@@ -3,6 +3,7 @@
 
 #include "Portfolio_cppGameModeBase.h"
 
+
 APortfolio_cppGameModeBase::APortfolio_cppGameModeBase()
 {
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *(FString(__FUNCTION__) + TEXT("(") + FString::FromInt(__LINE__) + TEXT(")")));
@@ -11,4 +12,11 @@ APortfolio_cppGameModeBase::APortfolio_cppGameModeBase()
 	{
 		this->DefaultPawnClass = tempChar.Class;
 	}
+}
+void APortfolio_cppGameModeBase::BeginPlay()
+{
+
+	Super::BeginPlay();
+
+
 }

@@ -6,6 +6,7 @@
 #include "GameFramework/GameModeBase.h"
 #include "Portfolio_cppGameModeBase.generated.h"
 
+
 /**
  * 
  */
@@ -18,4 +19,8 @@ class PORTFOLIO_CPP_API APortfolio_cppGameModeBase : public AGameModeBase
 public:
 	APortfolio_cppGameModeBase();
 
+ 	virtual void BeginPlay() override;
+
+	FVector2D out_ViewportSize ;
+	
 };
