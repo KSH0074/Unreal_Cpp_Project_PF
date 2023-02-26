@@ -4,8 +4,18 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include <queue>
 #include "MainPlayer.generated.h"
 
+UENUM(BlueprintType)
+enum class COMMAND : uint8
+{
+	None,
+	Right = 1,
+	Left,
+	Up,
+	Down,
+};
 UCLASS()
 class PORTFOLIO_CPP_API AMainPlayer : public ACharacter
 {
@@ -32,16 +42,37 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* cameraComp;
 	
-	UFUNCTION()
+
 	void MainCharacterMoveInput();
 
 	UPROPERTY()
 	class APlayerController* mainPlayerController;
 
-	UPROPERTY()
-	class UPlayerMoveComponent* moveComp;
-
-	//UFUNCTION()
+	bool bMouseDown = false;
 	
+	void MouseButtonDown();
+
+	void MouseButtonRelease();
+
+	void InputRight();
+	void InputLeft();
+	void InputUp();
+	void InputDown();
+
+	void OutputCommand();
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Command)
+	COMMAND mCommand = COMMAND::None;
+
+	
+	std::queue<COMMAND> commandQueue;
+
+	UFUNCTION()
+	void CommandTimeOut();
+
+	UPROPERTY()
+	bool isTimeEnd;
+
+	UPROPERTY()
+		FTimerHandle commandTimerHandle;
 
 };
