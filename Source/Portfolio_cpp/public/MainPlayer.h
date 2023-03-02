@@ -77,6 +77,11 @@ public:
 	FTimerHandle commandTimerHandle;
 	
 	UFUNCTION()
-	void TableReadTest(int32 colmn);
+	void TableRead(FString Command);
 
+	UFUNCTION()
+	void TimeOver();
+	
+	UPROPERTY()
+		class UPFGameInstance* thisGameInstance;
 };

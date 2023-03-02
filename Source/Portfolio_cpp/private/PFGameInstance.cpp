@@ -14,10 +14,20 @@ UPFGameInstance::UPFGameInstance()
 	{
 		commandTable = DtTable.Object;
 		UE_LOG(LogTemp, Warning, TEXT("data Table LoadComplete"));
+		tableSize = DtTable.Object->GetTableData().Num();
 	}
 }
 
-FCommandTable* UPFGameInstance::GetABCharacterData(int32 column)
+FCommandTable* UPFGameInstance::GetABCharacterData(FString column)
 {
-	return commandTable->FindRow<FCommandTable>(*FString::FromInt(column), TEXT(""));
+	FCommandTable* temp;
+	temp = commandTable->FindRow<FCommandTable>(*FString::FString(column), TEXT(""));
+	if (temp != nullptr)
+	{
+		TextOut = temp->Text;
+		return temp;
+	}
+	return nullptr;
 }
+
+

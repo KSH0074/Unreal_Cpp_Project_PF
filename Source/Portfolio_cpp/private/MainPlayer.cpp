@@ -48,15 +48,16 @@ void AMainPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	mainPlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	UE_LOG(LogTemp, Warning, TEXT("%d"), commandQueue.size());
-
+//	UE_LOG(LogTemp, Warning, TEXT("%d"), commandQueue.size());
+	thisGameInstance = Cast<UPFGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	//TableRead("41");
 }
 
 // Called every frame
 void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	TableReadTest(1);
+
 	if (bMouseDown)
 	{
 		MainCharacterMoveInput();
@@ -90,8 +91,6 @@ void AMainPlayer::MainCharacterMoveInput()
 
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
-
-		
 	}
 }
 
@@ -168,54 +167,49 @@ void AMainPlayer::OutputCommand()
 	}
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
 
-	FString b{};
-	b = "41";
-	if (a.Equals(b)) //기술표와 대조하는 부분 csv파일로 간단하게 이름/기술명(추후 함수이름)으로 만든다음 델리게이트 bindUFunctino으로 이름 넘겨서 함수 호출시키면 되지 않을까?
-	{
-		UE_LOG(LogTemp, Warning, TEXT("oshida"));
-	}
+	TableRead(a);
+	//FString b{};
+	////TableReadTest(1);
+	//b = "41";
+	//if (a.Equals(b)) //기술표와 대조하는 부분 csv파일로 간단하게 이름/기술명(추후 함수이름)으로 만든다음 델리게이트 bindUFunctino으로 이름 넘겨서 함수 호출시키면 되지 않을까?
+	//{
+	//	UE_LOG(LogTemp, Warning, TEXT("oshida"));
+	//}
+
 	
 }
 
 void AMainPlayer::CommandTimeOut()
 {
-
-		GetWorld()->GetTimerManager().SetTimer(commandTimerHandle,this,&AMainPlayer::OutputCommand,0.5,false);//OutputCommand가 대신 비우는 함수로
-	
-	
+		GetWorld()->GetTimerManager().SetTimer(commandTimerHandle,this,&AMainPlayer::TimeOver,0.5,false);//OutputCommand가 대신 비우는 함수로
 }
 
 
 
 /*
-행으로 찾았는데 이걸 커맨드로 어떻게 만들지
-지금 인풋은 41 으로 들어오는데 
-맵을 하나 또 준비해서 41:1 로 묶어야하나 
-
-
-애초에 맵으로 41 : 함수 
+행 이름 숫자 말고 문자로 할 수 있는거 처음 알았다 ...
 */
-void AMainPlayer::TableReadTest(int32 colmn)
+void AMainPlayer::TableRead(FString InputCommand)// 인수 FString 으로 변경하여 위의 OutputCommand 에 적ㅇ요할 수 있도록 하기 
 {
-	UPFGameInstance* thisGameInstance = Cast<UPFGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	
 	if (nullptr == thisGameInstance) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
-	FCommandTable* CurrentStatData{};
-	int32 Level{};
-	FString LoadedCommand{};
-	CurrentStatData = 	thisGameInstance->GetABCharacterData(colmn);
-	if (CurrentStatData)
+	FCommandTable* temp;
+	temp = thisGameInstance->GetABCharacterData(InputCommand);
+	if (temp != nullptr)
 	{
-		Level = colmn;
-		LoadedCommand = CurrentStatData->Command;//찾은 커맨드 
-		UE_LOG(LogTemp, Warning, TEXT("Level %d data exist."), Level);//레벨(행)
-		UE_LOG(LogTemp, Warning, TEXT("Command %s data exist."), *LoadedCommand);
+		UE_LOG(LogTemp, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut);
 	}
-	else
+	
+
+}
+void AMainPlayer::TimeOver()
+{
+	while (!commandQueue.empty())
 	{
-		// 데이터 테이블에 없는 레벨일 때
-		UE_LOG(LogTemp, Warning, TEXT("Level %d data doesn't exist."), Level);
+		commandQueue.pop();
 	}
+	UE_LOG(LogTemp, Warning, TEXT("TimeOver : Input CommandRemoved"));
 }
 
 
