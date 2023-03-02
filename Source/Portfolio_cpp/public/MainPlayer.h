@@ -58,6 +58,7 @@ public:
 	void InputLeft();
 	void InputUp();
 	void InputDown();
+	void InputCommand(FKey inputKey);
 
 	void OutputCommand();
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Command)
@@ -73,6 +74,9 @@ public:
 	bool isTimeEnd;
 
 	UPROPERTY()
-		FTimerHandle commandTimerHandle;
+	FTimerHandle commandTimerHandle;
+	
+	UFUNCTION()
+	void TableReadTest(int32 colmn);
 
 };

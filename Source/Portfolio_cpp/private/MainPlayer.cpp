@@ -7,7 +7,8 @@
 #include <Camera/CameraComponent.h>
 #include "Blueprint/AIBlueprintHelperLibrary.h"
 #include "Kismet/GameplayStatics.h"
-
+#include "PFGameInstance.h"//데이터 테이블관련 헤더 
+#include "CommandDataTable.h"//Struct 
 
 // Sets default values
 AMainPlayer::AMainPlayer()
@@ -48,12 +49,14 @@ void AMainPlayer::BeginPlay()
 	Super::BeginPlay();
 	mainPlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	UE_LOG(LogTemp, Warning, TEXT("%d"), commandQueue.size());
+
 }
 
 // Called every frame
 void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	TableReadTest(1);
 	if (bMouseDown)
 	{
 		MainCharacterMoveInput();
@@ -64,13 +67,15 @@ void AMainPlayer::Tick(float DeltaTime)
 void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
-	//PlayerInputComponent->BindAction("Move", IE_Pressed, this, &AMainPlayer::MainCharacterMoveInput);
+
+	//이동관련
 	PlayerInputComponent->BindAction("Move", IE_Pressed, this, &AMainPlayer::MouseButtonDown);
 	PlayerInputComponent->BindAction("Move", IE_Released, this, &AMainPlayer::MouseButtonRelease);
-	PlayerInputComponent->BindAction("Right", IE_Pressed, this, &AMainPlayer::InputRight);
-	PlayerInputComponent->BindAction("Left", IE_Pressed, this, &AMainPlayer::InputLeft);
-	PlayerInputComponent->BindAction("Up", IE_Pressed, this, &AMainPlayer::InputUp);
-	PlayerInputComponent->BindAction("Down", IE_Pressed, this, &AMainPlayer::InputDown);
+	//커맨드 관련 
+	PlayerInputComponent->BindAction("Right", IE_Pressed, this, &AMainPlayer::InputCommand);
+	PlayerInputComponent->BindAction("Left", IE_Pressed, this, &AMainPlayer::InputCommand);
+	PlayerInputComponent->BindAction("Up", IE_Pressed, this, &AMainPlayer::InputCommand);
+	PlayerInputComponent->BindAction("Down", IE_Pressed, this, &AMainPlayer::InputCommand);
 	PlayerInputComponent->BindAction("Action", IE_Pressed, this, &AMainPlayer::OutputCommand);
 }
 
@@ -103,7 +108,7 @@ void AMainPlayer::MouseButtonRelease()
 void AMainPlayer::InputRight()
 {
 	mCommand = COMMAND::Right;
-	UE_LOG(LogTemp, Warning, TEXT("Right : %d"),mCommand);
+	UE_LOG(LogTemp, Warning,  TEXT("Left : % d"), mCommand);
 	commandQueue.push(mCommand);
 	CommandTimeOut();
 }
@@ -132,19 +137,40 @@ void AMainPlayer::InputDown()
 	CommandTimeOut();
 }
 
-void AMainPlayer::OutputCommand()
+void AMainPlayer::InputCommand(FKey inputKey)
 {
-	FString a{};
+	switch (inputKey.GetFName().GetPlainNameString()[0])//GetPlainNameString => 이름부분만 추출 FString 으로 변환
+	{
+	case 'D':
+		InputRight();
+		break;
+	case 'A':
+		InputLeft();
+		break;
+	case 'S':
+		InputDown();
+		break;
+	case 'W':
+		InputUp();
+		break;
+	default:
+		break;
+	}
+}
+
+void AMainPlayer::OutputCommand() 
+{
+	FString a{}; //커맨드 Queue 를 FString 형태로 받는 변수 
 	while (!commandQueue.empty())
 	{
 		a.AppendInt(static_cast<int32>(commandQueue.front()));
 		commandQueue.pop();
 	}
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *a);
+	UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
 
 	FString b{};
 	b = "41";
-	if (a.Equals(b))
+	if (a.Equals(b)) //기술표와 대조하는 부분 csv파일로 간단하게 이름/기술명(추후 함수이름)으로 만든다음 델리게이트 bindUFunctino으로 이름 넘겨서 함수 호출시키면 되지 않을까?
 	{
 		UE_LOG(LogTemp, Warning, TEXT("oshida"));
 	}
@@ -154,44 +180,42 @@ void AMainPlayer::OutputCommand()
 void AMainPlayer::CommandTimeOut()
 {
 
-		GetWorld()->GetTimerManager().SetTimer(commandTimerHandle,this,&AMainPlayer::OutputCommand,0.5,false);
+		GetWorld()->GetTimerManager().SetTimer(commandTimerHandle,this,&AMainPlayer::OutputCommand,0.5,false);//OutputCommand가 대신 비우는 함수로
 	
 	
 }
+
 
 
 /*
-Fstring으로 Switch 문을 만들려고 하면 사용할 것 
-// 문자열과 매칭되는 정수형 데이터를 저장하는 TMap
-TMap<FString, int32> StringToIntMap;
-StringToIntMap.Add(TEXT("apple"), 1);
-StringToIntMap.Add(TEXT("banana"), 2);
-StringToIntMap.Add(TEXT("cherry"), 3);
+행으로 찾았는데 이걸 커맨드로 어떻게 만들지
+지금 인풋은 41 으로 들어오는데 
+맵을 하나 또 준비해서 41:1 로 묶어야하나 
 
-// Switch문에 사용할 문자열 변수
-FString Fruit = TEXT("banana");
 
-// 문자열과 매칭되는 정수형 데이터를 TMap에서 가져옴
-int32 IntValue = -1;
-if (StringToIntMap.Contains(Fruit))
-{
-    IntValue = *StringToIntMap.Find(Fruit);
-}
-
-// Switch문에서 매핑된 정수형 데이터를 사용
-switch (IntValue)
-{
-case 1:
-    UE_LOG(LogTemp, Warning, TEXT("This is an apple."));
-    break;
-case 2:
-    UE_LOG(LogTemp, Warning, TEXT("This is a banana."));
-    break;
-case 3:
-    UE_LOG(LogTemp, Warning, TEXT("This is a cherry."));
-    break;
-default:
-    UE_LOG(LogTemp, Warning, TEXT("This is not a valid fruit."));
-    break;
-}
+애초에 맵으로 41 : 함수 
 */
+void AMainPlayer::TableReadTest(int32 colmn)
+{
+	UPFGameInstance* thisGameInstance = Cast<UPFGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+	if (nullptr == thisGameInstance) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
+
+	FCommandTable* CurrentStatData{};
+	int32 Level{};
+	FString LoadedCommand{};
+	CurrentStatData = 	thisGameInstance->GetABCharacterData(colmn);
+	if (CurrentStatData)
+	{
+		Level = colmn;
+		LoadedCommand = CurrentStatData->Command;//찾은 커맨드 
+		UE_LOG(LogTemp, Warning, TEXT("Level %d data exist."), Level);//레벨(행)
+		UE_LOG(LogTemp, Warning, TEXT("Command %s data exist."), *LoadedCommand);
+	}
+	else
+	{
+		// 데이터 테이블에 없는 레벨일 때
+		UE_LOG(LogTemp, Warning, TEXT("Level %d data doesn't exist."), Level);
+	}
+}
+
+
