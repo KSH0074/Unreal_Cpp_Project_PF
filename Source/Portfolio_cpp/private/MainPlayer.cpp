@@ -107,7 +107,7 @@ void AMainPlayer::MouseButtonRelease()
 void AMainPlayer::InputRight()
 {
 	mCommand = COMMAND::Right;
-	UE_LOG(LogTemp, Warning,  TEXT("Left : % d"), mCommand);
+	UE_LOG(LogTemp, Warning,  TEXT("Right : % d"), mCommand);
 	commandQueue.push(mCommand);
 	CommandTimeOut();
 }
@@ -168,15 +168,7 @@ void AMainPlayer::OutputCommand()
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
 
 	TableRead(a);
-	//FString b{};
-	////TableReadTest(1);
-	//b = "41";
-	//if (a.Equals(b)) //기술표와 대조하는 부분 csv파일로 간단하게 이름/기술명(추후 함수이름)으로 만든다음 델리게이트 bindUFunctino으로 이름 넘겨서 함수 호출시키면 되지 않을까?
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("oshida"));
-	//}
-
-	
+	UseSkill.Execute();
 }
 
 void AMainPlayer::CommandTimeOut()
@@ -191,17 +183,19 @@ void AMainPlayer::CommandTimeOut()
 */
 void AMainPlayer::TableRead(FString InputCommand)// 인수 FString 으로 변경하여 위의 OutputCommand 에 적ㅇ요할 수 있도록 하기 
 {
-	
 	if (nullptr == thisGameInstance) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
-	FCommandTable* temp;
-	temp = thisGameInstance->GetABCharacterData(InputCommand);
-	if (temp != nullptr)
+	FCommandTable* temp; //커맨드 테이블(행)을 저장할 임시변수 
+	temp = thisGameInstance->GetABCharacterData(InputCommand); // PFGameInstance에 구현한 GetABCharacterData사용 InputCommand와 이름이 같은 행을 찾아 반환 
+	if (temp != nullptr) // 찾은 경우 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut);
+		UE_LOG(LogTemp, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut); //출력로그에 출력  
+		UseSkill.BindUFunction(this, *thisGameInstance->TextOut); //Blueprint에서 바인딩하려고 했으나 일단은 C++상으로 구현 해당 커맨드와 함수를 바인딩 
 	}
-	
-
+	else //못 찾은 경우 
+	{
+		return;
+	}
 }
 void AMainPlayer::TimeOver()
 {
@@ -210,6 +204,27 @@ void AMainPlayer::TimeOver()
 		commandQueue.pop();
 	}
 	UE_LOG(LogTemp, Warning, TEXT("TimeOver : Input CommandRemoved"));
+}
+
+
+void AMainPlayer::JangPoong()
+{
+	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
+}
+
+void AMainPlayer::Hold()
+{
+	UE_LOG(LogTemp, Warning, TEXT("use Skill Hold"));
+}
+
+void AMainPlayer::Dodge()
+{
+	UE_LOG(LogTemp, Warning, TEXT("use Skill Dodge"));
+}
+
+void AMainPlayer::BackDash()
+{
+	UE_LOG(LogTemp, Warning, TEXT("use Skill BackDash"));
 }
 
 

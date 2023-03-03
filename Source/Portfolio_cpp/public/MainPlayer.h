@@ -7,6 +7,8 @@
 #include <queue>
 #include "MainPlayer.generated.h"
 
+DECLARE_DYNAMIC_DELEGATE(FCommandOutDelegate);
+
 UENUM(BlueprintType)
 enum class COMMAND : uint8
 {
@@ -84,4 +86,15 @@ public:
 	
 	UPROPERTY()
 		class UPFGameInstance* thisGameInstance;
+
+	FCommandOutDelegate UseSkill;
+
+	UFUNCTION()
+		void JangPoong();
+	UFUNCTION()
+		void Hold();
+	UFUNCTION()
+		void Dodge();
+	UFUNCTION()
+		void BackDash();
 };
