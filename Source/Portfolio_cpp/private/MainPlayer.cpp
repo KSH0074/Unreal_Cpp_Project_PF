@@ -87,7 +87,7 @@ void AMainPlayer::MainCharacterMoveInput()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("MouseInput Recive"));
 		FHitResult hitResult;
-		mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
+		mainPlayerController->GetHitResultUnderCursor(ECC_EngineTraceChannel1, false, hitResult);
 
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
