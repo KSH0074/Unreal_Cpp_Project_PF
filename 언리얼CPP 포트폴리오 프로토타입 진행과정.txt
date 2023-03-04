@@ -11,7 +11,7 @@
 2023/03/02 : for문을 이용한 테이블 탐색 및 해당 커맨드 출력, //for문 대신 테이블 행을 검색해서 가져오는 방법으로 구현 
 2023/03/03 : 입력한 커맨드에 맞는 함수 델리게이트로 바인드, 호출 
 
-2023/03/04 : Enemy FSM 계획 및 BB 활용 방법 숙지 후 적용 
+2023/03/04 : Enemy FSM 계획 및 BB 활용 방법 숙지 후 적용  	
 참고 예정  : https://docs.unrealengine.com/5.0/ko/behavior-tree-in-unreal-engine---quick-start-guide/
 
 
