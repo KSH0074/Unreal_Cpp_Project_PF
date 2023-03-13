@@ -87,7 +87,7 @@ void AMainPlayer::MainCharacterMoveInput()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("MouseInput Recive"));
 		FHitResult hitResult;
-		mainPlayerController->GetHitResultUnderCursor(ECC_EngineTraceChannel1, false, hitResult);
+		mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
 
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
@@ -167,8 +167,12 @@ void AMainPlayer::OutputCommand()
 	}
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
 
-	TableRead(a);
-	UseSkill.Execute();
+	TableRead(a);//스킬 바인딩까지 
+	if (UseSkill.IsBound()) //
+	{
+		UseSkill.Execute();
+	}
+	
 }
 
 void AMainPlayer::CommandTimeOut()
@@ -183,6 +187,7 @@ void AMainPlayer::CommandTimeOut()
 */
 void AMainPlayer::TableRead(FString InputCommand)// 인수 FString 으로 변경하여 위의 OutputCommand 에 적ㅇ요할 수 있도록 하기 
 {
+	UseSkill.Unbind();//이미 바인드 되어있는거 해제 
 	if (nullptr == thisGameInstance) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
 	FCommandTable* temp; //커맨드 테이블(행)을 저장할 임시변수 
