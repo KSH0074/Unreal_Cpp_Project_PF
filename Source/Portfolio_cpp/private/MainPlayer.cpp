@@ -9,7 +9,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "PFGameInstance.h"//데이터 테이블관련 헤더 
 #include "CommandDataTable.h"//Struct 
-
+#include <Components/ArrowComponent.h>
+#include "FireBall.h"
 // Sets default values
 AMainPlayer::AMainPlayer()
 {
@@ -39,8 +40,11 @@ AMainPlayer::AMainPlayer()
 
 	this->bUseControllerRotationYaw = false;
 
-	
-	
+	//firePosition 
+	firePosition2 = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition2"));
+	firePosition2->SetRelativeLocation(FVector(80.0f, 0.0f, 40.0f));
+	firePosition2->bHiddenInGame = false;
+	firePosition2->SetupAttachment(RootComponent);
 }
 
 // Called when the game starts or when spawned
@@ -215,6 +219,8 @@ void AMainPlayer::TimeOver()
 void AMainPlayer::JangPoong()
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
+	GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition2->GetComponentTransform());
+	//여기에 현재 마우스 포인트 바라보게하는 코드 추가 
 }
 
 void AMainPlayer::Hold()

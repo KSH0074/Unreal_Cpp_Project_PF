@@ -97,4 +97,9 @@ public:
 		void Dodge();
 	UFUNCTION()
 		void BackDash();
+
+	UPROPERTY(EditDefaultsOnly, Category = FireBallFactory)
+		TSubclassOf<class AFireBall> FireBall;
+	UPROPERTY(BlueprintReadWrite, Category = FireBallFactory)
+		class UArrowComponent* firePosition2;
 };
