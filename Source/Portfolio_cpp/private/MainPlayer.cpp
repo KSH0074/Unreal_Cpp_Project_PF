@@ -11,6 +11,7 @@
 #include "CommandDataTable.h"//Struct 
 #include <Components/ArrowComponent.h>
 #include "FireBall.h"
+#include <Kismet/KismetMathLibrary.h>
 // Sets default values
 AMainPlayer::AMainPlayer()
 {
@@ -174,6 +175,12 @@ void AMainPlayer::OutputCommand()
 	TableRead(a);//스킬 바인딩까지 
 	if (UseSkill.IsBound()) //
 	{
+		FHitResult hitResult;
+		mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
+		
+		FRotator turnPlayer = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), hitResult.Location);
+		SetActorRotation(FRotator(0.f, turnPlayer.Yaw, 0.f));
+		
 		UseSkill.Execute();
 	}
 	
