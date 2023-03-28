@@ -2,7 +2,7 @@
 
 
 #include "Enemy.h"
-
+#include <Components/CapsuleComponent.h>
 // Sets default values
 AEnemy::AEnemy()
 {
@@ -17,6 +17,9 @@ AEnemy::AEnemy()
 
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
 	}
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
 }
 
 // Called when the game starts or when spawned

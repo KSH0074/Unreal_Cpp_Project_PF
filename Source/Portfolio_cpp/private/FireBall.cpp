@@ -13,8 +13,10 @@ AFireBall::AFireBall()
 	//Craeate collision
 	collisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("CollisionComp"));
 
-	//Attach collision(Block All)
-	collisionComp->SetCollisionProfileName(TEXT("BlockAll"));
+	collisionComp->SetGenerateOverlapEvents(true);
+	collisionComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	collisionComp->SetCollisionObjectType(ECC_GameTraceChannel4);
+
 	
 	//Size 
 	collisionComp->SetSphereRadius(10);
@@ -33,13 +35,16 @@ AFireBall::AFireBall()
 	BulletProjectileComp->MaxSpeed = 2000.0f;
 	BulletProjectileComp->bShouldBounce = false;
 
+	//InitialLifeSpan = 2.0f;// Distroy or LifeSpan 사용하여 수명을 정함 
+	//다른 물체에 충돌하였을 때도 사라져야 하므로 Distroy 사용 
 }
 
 // Called when the game starts or when spawned
 void AFireBall::BeginPlay()
 {
 	Super::BeginPlay();
-	
+	FTimerHandle DeathTimer;
+	GetWorld()->GetTimerManager().SetTimer(DeathTimer, 2.0f, false);
 }
 
 // Called every frame
@@ -48,4 +53,7 @@ void AFireBall::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 }
-
+void AFireBall::Die()
+{
+	Destroy();
+}

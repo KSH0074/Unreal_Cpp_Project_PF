@@ -10,6 +10,7 @@
 #include "PFGameInstance.h"//데이터 테이블관련 헤더 
 #include "CommandDataTable.h"//Struct 
 #include <Components/ArrowComponent.h>
+#include <Components/CapsuleComponent.h>
 #include "FireBall.h"
 #include <Kismet/KismetMathLibrary.h>
 // Sets default values
@@ -46,6 +47,10 @@ AMainPlayer::AMainPlayer()
 	firePosition2->SetRelativeLocation(FVector(80.0f, 0.0f, 40.0f));
 	firePosition2->bHiddenInGame = false;
 	firePosition2->SetupAttachment(RootComponent);
+
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel2);
 }
 
 // Called when the game starts or when spawned
