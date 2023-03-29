@@ -4,6 +4,7 @@
 #include "FireBall.h"
 #include <Components/SphereComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
+#include "Enemy.h"
 // Sets default values
 AFireBall::AFireBall()
 {
@@ -45,6 +46,9 @@ void AFireBall::BeginPlay()
 	Super::BeginPlay();
 	FTimerHandle DeathTimer;
 	GetWorld()->GetTimerManager().SetTimer(DeathTimer, 2.0f, false);
+	//바인드
+	collisionComp->OnComponentBeginOverlap.AddDynamic(this, &AFireBall::OnFireBallOverlap);
+
 }
 
 // Called every frame
@@ -55,5 +59,18 @@ void AFireBall::Tick(float DeltaTime)
 }
 void AFireBall::Die()
 {
+	Destroy();
+}
+//충돌(겹침)이벤트 발생 시 호출
+void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AEnemy* enemy = Cast<AEnemy>(OtherActor); // OtherActor => 충돌한 다른 물체 
+
+	if (enemy != nullptr)
+	{
+		//임시로 제거, 적 체력 추가시 변형
+		OtherActor->Destroy(); 
+	}
+	//자신 제거
 	Destroy();
 }
