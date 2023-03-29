@@ -26,4 +26,15 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	//공격 범위
+	//UPROPERTY(EditAnyWhere, Category = FSM)
+	//float attackRange = 150.0f;
+
+	//HP
+	UPROPERTY(EditAnywhere)
+	float HP = 1000.0f;
+
+	//피격함수 
+	UFUNCTION()
+	void OnDamageProcess(float damage);
 };

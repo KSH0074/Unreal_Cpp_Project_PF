@@ -68,8 +68,8 @@ void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 
 	if (enemy != nullptr)
 	{
-		//임시로 제거, 적 체력 추가시 변형
-		OtherActor->Destroy(); 
+		//적 체력 추가시 변형, 임시 데미지 500.0f
+		enemy->OnDamageProcess(500.0f);
 	}
 	//자신 제거
 	Destroy();
