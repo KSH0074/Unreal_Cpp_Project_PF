@@ -33,7 +33,7 @@
 2023/03/27 : FireBall 사용시 마우스 커서 방향대로 날아가게 함 
 2023/03/28 : FireBall 및 Player, Enemy, Floor 에대한 충돌 설정 변경 및 추가
 2023/03/29 : FireBall 충돌 시스템 추가, Enemy 체력 및 피격함수 대략적인 기틀 완성,
-  
+2023/03/30 : FireBall에 Player정보를 가지도록 코드 설계 이후 테스트하는 코드 추가
 맵 디자인은 던전 형태로 Enter the Gungeon 이나 다른 로그라이크 처럼 만드는 것도 나쁘지 않을 듯 
 
 //카메라에서 뷰포트위의 마우스커서 좌표로 LineTrace 
