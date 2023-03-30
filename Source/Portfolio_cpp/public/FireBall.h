@@ -13,7 +13,7 @@ class PORTFOLIO_CPP_API AFireBall : public AActor
 	
 public:	
 	// Sets default values for this actor's properties
-	AFireBall();
+	AFireBall();	
 
 protected:
 	// Called when the game starts or when spawned
@@ -42,4 +42,8 @@ public:
 	UFUNCTION()
 	void OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	//발사한 플레이어를 기억하는 변수
+	UPROPERTY()
+	class AMainPlayer* master;
 };

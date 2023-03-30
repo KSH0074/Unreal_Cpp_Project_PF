@@ -100,6 +100,10 @@ public:
 
 	UPROPERTY(EditDefaultsOnly, Category = FireBallFactory)
 		TSubclassOf<class AFireBall> FireBall;
+	
 	UPROPERTY(BlueprintReadWrite, Category = FireBallFactory)
 		class UArrowComponent* firePosition2;
+	
+	UFUNCTION()
+	void test();
 };

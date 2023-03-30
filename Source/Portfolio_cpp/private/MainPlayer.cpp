@@ -235,8 +235,8 @@ void AMainPlayer::TimeOver()
 void AMainPlayer::JangPoong()
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
-	GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition2->GetComponentTransform());
-	//여기에 현재 마우스 포인트 바라보게하는 코드 추가 
+	GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition2->GetComponentTransform())->master = this;
+
 }
 
 void AMainPlayer::Hold()
@@ -252,6 +252,11 @@ void AMainPlayer::Dodge()
 void AMainPlayer::BackDash()
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill BackDash"));
+}
+
+void AMainPlayer::test()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Test complete"));
 }
 
 

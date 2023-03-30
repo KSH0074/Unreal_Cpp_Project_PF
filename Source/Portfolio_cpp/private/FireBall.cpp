@@ -5,6 +5,7 @@
 #include <Components/SphereComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include "Enemy.h"
+#include "MainPlayer.h"
 // Sets default values
 AFireBall::AFireBall()
 {
@@ -61,15 +62,18 @@ void AFireBall::Die()
 {
 	Destroy();
 }
-//충돌(겹침)이벤트 발생 시 호출
+//충돌(겹침)이벤트 발생 시 호출, 하지만 공격과 관련된 MainPlayer에 작성하는게 낫지 않을까 
 void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	AEnemy* enemy = Cast<AEnemy>(OtherActor); // OtherActor => 충돌한 다른 물체 
-
+	// OtherActor => 충돌한 다른 물체를 Enemy로 형 변환 시도 
+	AEnemy* enemy = Cast<AEnemy>(OtherActor);  
+	//형 변환성공 == Enemy가 맞은 경우 
 	if (enemy != nullptr)
 	{
 		//적 체력 추가시 변형, 임시 데미지 500.0f
+		//DataTable에서 값을 받아와 적용하도록 해야함 
 		enemy->OnDamageProcess(500.0f);
+		master->test();
 	}
 	//자신 제거
 	Destroy();
