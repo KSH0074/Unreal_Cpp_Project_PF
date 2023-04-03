@@ -46,4 +46,6 @@ public:
 	//발사한 플레이어를 기억하는 변수
 	UPROPERTY()
 	class AMainPlayer* master;
+
+	float Damage;
 };

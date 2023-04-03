@@ -72,8 +72,8 @@ void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	{
 		//적 체력 추가시 변형, 임시 데미지 500.0f
 		//DataTable에서 값을 받아와 적용하도록 해야함 
-		enemy->OnDamageProcess(500.0f);
-		master->test();
+		enemy->OnDamageProcess(Damage);
+		UE_LOG(LogTemp, Warning, TEXT("Damage test:%f"),Damage);
 	}
 	//자신 제거
 	Destroy();

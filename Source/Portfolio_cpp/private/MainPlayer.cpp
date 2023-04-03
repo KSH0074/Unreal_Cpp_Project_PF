@@ -235,7 +235,7 @@ void AMainPlayer::TimeOver()
 void AMainPlayer::JangPoong()
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
-	GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition2->GetComponentTransform())->master = this;
+	GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition2->GetComponentTransform())->Damage = 100.0f;
 
 }
 
