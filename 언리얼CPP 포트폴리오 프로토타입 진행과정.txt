@@ -34,6 +34,9 @@
 2023/03/28 : FireBall 및 Player, Enemy, Floor 에대한 충돌 설정 변경 및 추가
 2023/03/29 : FireBall 충돌 시스템 추가, Enemy 체력 및 피격함수 대략적인 기틀 완성,
 2023/03/30 : FireBall에 Player정보를 가지도록 코드 설계 이후 테스트하는 코드 추가
+2023/04/03 : FireBall 생성시 FireBall에 데미지 업데이트
+2023/03/04 : DataTable에 데미지 추가, 후 적용 확인, Enemy AI결함 발견, 처리 해야함, FireBall생성시 겹쳐있으면 오류나는 문제 대략 수정, 추후 베타에서 점검 필요
+
 맵 디자인은 던전 형태로 Enter the Gungeon 이나 다른 로그라이크 처럼 만드는 것도 나쁘지 않을 듯 
 2023/04/03 : FireBall 생성시 데미지를 업데이트하여 추가됨,  
 //카메라에서 뷰포트위의 마우스커서 좌표로 LineTrace 
