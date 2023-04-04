@@ -44,8 +44,9 @@ public:
 		int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 
 	//발사한 플레이어를 기억하는 변수
-	UPROPERTY()
-	class AMainPlayer* master;
+	// 이 부분은 instigator로 대체 가능
+	//UPROPERTY()
+	//class AMainPlayer* master;
 
-	float Damage;
+	float fireballDamage;
 };

@@ -14,7 +14,8 @@ UPFGameInstance::UPFGameInstance()
 	{
 		commandTable = DtTable.Object;
 		UE_LOG(LogTemp, Warning, TEXT("data Table LoadComplete"));
-		tableSize = DtTable.Object->GetTableData().Num();
+		//테스트 코드 
+		//tableSize = DtTable.Object->GetTableData().Num();
 	}
 }
 

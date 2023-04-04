@@ -21,7 +21,8 @@ public:
 	UPFGameInstance();
 	FCommandTable* GetABCharacterData(FString column);
 	
-	int32 tableSize = 0;
+	//TestCode
+	//int32 tableSize = 0;
 	UPROPERTY()
 	FString TextOut;
 private:

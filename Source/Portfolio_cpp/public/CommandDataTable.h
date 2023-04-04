@@ -13,17 +13,22 @@ struct FCommandTable : public FTableRowBase
 	GENERATED_BODY()
 
 public:
-	FCommandTable() : Command(""), Text("") {};
+	//FCommandTable() : Command(""), Text("") {};
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		FString Command;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		FString Text;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		FString SkillDamage;
+	FCommandTable() :Command(""), Text(""), SkillDamage("")
+	{
 
+	};
 };
 UCLASS()
 class PORTFOLIO_CPP_API ACommandDataTable : public AActor
-{
+{ 
 	GENERATED_BODY()
 
 };

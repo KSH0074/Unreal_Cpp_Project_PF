@@ -7,7 +7,7 @@
 #include <queue>
 #include "MainPlayer.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE(FCommandOutDelegate);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FCommandOutDelegate,float,Damage);
 
 UENUM(BlueprintType)
 enum class COMMAND : uint8
@@ -79,7 +79,7 @@ public:
 	FTimerHandle commandTimerHandle;
 	
 	UFUNCTION()
-	void TableRead(FString Command);
+	void TableRead(FString Command, float& damage);
 
 	UFUNCTION()
 	void TimeOver();
@@ -90,20 +90,18 @@ public:
 	FCommandOutDelegate UseSkill;
 
 	UFUNCTION()
-		void JangPoong();
+		void JangPoong(float Damage);
 	UFUNCTION()
-		void Hold();
+		void Hold(float Damage);
 	UFUNCTION()
-		void Dodge();
+		void Dodge(float Damage);
 	UFUNCTION()
-		void BackDash();
+		void BackDash(float Damage);
 
 	UPROPERTY(EditDefaultsOnly, Category = FireBallFactory)
 		TSubclassOf<class AFireBall> FireBall;
 	
 	UPROPERTY(BlueprintReadWrite, Category = FireBallFactory)
-		class UArrowComponent* firePosition2;
-	
-	UFUNCTION()
-	void test();
+		class UArrowComponent* firePosition;
+
 };

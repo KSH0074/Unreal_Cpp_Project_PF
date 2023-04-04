@@ -37,6 +37,7 @@ AFireBall::AFireBall()
 	BulletProjectileComp->MaxSpeed = 2000.0f;
 	BulletProjectileComp->bShouldBounce = false;
 
+
 	//InitialLifeSpan = 2.0f;// Distroy or LifeSpan 사용하여 수명을 정함 
 	//다른 물체에 충돌하였을 때도 사라져야 하므로 Distroy 사용 
 }
@@ -70,10 +71,12 @@ void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	//형 변환성공 == Enemy가 맞은 경우 
 	if (enemy != nullptr)
 	{
-		//적 체력 추가시 변형, 임시 데미지 500.0f
+		
 		//DataTable에서 값을 받아와 적용하도록 해야함 
-		enemy->OnDamageProcess(Damage);
-		UE_LOG(LogTemp, Warning, TEXT("Damage test:%f"),Damage);
+		enemy->OnDamageProcess(fireballDamage);
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *(GetInstigator()->GetFName().ToString()));
+		
+		UE_LOG(LogTemp, Warning, TEXT("Damage test:%f"), fireballDamage);
 	}
 	//자신 제거
 	Destroy();

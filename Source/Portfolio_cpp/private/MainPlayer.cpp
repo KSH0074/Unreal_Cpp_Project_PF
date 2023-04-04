@@ -43,10 +43,10 @@ AMainPlayer::AMainPlayer()
 	this->bUseControllerRotationYaw = false;
 
 	//firePosition 
-	firePosition2 = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition2"));
-	firePosition2->SetRelativeLocation(FVector(80.0f, 0.0f, 40.0f));
-	firePosition2->bHiddenInGame = false;
-	firePosition2->SetupAttachment(RootComponent);
+	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition2"));
+	firePosition->SetRelativeLocation(FVector(0.0f, 0.0f, 40.0f));
+	firePosition->bHiddenInGame = false;
+	firePosition->SetupAttachment(RootComponent);
 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -180,8 +180,10 @@ void AMainPlayer::OutputCommand()
 		commandQueue.pop();
 	}
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
+	float tempDmg =0;
+	
+	TableRead(a,tempDmg);
 
-	TableRead(a);//스킬 바인딩까지 
 	if (UseSkill.IsBound()) //
 	{
 		FHitResult hitResult;
@@ -190,7 +192,7 @@ void AMainPlayer::OutputCommand()
 		FRotator turnPlayer = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), hitResult.Location);
 		SetActorRotation(FRotator(0.f, turnPlayer.Yaw, 0.f));
 		
-		UseSkill.Execute();
+		UseSkill.Execute(tempDmg);
 	}
 	
 }
@@ -205,17 +207,20 @@ void AMainPlayer::CommandTimeOut()
 /*
 행 이름 숫자 말고 문자로 할 수 있는거 처음 알았다 ...
 */
-void AMainPlayer::TableRead(FString InputCommand)// 인수 FString 으로 변경하여 위의 OutputCommand 에 적ㅇ요할 수 있도록 하기 
+void AMainPlayer::TableRead(FString InputCommand,float& damage)// 인수 FString 으로 변경하여 위의 OutputCommand 에 적용할 수 있도록 하기 
 {
 	UseSkill.Unbind();//이미 바인드 되어있는거 해제 
 	if (nullptr == thisGameInstance) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
 	FCommandTable* temp; //커맨드 테이블(행)을 저장할 임시변수 
 	temp = thisGameInstance->GetABCharacterData(InputCommand); // PFGameInstance에 구현한 GetABCharacterData사용 InputCommand와 이름이 같은 행을 찾아 반환 
+	
 	if (temp != nullptr) // 찾은 경우 
 	{
+		FString skillDMG = temp->SkillDamage;
 		UE_LOG(LogTemp, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut); //출력로그에 출력  
-		UseSkill.BindUFunction(this, *thisGameInstance->TextOut); //Blueprint에서 바인딩하려고 했으나 일단은 C++상으로 구현 해당 커맨드와 함수를 바인딩 
+		UseSkill.BindUFunction(this, *thisGameInstance->TextOut); //해당 커맨드와 함수를 바인딩 
+		damage = FCString::Atof(*skillDMG);
 	}
 	else //못 찾은 경우 
 	{
@@ -232,31 +237,36 @@ void AMainPlayer::TimeOver()
 }
 
 
-void AMainPlayer::JangPoong()
+void AMainPlayer::JangPoong(float Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
-	GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition2->GetComponentTransform())->Damage = 100.0f;
+
+	FActorSpawnParameters SpawnPrams;
+	SpawnPrams.bNoFail = true;
+	AFireBall* FireBallInstance = GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition->GetComponentTransform());
+	//생성위치가 겹칠때 생기는 문제를 방지하기 위해서 
+	if( FireBallInstance != nullptr)
+	{
+		FireBallInstance->fireballDamage = Damage;
+		FireBallInstance->SetInstigator(this);
+	}
 
 }
 
-void AMainPlayer::Hold()
+void AMainPlayer::Hold(float Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill Hold"));
 }
 
-void AMainPlayer::Dodge()
+void AMainPlayer::Dodge(float Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill Dodge"));
 }
 
-void AMainPlayer::BackDash()
+void AMainPlayer::BackDash(float Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill BackDash"));
 }
 
-void AMainPlayer::test()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Test complete"));
-}
 
 
