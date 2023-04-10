@@ -35,9 +35,13 @@
 2023/03/29 : FireBall 충돌 시스템 추가, Enemy 체력 및 피격함수 대략적인 기틀 완성,
 2023/03/30 : FireBall에 Player정보를 가지도록 코드 설계 이후 테스트하는 코드 추가
 2023/04/03 : FireBall 생성시 FireBall에 데미지 업데이트
-2023/03/04 : DataTable에 데미지 추가, 후 적용 확인, Enemy AI결함 발견, 처리 해야함, FireBall생성시 겹쳐있으면 오류나는 문제 대략 수정, 추후 베타에서 점검 필요
+2023/04/04 : DataTable에 데미지 추가, 후 적용 확인, Enemy AI결함 발견, 처리 해야함, FireBall생성시 겹쳐있으면 오류나는 문제 대략 수정, 추후 베타에서 점검 필요
+2023/04/06 : AI BehaviorTree 적 캐릭터 피격시 Player 추적하는 대략적인 기틀 수정됨, BTT 이후 구현 필요
+2023/04/07 : 부상이슈
+2023/04/10 : EnemyAIController에서 Blackboard로 접근하여 is Damaged의 값을 셋 하도록 하기 위한 기틀 마련(AIcontroller에서 BlackBoard 접근 등), BluePrint로 구현하기 귀찮은? 부분을 C++을 통해 현함. 차후 다른 blueprint도 c++로 변경할 필요가 있을 수 있음  
+
 
 맵 디자인은 던전 형태로 Enter the Gungeon 이나 다른 로그라이크 처럼 만드는 것도 나쁘지 않을 듯 
-2023/04/03 : FireBall 생성시 데미지를 업데이트하여 추가됨,  
+
 //카메라에서 뷰포트위의 마우스커서 좌표로 LineTrace 
 //뷰포트위의 마우스 커서 => 

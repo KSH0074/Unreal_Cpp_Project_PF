@@ -46,9 +46,11 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::OnDamageProcess(float damage)
 {
 	//피격애니몽타주 재생 
+	// 
 	//체력 감소 
 	HP -= damage;
 	if (HP < 0)
 		Destroy();
+	//AIController Get 해서 BB의 Is Damaged  true 로 하고 Blueprint에서 moveto FirstLocation 할때 False 로 바꾸는 코드
 }
 
