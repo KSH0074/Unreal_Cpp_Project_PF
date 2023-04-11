@@ -2,20 +2,26 @@
 
 
 #include "EnemyAIController.h"
+#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 AEnemyAIController::AEnemyAIController()
 {
-	//여기에 BlackBoard 
-	// UBlackboardComponent* BlackboardComp = GetBlackboardComponent();
-	//FName KeyName = FName(TEXT("KeyName"));
-	//UBlackboardKeyType* KeyType = BlackboardComp->GetKeyType(KeyName);
-	//UBlackboardKey* Key = BlackboardComp->GetKey(KeyName);
+	
+}
+//blueprint에서도 사용가능하도록 함 단, 매개변수로 bool 형을 받아 blackboardComp->SetValueAsBool(FName::FName("isDamaged"), 여기); 여기에다 적용하도록 만듦 
+	
+void AEnemyAIController::BlackboardIsDamagedSet()
+{
 
-	//// 또는 uint8_t KeyID를 사용하여 BlackboardKey 가져오기
-	//uint8_t KeyID = 0;
-	//UBlackboardKeyType* KeyType = BlackboardComp->GetKeyType(KeyID);
-	//UBlackboardKey* Key = BlackboardComp->GetKey(KeyID);
-
-	//BlackboardComp = GetBlackboardComponent();
-	//BlackboardComp->SetValueAsBool(false);
+	behaviorComp = Cast<UBehaviorTreeComponent>(BrainComponent);
+	if (behaviorComp)
+	{
+		blackboardComp = behaviorComp->GetBlackboardComponent();
+		if (blackboardComp)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("TestCode is BlackBoard Exist"))
+		}
+	}
+	blackboardComp->SetValueAsBool(FName::FName("isDamaged"), true);
+	
 }

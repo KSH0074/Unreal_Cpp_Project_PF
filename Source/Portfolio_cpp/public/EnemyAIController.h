@@ -18,6 +18,10 @@ public:
 	AEnemyAIController();
 
 	UPROPERTY()
-	class UBlackboardComponent* BlackboardComp;
+	class UBehaviorTreeComponent* behaviorComp;
+	UPROPERTY()
+	class UBlackboardComponent* blackboardComp;
 	//데미지 입을 시 BlackBoard 값을 셋 하는 함수 추가 
+	UFUNCTION()
+	void BlackboardIsDamagedSet();
 };
