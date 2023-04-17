@@ -51,7 +51,8 @@ void AEnemy::OnDamageProcess(float damage)
 	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
 	if (AIController != nullptr)
 	{
-		AIController->BlackboardIsDamagedSet();
+		//but 돌아보는데만 작용하고 바로 false로 되게끔 BehaviorTree 로 구현 
+		AIController->BlackboardIsDamagedSet(true);
 	}
 	//피격애니몽타주 재생 
 	// 

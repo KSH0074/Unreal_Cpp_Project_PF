@@ -9,8 +9,8 @@ AEnemyAIController::AEnemyAIController()
 	
 }
 //blueprint에서도 사용가능하도록 함 단, 매개변수로 bool 형을 받아 blackboardComp->SetValueAsBool(FName::FName("isDamaged"), 여기); 여기에다 적용하도록 만듦 
-	
-void AEnemyAIController::BlackboardIsDamagedSet()
+
+void AEnemyAIController::BlackboardIsDamagedSet(bool setIsDamaged)
 {
 
 	behaviorComp = Cast<UBehaviorTreeComponent>(BrainComponent);
@@ -22,6 +22,6 @@ void AEnemyAIController::BlackboardIsDamagedSet()
 			UE_LOG(LogTemp, Warning, TEXT("TestCode is BlackBoard Exist"))
 		}
 	}
-	blackboardComp->SetValueAsBool(FName::FName("isDamaged"), true);
+	blackboardComp->SetValueAsBool(FName::FName("isDamaged"), setIsDamaged);
 	
 }

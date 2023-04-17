@@ -39,8 +39,8 @@
 2023/04/06 : AI BehaviorTree 적 캐릭터 피격시 Player 추적하는 대략적인 기틀 수정됨, BTT 이후 구현 필요
 2023/04/07 : 부상이슈
 2023/04/10 : EnemyAIController에서 Blackboard로 접근하여 is Damaged의 값을 셋 하도록 하기 위한 기틀 마련(AIcontroller에서 BlackBoard 접근 등), BluePrint로 구현하기 귀찮은? 부분을 C++을 통해 현함. 차후 다른 blueprint도 c++로 변경할 필요가 있을 수 있음  
-2023/04/11 :C++코드를 통해 Blackboard 접근 후 값 변경 성공함, 사용한 함수를 약간 변형하여 블루프린트 상에서 사용가능하게 할 계획, 추적 끝나면 isDamaged는 false가 되도록 
-
+2023/04/11 : C++코드를 통해 Blackboard 접근 후 값 변경 성공함, 사용한 함수를 약간 변형하여 블루프린트 상에서 사용가능하게 할 계획, 추적 끝나면 isDamaged는 false가 되도록 
+2023/04/17 : BTT를 이용하여 추적이후 isDamaged 값을 false로 두는 시도 중  
 맵 디자인은 던전 형태로 Enter the Gungeon 이나 다른 로그라이크 처럼 만드는 것도 나쁘지 않을 듯 
 
 //카메라에서 뷰포트위의 마우스커서 좌표로 LineTrace 
