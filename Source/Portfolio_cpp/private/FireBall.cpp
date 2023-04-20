@@ -63,7 +63,7 @@ void AFireBall::Die()
 {
 	Destroy();
 }
-//충돌(겹침)이벤트 발생 시 호출, 하지만 공격과 관련된 MainPlayer에 작성하는게 낫지 않을까 
+//충돌(겹침)이벤트 발생 시 호출
 void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	// OtherActor => 충돌한 다른 물체를 Enemy로 형 변환 시도 
@@ -77,7 +77,7 @@ void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *(GetInstigator()->GetFName().ToString()));
 		
 		UE_LOG(LogTemp, Warning, TEXT("Damage test:%f"), fireballDamage);
-	}
+	}	Destroy();
 	//자신 제거
 	Destroy();
 }

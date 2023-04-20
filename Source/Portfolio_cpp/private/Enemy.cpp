@@ -36,6 +36,10 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 	//공격 관련된 기능은 BB에 하는걸로 
+	if (isDead)
+	{
+		DeathState();
+	}
 }
 
 // Called to bind functionality to input
@@ -58,9 +62,25 @@ void AEnemy::OnDamageProcess(float damage)
 	// 
 	//체력 감소 
 	HP -= damage;
+	UE_LOG(LogTemp, Warning, TEXT("HP:%.2f"),HP );
 	if (HP < 0)
-		Destroy();
+	{
+		isDead = true;
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 	
 
 }
-
+void AEnemy::DeathState()
+{
+	//p = p0 + vt
+	FVector p0 = this->GetActorLocation();
+	FVector vt = FVector::DownVector * GetWorld()->DeltaTimeSeconds;
+	FVector p = p0 + (50.0f*vt);
+	this->SetActorLocation(p);
+	if (p.Z < -200.0f)
+	{
+		Destroy();
+	}
+	
+}

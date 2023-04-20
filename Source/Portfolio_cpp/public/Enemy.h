@@ -37,4 +37,9 @@ public:
 	//피격함수 
 	UFUNCTION()
 	void OnDamageProcess(float damage);
+	UFUNCTION()
+	void DeathState();
+
+	UPROPERTY()
+	bool isDead = false;
 };
