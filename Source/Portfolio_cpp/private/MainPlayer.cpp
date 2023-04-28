@@ -101,7 +101,8 @@ void AMainPlayer::MainCharacterMoveInput()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("MouseInput Recive"));
 		FHitResult hitResult;
-		mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
+		//ECC_VIsibility 트레이스 채널대신 MoveAble채널로 함 
+		mainPlayerController->GetHitResultUnderCursor(ECC_GameTraceChannel5, false, hitResult);
 
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
