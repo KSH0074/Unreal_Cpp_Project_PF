@@ -74,10 +74,10 @@ void AEnemy::OnDamageProcess(float damage)
 void AEnemy::DeathState()
 {
 	//p = p0 + vt
-	FVector p0 = this->GetActorLocation();
+	FVector p0 = GetActorLocation();
 	FVector vt = FVector::DownVector * GetWorld()->DeltaTimeSeconds;
 	FVector p = p0 + (50.0f*vt);
-	this->SetActorLocation(p);
+	SetActorLocation(p);
 	if (p.Z < -200.0f)
 	{
 		Destroy();

@@ -40,7 +40,7 @@ AMainPlayer::AMainPlayer()
 	//캐릭터 설정
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 
-	this->bUseControllerRotationYaw = false;
+	bUseControllerRotationYaw = false;
 
 	//firePosition 
 	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition2"));
@@ -249,7 +249,8 @@ void AMainPlayer::JangPoong(float Damage)
 	if( FireBallInstance != nullptr)
 	{
 		FireBallInstance->fireballDamage = Damage;
-		FireBallInstance->SetInstigator(this);
+		AMainPlayer* selfPointer = this;
+		FireBallInstance->SetInstigator(selfPointer);
 	}
 
 }
