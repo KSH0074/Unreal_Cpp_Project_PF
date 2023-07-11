@@ -14,7 +14,7 @@ class PORTFOLIO_CPP_API AFireBall : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AFireBall();	
-
+	FTimerHandle DeathTimer;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

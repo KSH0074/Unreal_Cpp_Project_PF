@@ -39,15 +39,15 @@ AFireBall::AFireBall()
 
 
 	//InitialLifeSpan = 2.0f;// Distroy or LifeSpan 사용하여 수명을 정함 
-	//다른 물체에 충돌하였을 때도 사라져야 하므로 Distroy 사용 
+	//다른 물체에 충돌하였을 때도 사라져야 하므로 Destroy 사용 
 }
 
 // Called when the game starts or when spawned
 void AFireBall::BeginPlay()
 {
 	Super::BeginPlay();
-	FTimerHandle DeathTimer;
-	GetWorld()->GetTimerManager().SetTimer(DeathTimer, 2.0f, false);
+	
+	GetWorld()->GetTimerManager().SetTimer(DeathTimer,this,&AFireBall::Die ,2.0f, false);
 	//바인드
 	collisionComp->OnComponentBeginOverlap.AddDynamic(this, &AFireBall::OnFireBallOverlap);
 	
