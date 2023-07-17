@@ -22,6 +22,12 @@ AEnemy::AEnemy()
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
+
+	ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/ImportedAnimationAndCharacter/Enemy/Enemy_Animation/Enemy_AnimBP.Enemy_AnimBP'"));
+	if (tempClass.Succeeded())
+	{
+		GetMesh()->SetAnimInstanceClass(tempClass.Class);
+	}
 }
 
 // Called when the game starts or when spawned
@@ -35,7 +41,7 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//공격 관련된 기능은 BB에 하는걸로 
+	
 	if (isDead)
 	{
 		DeathState();
