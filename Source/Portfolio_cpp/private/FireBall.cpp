@@ -64,7 +64,7 @@ void AFireBall::Die()
 {
 	Destroy();
 }
-//충돌(겹침)이벤트 발생 시 호출
+//충돌(겹침)이벤트 발생 시 호출 FireBall 이 충돌했을 경우 작동하는 함수 
 void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Overlap!!"));
