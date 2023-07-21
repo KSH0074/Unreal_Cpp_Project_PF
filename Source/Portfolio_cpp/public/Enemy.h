@@ -15,6 +15,10 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
+	//this 대체를 위한 변수 
+	UPROPERTY()
+	class AEnemy* me;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -26,9 +30,7 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	//공격 범위
-	//UPROPERTY(EditAnyWhere, Category = FSM)
-	//float attackRange = 150.0f;
+	
 
 	//HP
 	UPROPERTY(EditAnywhere)
@@ -37,9 +39,31 @@ public:
 	//피격함수 
 	UFUNCTION()
 	void OnDamageProcess(float damage);
+
+	//사망할때 작동하는 함수
 	UFUNCTION()
 	void DeathState();
 
+	//공격함수
+	UFUNCTION()
+	void AttackPlayer();
+
+	//사망여부 변수
 	UPROPERTY()
 	bool isDead = false;
+
+	//BlueprintReadWrite로  Enemy_Controller 블루프린트에서 접근하려했으나 실패함
+	UPROPERTY(BlueprintReadWrite)
+	class AMainPlayer* Scene_Placed_PlayerPawn;
+
+	//공격범위변수
+	UPROPERTY(EditAnyWhere, Category = Attack)
+	float attackRange = 120.0f;
+
+	//공격 쿨타임
+	UPROPERTY(EditAnyWhere, Category = Attack)
+	float attackCoolTime = 1.0f;
+
+	UPROPERTY()
+	float currentTime{};
 };

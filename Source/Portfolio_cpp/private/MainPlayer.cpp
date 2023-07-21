@@ -19,7 +19,7 @@ AMainPlayer::AMainPlayer()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	ConstructorHelpers::FObjectFinder<USkeletalMesh> TempMesh(TEXT("SkeletalMesh'/Game/Mannequin/Character/Mesh/SK_Mannequin.SK_Mannequin'"));
+	ConstructorHelpers::FObjectFinder<USkeletalMesh> TempMesh(TEXT("SkeletalMesh'/Game/ImportedAnimationAndCharacter/Player/Mesh/PlayerSkeletal.PlayerSkeletal'"));
 	if (TempMesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(TempMesh.Object);
@@ -99,12 +99,12 @@ void AMainPlayer::MainCharacterMoveInput()
 	//if 떼지 않았을 경우 true => tick 
 	if (bMouseDown)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("MouseInput Recive"));
+		//UE_LOG(LogTemp, Warning, TEXT("MouseInput Recive"));
 		FHitResult hitResult;
 		//ECC_VIsibility 트레이스 채널대신 MoveAble채널로 함 
 		mainPlayerController->GetHitResultUnderCursor(ECC_GameTraceChannel5, false, hitResult);
 
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
 		UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
 	}
 }
@@ -174,7 +174,8 @@ void AMainPlayer::InputCommand(FKey inputKey)
 
 void AMainPlayer::OutputCommand() 
 {
-	FString a{}; //커맨드 Queue 를 FString 형태로 받는 변수 
+	//커맨드 Queue 를 FString 형태로 받는 변수
+	FString a{};  
 	while (!commandQueue.empty())
 	{
 		a.AppendInt(static_cast<int32>(commandQueue.front()));
@@ -191,27 +192,30 @@ void AMainPlayer::OutputCommand()
 		mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
 		
 		FRotator turnPlayer = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), hitResult.Location);
-		SetActorRotation(FRotator(0.f, turnPlayer.Yaw, 0.f));
+		SetActorRotation(FRotator(0.0f, turnPlayer.Yaw, 0.0f));
 		
 		UseSkill.Execute(tempDmg);
 	}
 	
 }
 
+//커맨드 0.5초 내 출력하지 않으면 취소됨 
 void AMainPlayer::CommandTimeOut()
 {
-		GetWorld()->GetTimerManager().SetTimer(commandTimerHandle,this,&AMainPlayer::TimeOver,0.5,false);//OutputCommand가 대신 비우는 함수로
+		GetWorld()->GetTimerManager().SetTimer(commandTimerHandle,this,&AMainPlayer::TimeOver,0.5,false);
 }
 
 
 
 /*
-행 이름 숫자 말고 문자로 할 수 있는거 처음 알았다 ...
+행 이름 숫자 말고 문자로 
 */
-void AMainPlayer::TableRead(FString InputCommand,float& damage)// 인수 FString 으로 변경하여 위의 OutputCommand 에 적용할 수 있도록 하기 
+
+// 인수 FString 으로 변경하여 위의 OutputCommand 에 적용할 수 있도록 하기 
+void AMainPlayer::TableRead(FString InputCommand,float& damage)
 {
 	UseSkill.Unbind();//이미 바인드 되어있는거 해제 
-	if (nullptr == thisGameInstance) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
+	if (thisGameInstance == nullptr) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
 	FCommandTable* temp; //커맨드 테이블(행)을 저장할 임시변수 
 	temp = thisGameInstance->GetABCharacterData(InputCommand); // PFGameInstance에 구현한 GetABCharacterData사용 InputCommand와 이름이 같은 행을 찾아 반환 
@@ -225,6 +229,7 @@ void AMainPlayer::TableRead(FString InputCommand,float& damage)// 인수 FString
 	}
 	else //못 찾은 경우 
 	{
+		UE_LOG(LogTemp, Warning, TEXT("Skill not found, faild TableReading"));
 		return;
 	}
 }

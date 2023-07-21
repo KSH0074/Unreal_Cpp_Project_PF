@@ -66,7 +66,6 @@ FSM을 추가하던가 아무튼 피격효과도 추가해야함 => FSM대신 Be
 의문 : 프로토타입 / 알파 / 베타 버전을 구분하는 것이 의미있는 행위인가? 
 
 
-FireBall을 관통공격으로 만들어야 할까? => yes 이지만 일단 나중에 
 -----------------------------------
 *중간 정리*
 
@@ -166,7 +165,7 @@ Enemy AI 요구사항.
 - 평상시에는 특정 범위 내에서 랜덤하게(굳이 랜덤하지 않아도 좋다) 패트롤 한다.
 - Player가 가까이 있는 경우 근접 공격을 한다.
 
-현재 Enemy AI의 요구사항에 비해 BehaviorTree가 과하게 복잡해 보인다.
+
 
 앞으로 해야할 것 
 Enemy AI 개편 
@@ -179,11 +178,9 @@ Enemy가 Player룰 추적하기위해서
 기존에는 시야에 들었을 경우 Player로 인식하고 추적하였으나 
 시야 밖에서 피격당했을 때도 알아차리기 위해서는 처음부터 Player에 대한 정보를 가져야 한다.
 
-방법 : 
-1.Enemy의 변수에 Player 변수를 추가하고 BeginPlay 시점에 World에 있는 액터들 중 player 태그를 가진 오브젝트를 찾도록 한다. => 오브젝트가 많아질 수록 탐색비용이 든다.
-2.Enemy의 Blueprint에서 Player변수 추가하고 씬에서 액터를 선택한다. => 이 방법이 1번보다 비용이 적게든다고 할 수 있는가?(잘 모르겠다), Enemy 가 많아질수록 번거로울 가능성이 있다.
-3.게임 시작전에 Player 정보를 모든 오브젝트가 접근 가능하게 한다? => 어떻게 해야할까, Player가 씬에 배치되지 않은 상태일때 GameModeBase에서 지정된 오브젝트를 Player로 배치한다.
-이때 배치되는 BP_Player정보를 Enemy가 가져올 수 있는가? 
+->Enemy c++ 파일에서 PlayerPlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetPlayerPawn(this, 0)); 을 통해 플레이어 Pawn의 정보를 가지고 있다. 
+그러나 EnemyController 블루프린트에서 사용하였을때 제대로 입력되지 않는다. C++ 코드상에서는 문제없이 작동한다. 일단은 Blueprint에서 같은 변수를 사용하는 것은 포기하고 GetPlayerPawn 함수를 사용해서 할당했다. 
+나중에 InitializeComponents 에서 호출하여 사용하는 것을 고려해본다.
 
 일단 2번 방법으로 테스트 진행후 1번 방법으로 
 
@@ -199,3 +196,7 @@ Enemy 와 Player거리가 가까워지면 Enemy 공격 =>
 따라서 탐색을 통해 Player를 Enemy에 할당하거나 World정보에서 Player 정보를 가져 오면 될 것 
 
 Montage를 통해 코드상에서 공격 애니메이션 작동가능, 두 모션 중 랜덤으로 작동하게 될 것  
+FireBall을 관통공격으로 만들어야 할까? => yes 이지만 일단 나중에 
+
+개선 필요사항: 
+Enmey cpp에 공격 및 사망 관련 코드를 BB에 관련된 키(bool값)으로 추가한 후 BT에 적용하여 작동되도록 변경해야함, 이유는 가독성 

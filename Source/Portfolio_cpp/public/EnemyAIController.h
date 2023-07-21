@@ -7,7 +7,8 @@
 #include "EnemyAIController.generated.h"
 
 /**
- * 
+ * 이 C++파일과 이를 부모로하는 블루프린트 Enemy_Controller를 한 쪽으로 통일시킬 필요가 있음
+ * 이는 리팩토링할때 반영바람 
  */
 UCLASS()
 class PORTFOLIO_CPP_API AEnemyAIController : public AAIController
