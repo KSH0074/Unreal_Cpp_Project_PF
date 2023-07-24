@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ // Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Enemy.h"
@@ -24,6 +24,7 @@ AEnemy::AEnemy()
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
 
+	//애미네이션 블루프린트 할당 
 	ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/ImportedAnimationAndCharacter/Enemy/Enemy_Animation/Enemy_AnimBP.Enemy_AnimBP_C'"));
 	if (tempClass.Succeeded())
 	{
@@ -55,14 +56,19 @@ void AEnemy::Tick(float DeltaTime)
 		DeathState();
 	}
 
+	//플레이어 위치 업데이트 Player Location Update
 	FVector PlayerLocation = Scene_Placed_PlayerPawn->GetActorLocation();
 	//UE_LOG(LogTemp, Warning, TEXT("%s is Enemy recognize playerFVector"),*PlayerLocation.ToString());
 
+	//플레이어와 거리가 공격범위 이하로 내려가면 
 	FVector distance = PlayerLocation - me->GetActorLocation();
-	if (distance.Size() < attackRange)
+	if (distance.Size() < MeeleAttackRange)
 	{
+		isAttack = true;//상태변화라 가정한다. 추후 아래 함수로 흡수된다.
 		AttackPlayer();
 	}
+	else
+		isAttack = false;
 }
 
 // Called to bind functionality to input
@@ -74,6 +80,8 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void AEnemy::OnDamageProcess(float damage)
 {
+	//isDamaged = true;
+
 	//AIController Get 해서 BB의 Is Damaged  true 로 하고 Blueprint에서 moveto FirstLocation 할때 False 로 바꾸는 코드
 	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
 	if (AIController != nullptr)
@@ -86,7 +94,7 @@ void AEnemy::OnDamageProcess(float damage)
 	//체력 감소 
 	HP -= damage;
 	UE_LOG(LogTemp, Warning, TEXT("HP:%.2f"),HP );
-	if (HP < 0)
+	if (HP <= 0.0f)
 	{
 		isDead = true;
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -99,7 +107,7 @@ void AEnemy::DeathState()
 	//p = p0 + vt
 	FVector p0 = GetActorLocation();
 	FVector vt = FVector::DownVector * GetWorld()->DeltaTimeSeconds;
-	FVector p = p0 + (50.0f*vt);
+	FVector p = p0 + (30.0f*vt);
 	SetActorLocation(p);
 	if (p.Z < -200.0f)
 	{
@@ -110,6 +118,14 @@ void AEnemy::DeathState()
 
 void AEnemy::AttackPlayer()
 {
+	FVector tagetLocation = Scene_Placed_PlayerPawn->GetActorLocation();
+
+	FVector LoockDirection = tagetLocation - me->GetActorLocation();
+	
+	//Player가 감지되지 않는 뒤 시야에서도 가까워지면 공격하도록, SetActorRotation으로 하면 Controller는 회전하지 않기때문에  
+
+	me->GetController()->SetControlRotation(LoockDirection.Rotation());
+
 	currentTime = currentTime + GetWorld()->DeltaTimeSeconds;
 
 	if (currentTime > attackCoolTime)
@@ -117,4 +133,5 @@ void AEnemy::AttackPlayer()
 		UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack!"));
 		currentTime = 0;
 	}
+	
 }

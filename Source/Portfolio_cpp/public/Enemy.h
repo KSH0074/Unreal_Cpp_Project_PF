@@ -34,7 +34,7 @@ public:
 
 	//HP
 	UPROPERTY(EditAnywhere)
-	float HP = 1000.0f;
+	float HP = 100.0f;
 
 	//피격함수 
 	UFUNCTION()
@@ -48,9 +48,6 @@ public:
 	UFUNCTION()
 	void AttackPlayer();
 
-	//사망여부 변수
-	UPROPERTY()
-	bool isDead = false;
 
 	//BlueprintReadWrite로  Enemy_Controller 블루프린트에서 접근하려했으나 실패함
 	UPROPERTY(BlueprintReadWrite)
@@ -58,7 +55,7 @@ public:
 
 	//공격범위변수
 	UPROPERTY(EditAnyWhere, Category = Attack)
-	float attackRange = 120.0f;
+	float MeeleAttackRange = 120.0f;
 
 	//공격 쿨타임
 	UPROPERTY(EditAnyWhere, Category = Attack)
@@ -66,4 +63,16 @@ public:
 
 	UPROPERTY()
 	float currentTime{};
+	
+	//애니메이션 BP에서 스테이트 변경에 사용하기 위한 Bool변수, 추후 UENUM으로 관리할 필요가 있을 걸로 보임 => FSM 화 하여 BT연계 
+	UPROPERTY(BlueprintReadOnly)
+	bool isAttack = false;
+
+	//사망여부 변수
+	UPROPERTY(BlueprintReadOnly)
+	bool isDead = false;
+
+	//피격여부 변수
+	UPROPERTY(BlueprintReadOnly)
+		bool isDamaged = false;
 };
