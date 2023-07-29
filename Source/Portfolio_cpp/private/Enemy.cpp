@@ -5,6 +5,7 @@
 #include <Components/CapsuleComponent.h>
 #include "MainPlayer.h"
 #include "Kismet/GameplayStatics.h"
+#include "EnemyAnim.h"
 #include "EnemyAIController.h"
 // Sets default values
 AEnemy::AEnemy()
@@ -30,6 +31,8 @@ AEnemy::AEnemy()
 	{
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
 	}
+	me = this;
+	
 }
 
 
@@ -40,7 +43,7 @@ void AEnemy::BeginPlay()
 
 	//GetPlayerPawn으로 대체해도 무방함 
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
-	me = this;
+	anim = Cast<UEnemyAnim>(me->GetMesh()->GetAnimInstance());
 
 }
 
@@ -50,7 +53,7 @@ void AEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	
 
-	//테스트코드, DeathState, AttackPlayer 전부 BlackBoard에 관련 키를 추가하고 BT에서 판단하여 작동하도록 이 부분을 수정, 
+	//관련 및 비슷한 부분 전부 테스트코드이며 테스트 완성후 FSM 또는 BT로 편입, DeathState, AttackPlayer 전부 BlackBoard에 관련 키를 추가하고 BT에서 판단하여 작동하도록 이 부분을 수정, 
 	if (isDead)
 	{
 		DeathState();
@@ -65,10 +68,11 @@ void AEnemy::Tick(float DeltaTime)
 	if (distance.Size() < MeeleAttackRange)
 	{
 		isAttack = true;//상태변화라 가정한다. 추후 아래 함수로 흡수된다.
+	
 		AttackPlayer();
 	}
 	else
-		isAttack = false;
+		isAttack = false; 
 }
 
 // Called to bind functionality to input
@@ -128,9 +132,13 @@ void AEnemy::AttackPlayer()
 
 	currentTime = currentTime + GetWorld()->DeltaTimeSeconds;
 
-	if (currentTime > attackCoolTime)
+	if (currentTime > mAttackCoolTime)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack!"));
+		//anim->bAttackPlay = true;
+		int32 index = FMath::RandRange(0.0f, 1.9f);
+		FString sectionName = FString::Printf(TEXT("Attack%d"), index);
+		anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
+		UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack! %d"), index);
 		currentTime = 0;
 	}
 	

@@ -59,14 +59,17 @@ public:
 
 	//공격 쿨타임
 	UPROPERTY(EditAnyWhere, Category = Attack)
-	float attackCoolTime = 1.0f;
+	float mAttackCoolTime = 1.0f;
+
+
+	//애니메이션 BP에서 스테이트 변경에 사용하기 위한 Bool변수, 추후 UENUM으로 관리할 필요가 있을 걸로 보임 => FSM 화 하여 BT연계 
+	UPROPERTY(BlueprintReadOnly)
+		bool isAttack = false;
 
 	UPROPERTY()
 	float currentTime{};
 	
-	//애니메이션 BP에서 스테이트 변경에 사용하기 위한 Bool변수, 추후 UENUM으로 관리할 필요가 있을 걸로 보임 => FSM 화 하여 BT연계 
-	UPROPERTY(BlueprintReadOnly)
-	bool isAttack = false;
+
 
 	//사망여부 변수
 	UPROPERTY(BlueprintReadOnly)
@@ -75,4 +78,7 @@ public:
 	//피격여부 변수
 	UPROPERTY(BlueprintReadOnly)
 		bool isDamaged = false;
+	
+	UPROPERTY()
+	class UEnemyAnim* anim;
 };
