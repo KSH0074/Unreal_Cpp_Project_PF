@@ -78,7 +78,7 @@ void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		enemy->OnDamageProcess(fireballDamage);
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *(GetInstigator()->GetFName().ToString()));
 		
-		UE_LOG(LogTemp, Warning, TEXT("Damage test:%f"), fireballDamage);
+		UE_LOG(LogTemp, Warning, TEXT("Damage test:%d"), fireballDamage);
 	}
 
 	//자신 제거

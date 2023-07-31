@@ -7,7 +7,7 @@
 #include <queue>
 #include "MainPlayer.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_OneParam(FCommandOutDelegate,float,Damage);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FCommandOutDelegate,int,Damage);
 
 UENUM(BlueprintType)
 enum class COMMAND : uint8
@@ -44,6 +44,9 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* cameraComp;
 	
+	//HitBox
+	UPROPERTY(VisibleAnywhere, Category = HitBox)
+		class UBoxComponent* PlayerHitBox;
 
 	void MainCharacterMoveInput();
 
@@ -79,7 +82,7 @@ public:
 	FTimerHandle commandTimerHandle;
 	
 	UFUNCTION()
-	void TableRead(FString Command, float& damage);
+	void TableRead(FString Command, int& damage);
 
 	UFUNCTION()
 	void TimeOver();
@@ -90,13 +93,13 @@ public:
 	FCommandOutDelegate UseSkill;
 
 	UFUNCTION()
-		void JangPoong(float Damage);
+		void JangPoong(int Damage);
 	UFUNCTION()
-		void Hold(float Damage);
+		void Hold(int Damage);
 	UFUNCTION()
-		void Dodge(float Damage);
+		void Dodge(int Damage);
 	UFUNCTION()
-		void BackDash(float Damage);
+		void BackDash(int Damage);
 
 	UPROPERTY(EditDefaultsOnly, Category = FireBallFactory)
 		TSubclassOf<class AFireBall> FireBall;
@@ -104,4 +107,7 @@ public:
 	UPROPERTY(BlueprintReadWrite, Category = FireBallFactory)
 		class UArrowComponent* firePosition;
 
+	//Player's HP
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int HP = 100;
 };

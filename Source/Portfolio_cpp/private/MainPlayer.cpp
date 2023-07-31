@@ -11,6 +11,7 @@
 #include "CommandDataTable.h"//Struct 
 #include <Components/ArrowComponent.h>
 #include <Components/CapsuleComponent.h>
+#include <Components/BoxComponent.h>
 #include "FireBall.h"
 #include <Kismet/KismetMathLibrary.h>
 // Sets default values
@@ -55,6 +56,15 @@ AMainPlayer::AMainPlayer()
 	GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Ignore);
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);//Enenmy
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_GameTraceChannel1, ECR_Block); //Floor
+
+	//hitBox 설정
+	PlayerHitBox = CreateDefaultSubobject<UBoxComponent>(TEXT("HitBox"));
+	PlayerHitBox->SetRelativeScale3D(FVector(1.0f, 1.0f, 3.25f));
+	PlayerHitBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); //Overlap만 이용하므로
+	PlayerHitBox->SetCollisionObjectType(ECC_GameTraceChannel6);//PlayerHitBox
+
+	PlayerHitBox->SetCollisionResponseToAllChannels(ECR_Ignore);//모든 콜리전 무시
+	PlayerHitBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);//Enenmy에만 overlap
 }
 
 // Called when the game starts or when spawned
@@ -102,10 +112,18 @@ void AMainPlayer::MainCharacterMoveInput()
 		//UE_LOG(LogTemp, Warning, TEXT("MouseInput Recive"));
 		FHitResult hitResult;
 		//ECC_VIsibility 트레이스 채널대신 MoveAble채널로 함 
-		mainPlayerController->GetHitResultUnderCursor(ECC_GameTraceChannel5, false, hitResult);
+		bool isMoveAble{};
+		isMoveAble = mainPlayerController->GetHitResultUnderCursor(ECC_GameTraceChannel5, false, hitResult);
 
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
-		UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
+
+		if(isMoveAble)
+		{
+			UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
+		}
+			
+		
+		
 	}
 }
 
@@ -182,7 +200,7 @@ void AMainPlayer::OutputCommand()
 		commandQueue.pop();
 	}
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
-	float tempDmg =0;
+	int tempDmg =0;
 	
 	TableRead(a,tempDmg);
 
@@ -212,7 +230,7 @@ void AMainPlayer::CommandTimeOut()
 */
 
 // 인수 FString 으로 변경하여 위의 OutputCommand 에 적용할 수 있도록 하기 
-void AMainPlayer::TableRead(FString InputCommand,float& damage)
+void AMainPlayer::TableRead(FString InputCommand,int& damage)
 {
 	UseSkill.Unbind();//이미 바인드 되어있는거 해제 
 	if (thisGameInstance == nullptr) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
@@ -225,7 +243,7 @@ void AMainPlayer::TableRead(FString InputCommand,float& damage)
 		FString skillDMG = temp->SkillDamage;
 		UE_LOG(LogTemp, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut); //출력로그에 출력  
 		UseSkill.BindUFunction(this, *thisGameInstance->TextOut); //해당 커맨드와 함수를 바인딩 
-		damage = FCString::Atof(*skillDMG);
+		damage = FCString::Atoi(*skillDMG);
 	}
 	else //못 찾은 경우 
 	{
@@ -243,7 +261,7 @@ void AMainPlayer::TimeOver()
 }
 
 
-void AMainPlayer::JangPoong(float Damage)
+void AMainPlayer::JangPoong(int Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
 
@@ -260,17 +278,17 @@ void AMainPlayer::JangPoong(float Damage)
 
 }
 
-void AMainPlayer::Hold(float Damage)
+void AMainPlayer::Hold(int Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill Hold"));
 }
 
-void AMainPlayer::Dodge(float Damage)
+void AMainPlayer::Dodge(int Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill Dodge"));
 }
 
-void AMainPlayer::BackDash(float Damage)
+void AMainPlayer::BackDash(int Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill BackDash"));
 }

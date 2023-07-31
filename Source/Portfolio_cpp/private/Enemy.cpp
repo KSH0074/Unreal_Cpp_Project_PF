@@ -82,7 +82,7 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 }
 
-void AEnemy::OnDamageProcess(float damage)
+void AEnemy::OnDamageProcess(int damage)
 {
 	//isDamaged = true;
 
@@ -96,9 +96,10 @@ void AEnemy::OnDamageProcess(float damage)
 	//피격애니몽타주 재생 
 	// 
 	//체력 감소 
-	HP -= damage;
-	UE_LOG(LogTemp, Warning, TEXT("HP:%.2f"),HP );
-	if (HP <= 0.0f)
+	
+	HP-= damage;
+	UE_LOG(LogTemp, Warning, TEXT("HP:%d"),HP );
+	if (HP <= 0)
 	{
 		isDead = true;
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
