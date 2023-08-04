@@ -233,21 +233,20 @@ FSM,HFSM,BT와 관련된 문서를 참고하였다. BT의 FlowControl 관련 부
 Enemy가 공격하는 기능을 Enemy.cpp 에서 BT로 이동시킨다. blueprint를 사용해도 좋고 C++을 사용해도 좋으나 
 C++을 통해 BlackBoard에 저장된 키 값에 변동을 주어 컨트롤 하는 쪽이 더 코드 관리측면에서 유리할 것으로 사료된다.
 
-BrainComponent는 AIController.h에 있다. 따라서 AIController.h를 상속받는 EnemyAIController에 기능을 이관시키면 좋을 듯 하다.
-
 BP_EnemyCharacter 에 이미 자신의 Location을 저장하는 변수가 들어있고 이는 Enemy_Controller 블루프린트에서 이용된다는 걸 알아둔다.
 
-가능한 블루프린트에 구현된 내용또한 관리를 위해 EnemyAIController로 기능을 옮기며, BT의 최적화를 실시한다. 
+-> EnemyController 에 각 상태를 Enum으로 만들어서 함수 하나만 만들어서 각 키값의 true, false 조절을 하려고한다.
+
 현재 BT에 구현된 내용할 내용은  Patrol,Trace, Attack,Damaged, Died, idle(=patrol) 
 멀어지면 초기위치로 돌아가는 기능 Toofar 는 이동과 관련된 부분 아래에 적용한다.( ex: 추격중 너무 멀리가면 되돌아온다, 순찰 중 너무 멀어지면 되돌아 온다)
 
 -idle : 아무런 조건이 달성되지 않을 경우 ( 거의 사용되지 않는다)
--patrol : 피격, 시야내 발각, 공격, 상황이 아니면 발동된다. 범위내 랜덤한 지점으로 이동한다.너무 멀리가면 되돌아온다.
--Damaged : 피격 당했을 경우 true, 피격 애니메이션 재생, trace의 키값을 true 로 변경하고 Damaged는 false가된다. (= 맞으면 리액션 해주고 쫒아간다.)  
--trace : 시야 내 발각 시 true, Damaged 발동 이후 true, 플레이어를 쫒아간다. 플레이어와의 거리가 일정이상 가까워지면 Attack을 true로 바꾼다.너무 멀리가면 되돌아오면서 false.
--Attack: true시 공격 애니메이션을 재생한다.공격 주기(wait)는 1초정도로 한다. 애니메이션이 끝나면 Attack을 false로 한다. 이때 Damaged도 false로 해준다.
+-patrol : 피격, 시야내 발각, 공격, 상황이 아니면 발동된다. 범위내 랜덤한 지점으로 이동한다.너무 멀리가면 되돌아온다. 이동속도가 기본으로 세팅된다.
+-Damaged : 피격 당했을 경우 true, 피격 애니메이션 재생, trace의 키값을 true 로 변경하고 Damaged는 false가 되지 않는다. (= 맞으면 리액션 해주고 쫒아간다.)  
+-trace :  시야 내 발각 시 true, Damaged 발동 이후 true, 플레이어를 쫒아간다.이동속도가 올라간다, 플레이어와의 거리가 일정이상 가까워지면 Attack을 true로 바꾼다.너무 멀리가면 되돌아오면서 false.
+-Attack: true시 공격 애니메이션을 재생한다.공격 주기(wait)는 1초정도로 한다. 애니메이션이 끝나면 Attack을 false로 한다. 이때 Damaged도 false로 해준다. 기존 C++ 상의 몽타주 재생코드를 함수화 하여 Blueprint상에서 재사용 가능할지? 
 -die : HP 가 0가 될 시에 True, 
--isTooFar : 특정 상황에서 초기 위치와 멀어지면 되돌아오도록 한다.
+-isTooFar : 추적 상황에서 초기 위치와 멀어지면 되돌아오도록 한다. Damaged 가 true 였다면 isTooFar가 True라도 돌아가지 않는다.  
 
 
 이렇게 구성하면 Selector는 왼쪽에서 오른쪽으로 하나라도 기능성공하면 다음 가지를 수행하지 않기 때문에 Attack 기능을 수행중일때 Move가 되지 않도록 할 수 있다. 
