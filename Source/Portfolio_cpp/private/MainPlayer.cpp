@@ -115,7 +115,7 @@ void AMainPlayer::MainCharacterMoveInput()
 		bool isMoveAble{};
 		isMoveAble = mainPlayerController->GetHitResultUnderCursor(ECC_GameTraceChannel5, false, hitResult);
 
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
 
 		if(isMoveAble)
 		{

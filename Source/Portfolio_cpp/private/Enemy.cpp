@@ -31,7 +31,7 @@ AEnemy::AEnemy()
 	{
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
 	}
-	me = this;
+	
 	
 }
 
@@ -43,7 +43,7 @@ void AEnemy::BeginPlay()
 
 	//GetPlayerPawn으로 대체해도 무방함 
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
-	anim = Cast<UEnemyAnim>(me->GetMesh()->GetAnimInstance());
+	anim = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
 
 }
 
@@ -64,7 +64,7 @@ void AEnemy::Tick(float DeltaTime)
 	//UE_LOG(LogTemp, Warning, TEXT("%s is Enemy recognize playerFVector"),*PlayerLocation.ToString());
 
 	//플레이어와 거리가 공격범위 이하로 내려가면 
-	FVector distance = PlayerLocation - me->GetActorLocation();
+	FVector distance = PlayerLocation - GetActorLocation();
 	if (distance.Size() < MeeleAttackRange)
 	{
 		isAttack = true;//상태변화라 가정한다. 추후 아래 함수로 흡수된다.
@@ -75,12 +75,6 @@ void AEnemy::Tick(float DeltaTime)
 		isAttack = false; 
 }
 
-// Called to bind functionality to input
-void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-}
 
 void AEnemy::OnDamageProcess(int damage)
 {
@@ -93,9 +87,7 @@ void AEnemy::OnDamageProcess(int damage)
 		//BehaviorTree 에서바로 플레이추적하도록 함 
 		AIController->BlackboardIsDamagedSet(true);
 	}
-	//피격애니몽타주 재생 
-	// 
-	//체력 감소 
+
 	
 	HP-= damage;
 	UE_LOG(LogTemp, Warning, TEXT("HP:%d"),HP );
@@ -125,11 +117,11 @@ void AEnemy::AttackPlayer()
 {
 	FVector tagetLocation = Scene_Placed_PlayerPawn->GetActorLocation();
 
-	FVector LoockDirection = tagetLocation - me->GetActorLocation();
+	FVector LoockDirection = tagetLocation - GetActorLocation();
 	
 	//Player가 감지되지 않는 뒤 시야에서도 가까워지면 공격하도록, SetActorRotation으로 하면 Controller는 회전하지 않기때문에  
 
-	me->GetController()->SetControlRotation(LoockDirection.Rotation());
+	GetController()->SetControlRotation(LoockDirection.Rotation());
 
 	currentTime = currentTime + GetWorld()->DeltaTimeSeconds;
 

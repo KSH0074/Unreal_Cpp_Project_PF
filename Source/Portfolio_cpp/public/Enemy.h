@@ -15,9 +15,7 @@ public:
 	// Sets default values for this character's properties
 	AEnemy();
 
-	//this 대체를 위한 변수 
-	UPROPERTY()
-	class AEnemy* me;
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -27,8 +25,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 	
 
@@ -47,7 +43,8 @@ public:
 	//공격함수
 	UFUNCTION()
 	void AttackPlayer();
-	//
+	
+	//공격력
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
 	int mDamage = 2;
 

@@ -26,4 +26,6 @@ public:
 	//공격 애니메이션 재생 함수 블루프린터로 구현 => BP_Enemy에 접근이 용이하다. "BlueprintImplementableEvent""
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlayAttackAnim(FName sectionName);
+
+
 };
