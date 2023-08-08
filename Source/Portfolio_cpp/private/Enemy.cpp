@@ -32,7 +32,7 @@ AEnemy::AEnemy()
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
 	}
 	
-	
+
 }
 
 
@@ -44,7 +44,7 @@ void AEnemy::BeginPlay()
 	//GetPlayerPawn으로 대체해도 무방함 
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
 	anim = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
-
+	Controller = Cast<AEnemyAIController>(GetController());
 }
 
 // Called every frame
@@ -56,7 +56,7 @@ void AEnemy::Tick(float DeltaTime)
 	//관련 및 비슷한 부분 전부 테스트코드이며 테스트 완성후 FSM 또는 BT로 편입, DeathState, AttackPlayer 전부 BlackBoard에 관련 키를 추가하고 BT에서 판단하여 작동하도록 이 부분을 수정, 
 	if (isDead)
 	{
-		DeathState();
+		Controller->ChangeBlaockBoardState(EEnemyState::Die,true);
 	}
 
 	//플레이어 위치 업데이트 Player Location Update
@@ -67,15 +67,15 @@ void AEnemy::Tick(float DeltaTime)
 	FVector distance = PlayerLocation - GetActorLocation();
 	if (distance.Size() < MeeleAttackRange)
 	{
-		isAttack = true;//상태변화라 가정한다. 추후 아래 함수로 흡수된다.
-	
-		AttackPlayer();
+		Controller->ChangeBlaockBoardState(EEnemyState::Attack, true);
 	}
 	else
-		isAttack = false; 
+		Controller->ChangeBlaockBoardState(EEnemyState::Attack, false);
 }
 
 
+
+//이 아래를 어떻게 할지 생각해보자.. 2023/08/08 
 void AEnemy::OnDamageProcess(int damage)
 {
 	//isDamaged = true;

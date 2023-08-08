@@ -261,6 +261,9 @@ Enemy에 구현된 PlayerAttack, DamageOnProcess등은 이미 C++로 구현되�
 
 아마 3번으로 가는게 유리 할 것으로 판단됨, 3번으로 계획을 한다면 C++에서 현재 BlackBoard의 키 값을 읽어오는 방법, 또는 만들어둔 UENUM을 통해서 제어하는 범을 생각해야 할 것
  
+08/08 : Enemy의 Tick 부분을 변형하여 Blackboard의 키값 IsAttack 과 IsDeath를 변화하도록 함 
+BT의 해당 루트 아래에 DeathState,AttackPlayer 함수를 넣고싶음, 해당 방법을 생각 중  
+일단 아이디어 하나는 현재 스테이트를 저장하는 변수 하나를 이용하는 것 
 
 개발 우선순위가 HitBox처리에서 AI 대 개편으로 바뀌었다.
 우선적으로 개편이 이루어져야 향후에 처리해야 할 기술적부채 줄것으로 판단하였다.

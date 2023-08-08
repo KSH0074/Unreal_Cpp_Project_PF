@@ -26,7 +26,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 
-	
+	//Controller
+	class AEnemyAIController* Controller;
 
 	//HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
