@@ -75,7 +75,7 @@ void AEnemy::Tick(float DeltaTime)
 
 
 
-//이 아래를 어떻게 할지 생각해보자.. 2023/08/08 
+
 void AEnemy::OnDamageProcess(int damage)
 {
 	//isDamaged = true;
@@ -113,18 +113,19 @@ void AEnemy::DeathState()
 	
 }
 
-void AEnemy::AttackPlayer()
+void AEnemy::AttacktoPlayer()
 {
 	FVector tagetLocation = Scene_Placed_PlayerPawn->GetActorLocation();
 
 	FVector LoockDirection = tagetLocation - GetActorLocation();
 	
-	//Player가 감지되지 않는 뒤 시야에서도 가까워지면 공격하도록, SetActorRotation으로 하면 Controller는 회전하지 않기때문에  
+	//Player가 감지되지 않는 뒤 시야에서도 가까워지면 공격하도록 한다, SetActorRotation으로 하면 Controller는 회전하지 않기때문에 GetController를 사용해서 콘트롤러를 회전 
 
 	GetController()->SetControlRotation(LoockDirection.Rotation());
 
 	currentTime = currentTime + GetWorld()->DeltaTimeSeconds;
 
+	//AttackPlayer가 
 	if (currentTime > mAttackCoolTime)
 	{
 		//anim->bAttackPlay = true;

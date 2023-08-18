@@ -43,7 +43,7 @@ public:
 
 	//공격함수
 	UFUNCTION()
-	void AttackPlayer();
+	void AttacktoPlayer();
 	
 	//공격력
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
