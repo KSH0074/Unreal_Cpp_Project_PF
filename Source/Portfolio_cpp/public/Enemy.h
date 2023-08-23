@@ -67,7 +67,7 @@ public:
 		bool isAttack = false;
 
 	UPROPERTY()
-	float currentTime{};
+	float currentTime = 1;
 	
 
 

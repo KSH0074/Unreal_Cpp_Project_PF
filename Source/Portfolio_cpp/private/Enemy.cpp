@@ -5,6 +5,7 @@
 #include <Components/CapsuleComponent.h>
 #include "MainPlayer.h"
 #include "Kismet/GameplayStatics.h"
+#include "Animation/AnimInstance.h" 
 #include "EnemyAnim.h"
 #include "EnemyAIController.h"
 // Sets default values
@@ -70,7 +71,12 @@ void AEnemy::Tick(float DeltaTime)
 		Controller->ChangeBlaockBoardState(EEnemyState::Attack, true);
 	}
 	else
-		Controller->ChangeBlaockBoardState(EEnemyState::Attack, false);
+	{
+		anim->Montage_Stop(0.0f);//애니메이션 몽타주 즉시 중지 when Attack is Flase
+
+		Controller->ChangeBlaockBoardState(EEnemyState::Attack, false); 
+
+	}
 }
 
 
@@ -80,7 +86,7 @@ void AEnemy::OnDamageProcess(int damage)
 {
 	//isDamaged = true;
 
-	//AIController Get 해서 BB의 Is Damaged  true 로 하고 Blueprint에서 moveto FirstLocation 할때 False 로 바꾸는 코드
+	//AIController Get 해서 BB의 Is Damaged  true 
 	AEnemyAIController* AIController = Cast<AEnemyAIController>(GetController());
 	if (AIController != nullptr)
 	{
@@ -123,17 +129,17 @@ void AEnemy::AttacktoPlayer()
 
 	GetController()->SetControlRotation(LoockDirection.Rotation());
 
-	currentTime = currentTime + GetWorld()->DeltaTimeSeconds;
 
+	UE_LOG(LogTemp, Warning, TEXT("CurrentTime is : %f"), currentTime);
 	//AttackPlayer가 
-	if (currentTime > mAttackCoolTime)
+	if (currentTime >= mAttackCoolTime)
 	{
-		//anim->bAttackPlay = true;
+		
 		int32 index = FMath::RandRange(0.0f, 1.9f);
 		FString sectionName = FString::Printf(TEXT("Attack%d"), index);
 		anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
 		UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack! %d"), index);
 		currentTime = 0;
 	}
-	
+		currentTime = currentTime + GetWorld()->DeltaTimeSeconds;
 }

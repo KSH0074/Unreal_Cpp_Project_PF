@@ -64,3 +64,4 @@
 2023/08/07 : 상태변화를 위한 UENUM 생성, 이를 이용하여 상태변화를 하는 함수 및 BTT 생성, BT 수정, BT에 Attack 과 Die를 어떻게 넣는지에 대한 고민, 
 2023/08/18 : 뜻하지 않게 장기간 쉬게되어 리마인드를 위한 코드다시 보기 및 계획 진행 
 2023/08/22 : C++로 구현하기 위한 BBT 를 testNode라는 이름으로 만들어서 Attack to Player 코드를 옮기는 시도함, VisualStudio Inetelisense 문제있음 
+2023/08/23 : Intellisense 문제 해결 및 testNode 삭제후 AttacktoPlayer 명의 BBTaskNode C++ 구현, EnemyDeath도 같은 방식으로 구현함 외 기존 코드 약간의 수정  
