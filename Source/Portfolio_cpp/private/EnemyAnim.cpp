@@ -12,3 +12,14 @@
 //	....
 //	Cast<AEnemy>(TryGetPawnOwner())->PlayAnimMontage()
 //}
+
+void UEnemyAnim::AnimNotify_Attack()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Called notify : Attack"));
+}
+
+void UEnemyAnim::AnimNotify_OnAttackEnd()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Called notify : On Attack End"));
+
+}

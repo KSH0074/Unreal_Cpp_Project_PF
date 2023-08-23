@@ -27,5 +27,8 @@ public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void PlayAttackAnim(FName sectionName);
 
-
+	UFUNCTION()
+		void AnimNotify_Attack();
+	UFUNCTION()
+		void AnimNotify_OnAttackEnd();
 };

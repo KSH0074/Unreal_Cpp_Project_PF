@@ -280,6 +280,7 @@ BTT를 C++로 구현하는 법 등을 고민하고 있음, BlueprintCallable로 
 
 Enemy의 전방에 Collision Box를 설치하고 애니메이션 노티파이를 이용하여 애니메이션 특정구간에서 충돌 판정이 나면 플레이어가 데미지를 입도록 하려한다.
 Ex) Enemy의 공격 애니메이션 재생중 Enemy의 Collision Box(Attack Box)에 Player의 hitBox가 겹치는 경우 플레이어는 데미지를 입는다 
+>>Animinstance 에 AnimNotify_노티파이명 멤버함수만들어서 호출 가능함
 
 Box에 Player의 Hitbox가 Overlap 되어있는  상태 (bool로 판정하지 않을까 싶음)에서 -> Notify 에서 발동 이때 앞의 Bool이 true = Overlap 판정이면 데미지 주는 방식
 

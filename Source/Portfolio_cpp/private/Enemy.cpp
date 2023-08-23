@@ -130,7 +130,7 @@ void AEnemy::AttacktoPlayer()
 	GetController()->SetControlRotation(LoockDirection.Rotation());
 
 
-	UE_LOG(LogTemp, Warning, TEXT("CurrentTime is : %f"), currentTime);
+	//UE_LOG(LogTemp, Warning, TEXT("CurrentTime is : %f"), currentTime);
 	//AttackPlayer°¡ 
 	if (currentTime >= mAttackCoolTime)
 	{
