@@ -14,5 +14,6 @@ EBTNodeResult::Type UAttacktoPlayer::ExecuteTask(UBehaviorTreeComponent & OwnerC
 	
 	ControlledEnemy = Cast<AEnemy>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("SelfActor")));
 	ControlledEnemy->AttacktoPlayer();
+	
 	return EBTNodeResult::Succeeded;
 }

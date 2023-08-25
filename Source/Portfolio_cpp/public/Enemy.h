@@ -27,7 +27,7 @@ public:
 
 
 	//Controller
-	class AEnemyAIController* Controller;
+	class AEnemyAIController* mController;
 
 	//HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)

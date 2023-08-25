@@ -46,7 +46,7 @@ void AEnemyAIController::BlackboardIsDamagedSet(bool setIsDamaged)
 }
 
 
-void AEnemyAIController::ChangeBlaockBoardState(EEnemyState EState, bool setStateValue)
+void AEnemyAIController::ChangeBlackBoardState(EEnemyState EState, bool setStateValue)
 {
 	switch (EState)
 	{
@@ -75,6 +75,16 @@ void AEnemyAIController::ChangeBlaockBoardState(EEnemyState EState, bool setStat
 		break;
 	}
 
+}
+
+bool AEnemyAIController::getBlackBoardState(FName state)
+{
+	/*FName state{};
+	UEnum::GetValueAsName(Estate, state);
+	FString postFix = "Is";
+	postFix = postFix + state.ToString();*/
+
+	return blackboardComp->GetValueAsBool(state);
 }
 
 
