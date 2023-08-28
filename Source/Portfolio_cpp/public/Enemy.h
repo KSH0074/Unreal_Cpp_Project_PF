@@ -30,7 +30,7 @@ public:
 	class AEnemyAIController* mController;
 
 	//AttackZone
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 	class UBoxComponent* attackZoneComp;//변수명을 어떻게 해야하지
 
 	//HP

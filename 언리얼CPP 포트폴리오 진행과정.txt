@@ -66,3 +66,4 @@
 2023/08/22 : C++로 구현하기 위한 BBT 를 testNode라는 이름으로 만들어서 Attack to Player 코드를 옮기는 시도함, VisualStudio Inetelisense 문제있음 
 2023/08/23 : Intellisense 문제 해결 및 testNode 삭제후 AttacktoPlayer 명의 BBTaskNode C++ 구현, EnemyDeath도 같은 방식으로 구현함 외 기존 코드 약간의 수정  
 2023/08/25 : 코드내 오타 발견 및 수정, BT의 AttacktoPlayer시퀀스 데코레이터 관찰자 중단 설정, Enemy.cpp AttacktoPlayer 함수의 Player를 보도록 하는 코드 삭제->BT에서 Rotate to face BB entry로 대체함, 편의를 위한 getBlackBoardState 함수 EnemyAIController.h에 추가(특정 State의 값 반환), Enemy.cpp 의 tick함수의 if문 최적화(?), Enemy.cpp의 변수 Controller를 mController로 변경, 같은 파일의 OnDamageProcess의 GetController~ 부분 mController로 대체, Enemy공격 애니메이션 자연스럽게 플레이되도록 설정함   
+2023/08/28 :Enemy의 공격판정 존을 생성자에 추가하였으나 BP에서 오류가 발생함,  
