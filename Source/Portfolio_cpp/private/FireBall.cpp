@@ -70,6 +70,7 @@ void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 	UE_LOG(LogTemp, Warning, TEXT("Overlap!!"));
 	// OtherActor => 충돌한 다른 물체를 Enemy로 형 변환 시도 
 	AEnemy* enemy = Cast<AEnemy>(OtherActor);  
+	//UE_LOG(LogTemp, Warning, TEXT("%s"), *OtherComp->GetFName().ToString()); Enemy의 CollisionCylinder와 Overlap
 	//형 변환성공 == Enemy가 맞은 경우 
 	if (enemy != nullptr)
 	{

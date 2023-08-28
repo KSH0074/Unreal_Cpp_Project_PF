@@ -34,7 +34,13 @@ AEnemy::AEnemy()
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
 	}
 	
-
+	attackZoneComp = CreateDefaultSubobject<UBoxComponent>(TEXT("AttackZone"));
+	attackZoneComp->SetupAttachment(RootComponent);
+	attackZoneComp->SetRelativeLocation(FVector(70.0f,0.0f,0.0f),false,nullptr,ETeleportType::None);
+	attackZoneComp->SetRelativeScale3D(FVector(1.0f, 1.0f, 2.5f));
+	attackZoneComp->SetGenerateOverlapEvents(true);
+	attackZoneComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	//attackZoneComp->SetCollisionObjectType()
 
 }
 

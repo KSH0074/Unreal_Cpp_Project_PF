@@ -21,13 +21,17 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-public:	
+public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 
 	//Controller
 	class AEnemyAIController* mController;
+
+	//AttackZone
+	UPROPERTY(EditAnywhere)
+	class UBoxComponent* attackZoneComp;//변수명을 어떻게 해야하지
 
 	//HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
