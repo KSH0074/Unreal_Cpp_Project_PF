@@ -101,6 +101,11 @@ public:
 	UFUNCTION()
 		void BackDash(int Damage);
 
+	//대미지 받는 함수
+	UFUNCTION()
+		void OnDamageProcess(int damage);
+
+
 	UPROPERTY(EditDefaultsOnly, Category = FireBallFactory)
 		TSubclassOf<class AFireBall> FireBall;
 	
@@ -109,5 +114,5 @@ public:
 
 	//Player's HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int HP = 100;
+	int HP = 10;
 };

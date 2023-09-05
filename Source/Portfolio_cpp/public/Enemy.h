@@ -30,8 +30,9 @@ public:
 	class AEnemyAIController* mController;
 
 	//AttackZone
-	UPROPERTY()
-	class UBoxComponent* attackZoneComp;//변수명을 어떻게 해야하지
+	UPROPERTY(EditAnywhere)
+	//공격판정 구역, 이 컴포넌트와 PlayerHitZone이 overlap되어있고 공격 애니메이션의 Notify가 호출될 때 데미지를 주도록 함
+	class UBoxComponent* attackZoneComp;
 
 	//HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -47,7 +48,16 @@ public:
 
 	//공격함수
 	UFUNCTION()
-	void AttacktoPlayer();
+	void Attack();
+	
+	//공격판정함수 
+	UFUNCTION()
+	void attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
 	
 	//공격력
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
@@ -59,7 +69,7 @@ public:
 
 	//공격범위변수
 	UPROPERTY(EditAnyWhere, Category = Attack)
-	float MeeleAttackRange = 120.0f;
+	float MeeleAttackRange = 80.0f;
 
 	//공격 쿨타임
 	UPROPERTY(EditAnyWhere, Category = Attack)

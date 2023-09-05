@@ -293,5 +293,19 @@ void AMainPlayer::BackDash(int Damage)
 	UE_LOG(LogTemp, Warning, TEXT("use Skill BackDash"));
 }
 
+void AMainPlayer::OnDamageProcess(int damage)
+{
+	HP -= damage;
+	UE_LOG(LogTemp, Warning, TEXT("HP:%d"), HP);
+	if (HP <= 0)
+	{
+		//사망 모션 이후 게임오버 창 띄우고 조작 안되도독 함, 
+		//위 내용 구현 전까지는 게임을 끝내는 것으로 대체한다 
+		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0); // 플레이어 컨트롤러 가져오기
+		PlayerController->ConsoleCommand("Exit");
+	}
+
+}
+
 
 

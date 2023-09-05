@@ -42,7 +42,15 @@ AEnemy::AEnemy()
 	attackZoneComp->SetGenerateOverlapEvents(true);
 	attackZoneComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	attackZoneComp->SetCollisionObjectType(ECC_GameTraceChannel7);
+	//반응채널 설정
+	attackZoneComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	
+	//attackZoneComp 의 BeginOverlap에대한 델리게이트 
+	attackZoneComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::attackZoneBeginOverlap);
+	//attackZoneComp->OnComponentEndOverlap  //Overlap이 끝났을 때 헛발질 해도 공격판정이 되지 않도록 
 
+
+	
 }
 
 
@@ -135,7 +143,7 @@ void AEnemy::DeathState()
 	
 }
 
-void AEnemy::AttacktoPlayer()
+void AEnemy::Attack()
 {
 
 	//UE_LOG(LogTemp, Warning, TEXT("CurrentTime is : %f"), currentTime);
@@ -150,4 +158,15 @@ void AEnemy::AttacktoPlayer()
 		currentTime = 0.5f;
 	}
 		currentTime = currentTime + GetWorld()->DeltaTimeSeconds;
+}
+
+void AEnemy::attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex,
+	bool bFromSweep,
+	const FHitResult& SweepResult)
+{
+	//Overlap된 OtherComponent가 PlayerHitZone인지 if 로 확인 후, 맞을 경우 노티파이에서 Player의 OnDamageProcess 함수를 실행
+	//따라서 여기에는 PlayerHitZone 가 맞는지만 확인하고 맞다면 true 값을 노티파이에 전달, 노티파이에서는 true일경우 OnDamageProcess 실행 
 }

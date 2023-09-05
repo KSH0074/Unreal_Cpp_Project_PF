@@ -9,11 +9,18 @@ UAttacktoPlayer::UAttacktoPlayer()
 	NodeName = FString("AttacktoPlayer");
 }
 
+//블랙보드의 SelfActor의 값 == 컨트롤 되어지는 EnemyActor 를 ControlledEnemy에 할당 후 Attack 함수 실행
 EBTNodeResult::Type UAttacktoPlayer::ExecuteTask(UBehaviorTreeComponent & OwnerComp, uint8 * NodeMemory)
 {
 	
 	ControlledEnemy = Cast<AEnemy>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("SelfActor")));
-	ControlledEnemy->AttacktoPlayer();
+	//형 변환 실패할 경우 Faliled 
+	if (ControlledEnemy == nullptr)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("AttackToPlayer Node Failed, Cast Failed "));
+		return EBTNodeResult::Failed;
+	}
+	ControlledEnemy->Attack();
 	
 	return EBTNodeResult::Succeeded;
 }
