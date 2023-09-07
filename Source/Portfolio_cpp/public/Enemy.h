@@ -58,6 +58,13 @@ public:
 		int32 OtherBodyIndex,
 		bool bFromSweep,
 		const FHitResult& SweepResult);
+
+	UFUNCTION()
+		void attackZoneEndOverlap(
+			UPrimitiveComponent* OverlappedComponent,
+			AActor* OtherActor, 
+			UPrimitiveComponent* OtherComp, 
+			int32 OtherBodyIndex);
 	
 	//공격력
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
@@ -75,13 +82,8 @@ public:
 	UPROPERTY(EditAnyWhere, Category = Attack)
 	float mAttackCoolTime = 1.0f;
 
-
-	//애니메이션 BP에서 스테이트 변경에 사용하기 위한 Bool변수, 추후 UENUM으로 관리할 필요가 있을 걸로 보임 => FSM 화 하여 BT연계 
-	UPROPERTY(BlueprintReadOnly)
-		bool isAttack = false;
-
 	UPROPERTY()
-	float currentTime = 1;
+	float currentTime = 0.9f;
 	
 
 
@@ -95,4 +97,6 @@ public:
 	
 	UPROPERTY()
 	class UEnemyAnim* anim;
+
+	bool isMontagePlaying = false;
 };
