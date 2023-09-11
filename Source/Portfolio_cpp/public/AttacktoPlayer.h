@@ -13,13 +13,15 @@ UCLASS()
 class PORTFOLIO_CPP_API UAttacktoPlayer : public UBTTaskNode
 {
 	GENERATED_BODY()
+	
 
 public:
 	UAttacktoPlayer();
 protected:
 	virtual EBTNodeResult::Type ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory) override;
-
+	virtual void TickTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds) override;
 
 public:
 	class AEnemy* ControlledEnemy{};
+
 };

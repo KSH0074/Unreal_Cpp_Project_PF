@@ -99,4 +99,13 @@ public:
 	class UEnemyAnim* anim;
 
 	bool isMontagePlaying = false;
+
+	UPROPERTY()
+	float fMontageSectionPlaytime{};
+
+	void getMontageSectionPlaytime(int32 index);
+
+	UPROPERTY()
+	bool bHit = false;
+
 };

@@ -95,12 +95,10 @@ void AEnemy::Tick(float DeltaTime)
 			mController->ChangeBlackBoardState(EEnemyState::Attack, true);
 	
 	}
-	else if(mController->getBlackBoardState("IsAttack") &&  !(distance.Size() < MeeleAttackRange))
+	else if(mController->getBlackBoardState("IsAttack") &&  !(distance.Size() < MeeleAttackRange && !isMontagePlaying))
 	{
-		anim->Montage_Stop(0.0f);//애니메이션 몽타주 즉시 중지 when Attack is Flase
-
 		mController->ChangeBlackBoardState(EEnemyState::Attack, false);
-
+		UE_LOG(LogTemp, Warning, TEXT("Chande sTate to attack"));
 	}
 }
 
@@ -148,18 +146,23 @@ void AEnemy::Attack()
 
 	//UE_LOG(LogTemp, Warning, TEXT("CurrentTime is : %f"), currentTime);
 
-	if (currentTime >= mAttackCoolTime)
-	{
+	/*if (currentTime >= mAttackCoolTime)
+	{*/
 		
 		int32 index = FMath::RandRange(0.0f, 1.9f);
 		FString sectionName = FString::Printf(TEXT("Attack%d"), index);
-	
 		anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
-		UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack! %d"), index);
-		currentTime = 0.5f;
+		
+		getMontageSectionPlaytime(index);
 
-	}
-		currentTime = currentTime + GetWorld()->DeltaTimeSeconds;
+		isMontagePlaying = true;
+		GetController()->StopMovement();
+
+		UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack! %d"), index);
+		//currentTime = 0.0f;
+
+	/*}
+		currentTime = currentTime + GetWorld()->DeltaTimeSeconds;*/
 }
 
 void AEnemy::attackZoneBeginOverlap(
@@ -176,7 +179,7 @@ void AEnemy::attackZoneBeginOverlap(
 	{
 		UE_LOG(LogTemp, Warning, TEXT("hit the player : %s "), *(OtherComp->GetFName().ToString()));
 	}
-	anim->bHit = true;
+	bHit = true;
 }
 
 void AEnemy::attackZoneEndOverlap( 
@@ -185,5 +188,22 @@ void AEnemy::attackZoneEndOverlap(
 	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
-	anim->bHit = false;
+	bHit = false;
+}
+
+void AEnemy::getMontageSectionPlaytime(int32 index)
+{
+	//몽타주 재생할때 마다 호출되는 문제가 있다. 재생되고있는 몽타주의 플레이타임을 알고싶지 않다면  생성자 또는 BeginPlay에서 초기화 할 수 있도록 고치는 편이 나을 것 
+	//다만 섹션이 많아진다면 이대로 놔두는게 나을 수 있다.
+
+	UAnimMontage* montage = anim->GetCurrentActiveMontage();
+	//float test = PlayAnimMontage(montage, 1.0f, montageSectionName); 세번째 매개변수로 섹션이 들어가지만 의미없음 섹션 내용과 관계없이 몽타주 전체재생길이를 반환 
+	float StartTime{};
+	float EndTime{};
+	//UE_LOG(LogTemp, Warning, TEXT("%s Montage playTime is : % f"), *montageSectionName.ToString(), test); 섹션 내용과 관계없이 몽타주 전체재생길이를 반환 
+	montage->GetSectionStartAndEndTime(index, StartTime, EndTime);
+	//float test = EndTime - StartTime; 섹션 별 비교적 정확한 플레이타임, float 자료형이 가지는 소수점 오차 존재  
+	fMontageSectionPlaytime = EndTime - StartTime;
+	UE_LOG(LogTemp, Warning, TEXT("Attack %d  Montage playTime is : % f"), index, fMontageSectionPlaytime);
+
 }

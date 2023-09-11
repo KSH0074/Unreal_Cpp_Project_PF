@@ -50,4 +50,6 @@ public:
 	
 	UFUNCTION()
 	bool getBlackBoardState(FName state);
+
+
 };
