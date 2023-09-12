@@ -103,6 +103,7 @@ public:
 	UPROPERTY()
 	float fMontageSectionPlaytime{};
 
+	UFUNCTION()
 	void getMontageSectionPlaytime(int32 index);
 
 	UPROPERTY()

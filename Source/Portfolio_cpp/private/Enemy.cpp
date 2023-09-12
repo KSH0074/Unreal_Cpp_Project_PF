@@ -88,17 +88,18 @@ void AEnemy::Tick(float DeltaTime)
 	 IsAttack 이 아니고 가까울때 true // IsAttack은 Default가 False
 	 IsAttack 이면서 가깝지 않을때 False
 	 if 사용하는 법만 봐도 프로그래밍을 할 줄 아는사람인지 알 수 있다는데 
-	 이 if문은 최선인가?
+	 이 if문은 최선일까?
 	*/
-	if (distance.Size() < MeeleAttackRange)
+	if (distance.Size() < MeeleAttackRange && !(mController->getBlackBoardState("IsAttack")))
 	{
 			mController->ChangeBlackBoardState(EEnemyState::Attack, true);
 	
 	}
-	else if(mController->getBlackBoardState("IsAttack") &&  !(distance.Size() < MeeleAttackRange && !isMontagePlaying))
+	//isAttack 상태에서 근접 공격보다 멀어지면서 몽타주가 플레이중이 아닐때 상태변화 
+	else if(mController->getBlackBoardState("IsAttack") &&  distance.Size() > MeeleAttackRange && !isMontagePlaying)
 	{
 		mController->ChangeBlackBoardState(EEnemyState::Attack, false);
-		UE_LOG(LogTemp, Warning, TEXT("Chande sTate to attack"));
+		UE_LOG(LogTemp, Warning, TEXT("Change State  IsAttack false"));
 	}
 }
 
@@ -177,7 +178,7 @@ void AEnemy::attackZoneBeginOverlap(
 	//따라서 여기에는 PlayerHitZone 가 맞는지만 확인하고 맞다면 true 값을 노티파이에 전달, 노티파이에서는 true일경우 OnDamageProcess 실행 
 	if (OtherComp->GetName() == FString("HitBox"))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("hit the player : %s "), *(OtherComp->GetFName().ToString()));
+		UE_LOG(LogTemp, Warning, TEXT("Overlapped Component : %s "), *(OtherComp->GetFName().ToString()));
 	}
 	bHit = true;
 }

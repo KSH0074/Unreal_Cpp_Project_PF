@@ -4,9 +4,11 @@
 #include "Portfolio_cppGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
 
+
 APortfolio_cppGameModeBase::APortfolio_cppGameModeBase()
 {
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *(FString(__FUNCTION__) + TEXT("(test:") + FString::FromInt(__LINE__) + TEXT(")")));
+
 	ConstructorHelpers::FClassFinder<APawn> tempChar(TEXT("Blueprint'/Game/Blueprints/BP_MainPlayer.BP_MainPlayer_C'"));
 	if (tempChar.Succeeded())
 	{

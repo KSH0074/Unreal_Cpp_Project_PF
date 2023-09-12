@@ -13,6 +13,7 @@
 #include <Components/CapsuleComponent.h>
 #include <Components/BoxComponent.h>
 #include "FireBall.h"
+#include "MainPlayerAnim.h"
 #include <Kismet/KismetMathLibrary.h>
 // Sets default values
 AMainPlayer::AMainPlayer()
@@ -75,6 +76,7 @@ void AMainPlayer::BeginPlay()
 //	UE_LOG(LogTemp, Warning, TEXT("%d"), commandQueue.size());
 	thisGameInstance = Cast<UPFGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	//TableRead("41");
+	Playeranim = Cast<UMainPlayerAnim>(GetMesh()->GetAnimInstance());
 }
 
 // Called every frame
@@ -295,6 +297,8 @@ void AMainPlayer::BackDash(int Damage)
 
 void AMainPlayer::OnDamageProcess(int damage)
 {
+	Playeranim->PlayDamageMontage();
+
 	HP -= damage;
 	UE_LOG(LogTemp, Warning, TEXT("Player HP:%d"), HP);
 	if (HP <= 0)
