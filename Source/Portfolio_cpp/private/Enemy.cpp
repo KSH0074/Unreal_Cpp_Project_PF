@@ -108,15 +108,12 @@ void AEnemy::Tick(float DeltaTime)
 
 void AEnemy::OnDamageProcess(int damage)
 {
-	//isDamaged = true;
-
-	//AIController Get 해서 BB의 Is Damaged  true 
-
-
 		//BehaviorTree 에서바로 플레이추적하도록 함 
 		mController->BlackboardIsDamagedSet(true);
 	
-
+		//공격중 데미지를 입었을 경우 
+		mController->ChangeBlackBoardState(EEnemyState::Attack, false);
+		isMontagePlaying = false;
 	
 	HP-= damage;
 	UE_LOG(LogTemp, Warning, TEXT("HP:%d"),HP );

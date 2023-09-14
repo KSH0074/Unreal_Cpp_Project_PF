@@ -277,6 +277,7 @@ void AMainPlayer::JangPoong(int Damage)
 	FActorSpawnParameters SpawnPrams;
 	SpawnPrams.bNoFail = true;
 	AFireBall* FireBallInstance = GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition->GetComponentTransform());
+	
 	//생성위치가 겹칠때 생기는 문제를 방지하기 위해서 
 	if (FireBallInstance != nullptr)
 	{
