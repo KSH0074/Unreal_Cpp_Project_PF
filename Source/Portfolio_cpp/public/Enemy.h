@@ -103,8 +103,8 @@ public:
 	UPROPERTY()
 	float fMontageSectionPlaytime{};
 
-	UFUNCTION()
-	void getMontageSectionPlaytime(int32 index);
+	//UFUNCTION()
+	//void getMontageSectionPlaytime(int32 index);
 
 	UPROPERTY()
 	bool bHit = false;

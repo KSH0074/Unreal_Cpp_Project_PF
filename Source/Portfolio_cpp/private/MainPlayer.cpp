@@ -66,6 +66,7 @@ AMainPlayer::AMainPlayer()
 
 	PlayerHitBox->SetCollisionResponseToAllChannels(ECR_Ignore);//모든 콜리전 무시
 	PlayerHitBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);//Enenmy에만 overlap
+
 }
 
 // Called when the game starts or when spawned
@@ -73,10 +74,12 @@ void AMainPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	mainPlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-//	UE_LOG(LogTemp, Warning, TEXT("%d"), commandQueue.size());
+	//	UE_LOG(LogTemp, Warning, TEXT("%d"), commandQueue.size());
 	thisGameInstance = Cast<UPFGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	//TableRead("41");
 	Playeranim = Cast<UMainPlayerAnim>(GetMesh()->GetAnimInstance());
+
+
 }
 
 // Called every frame
@@ -84,10 +87,9 @@ void AMainPlayer::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	if (bMouseDown)
-	{
-		MainCharacterMoveInput();
-	}
+
+	MainCharacterMoveInput();
+
 }
 
 // Called to bind functionality to input
@@ -104,12 +106,14 @@ void AMainPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputComponen
 	PlayerInputComponent->BindAction("Up", IE_Pressed, this, &AMainPlayer::InputCommand);
 	PlayerInputComponent->BindAction("Down", IE_Pressed, this, &AMainPlayer::InputCommand);
 	PlayerInputComponent->BindAction("Action", IE_Pressed, this, &AMainPlayer::OutputCommand);
+
 }
+
 
 void AMainPlayer::MainCharacterMoveInput()
 {
-	//if 떼지 않았을 경우 true => tick 
-	if (bMouseDown)
+	//if 떼지 않았을 경우 true => tick에서 계속 작동되어 드래그로도 움직이기 가능함, 이때 첫 우 클릭시 바닥에 이펙트를 주어서 어디로 이동하는 지 보여주는 코드를 추가할 예정
+	if (bMouseDown && bInput)
 	{
 		//UE_LOG(LogTemp, Warning, TEXT("MouseInput Recive"));
 		FHitResult hitResult;
@@ -119,13 +123,13 @@ void AMainPlayer::MainCharacterMoveInput()
 
 		//UE_LOG(LogTemp, Warning, TEXT("%s"), *hitResult.Location.ToString());
 
-		if(isMoveAble)
+		if (isMoveAble)
 		{
 			UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
 		}
-			
-		
-		
+
+
+
 	}
 }
 
@@ -142,7 +146,7 @@ void AMainPlayer::MouseButtonRelease()
 void AMainPlayer::InputRight()
 {
 	mCommand = COMMAND::Right;
-	UE_LOG(LogTemp, Warning,  TEXT("Right : % d"), mCommand);
+	UE_LOG(LogTemp, Warning, TEXT("Right : % d"), mCommand);
 	commandQueue.push(mCommand);
 	CommandTimeOut();
 }
@@ -173,6 +177,7 @@ void AMainPlayer::InputDown()
 
 void AMainPlayer::InputCommand(FKey inputKey)
 {
+
 	switch (inputKey.GetFName().GetPlainNameString()[0])//GetPlainNameString => 이름부분만 추출 FString 으로 변환
 	{
 	case 'D':
@@ -190,56 +195,58 @@ void AMainPlayer::InputCommand(FKey inputKey)
 	default:
 		break;
 	}
+
+
 }
 
-void AMainPlayer::OutputCommand() 
+void AMainPlayer::OutputCommand()
 {
 	//커맨드 Queue 를 FString 형태로 받는 변수
-	FString a{};  
+	FString a{};
 	while (!commandQueue.empty())
 	{
 		a.AppendInt(static_cast<int32>(commandQueue.front()));
 		commandQueue.pop();
 	}
 	UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
-	int tempDmg =0;
-	
-	TableRead(a,tempDmg);
+	int tempDmg = 0;
 
-	if (UseSkill.IsBound()) //
+	TableRead(a, tempDmg);
+
+	if (UseSkill.IsBound()&&bInput) //
 	{
 		FHitResult hitResult;
 		mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
-		
+
 		FRotator turnPlayer = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), hitResult.Location);
 		SetActorRotation(FRotator(0.0f, turnPlayer.Yaw, 0.0f));
-		
+
 		UseSkill.Execute(tempDmg);
 	}
-	
+
 }
 
 //커맨드 0.5초 내 출력하지 않으면 취소됨 
 void AMainPlayer::CommandTimeOut()
 {
-		GetWorld()->GetTimerManager().SetTimer(commandTimerHandle,this,&AMainPlayer::TimeOver,0.5,false);
+	GetWorld()->GetTimerManager().SetTimer(commandTimerHandle, this, &AMainPlayer::TimeOver, 0.5, false);
 }
 
 
 
 /*
-행 이름 숫자 말고 문자로 
+행 이름 숫자 말고 문자로
 */
 
 // 인수 FString 으로 변경하여 위의 OutputCommand 에 적용할 수 있도록 하기 
-void AMainPlayer::TableRead(FString InputCommand,int& damage)
+void AMainPlayer::TableRead(FString InputCommand, int& damage)
 {
 	UseSkill.Unbind();//이미 바인드 되어있는거 해제 
 	if (thisGameInstance == nullptr) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
 	FCommandTable* temp; //커맨드 테이블(행)을 저장할 임시변수 
 	temp = thisGameInstance->GetABCharacterData(InputCommand); // PFGameInstance에 구현한 GetABCharacterData사용 InputCommand와 이름이 같은 행을 찾아 반환 
-	
+
 	if (temp != nullptr) // 찾은 경우 
 	{
 		FString skillDMG = temp->SkillDamage;
@@ -271,7 +278,7 @@ void AMainPlayer::JangPoong(int Damage)
 	SpawnPrams.bNoFail = true;
 	AFireBall* FireBallInstance = GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition->GetComponentTransform());
 	//생성위치가 겹칠때 생기는 문제를 방지하기 위해서 
-	if( FireBallInstance != nullptr)
+	if (FireBallInstance != nullptr)
 	{
 		FireBallInstance->fireballDamage = Damage;
 		AMainPlayer* selfPointer = this;
@@ -309,6 +316,20 @@ void AMainPlayer::OnDamageProcess(int damage)
 		PlayerController->ConsoleCommand("Exit");
 	}
 
+}
+
+void AMainPlayer::AllowInput(bool bInputAllow)
+{
+	bInput = bInputAllow;
+	if (bInput)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player Controller Input true"));
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player Controller Input false"));
+
+	}
 }
 
 

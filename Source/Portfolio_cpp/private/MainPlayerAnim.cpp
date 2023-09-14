@@ -2,7 +2,7 @@
 
 
 #include "MainPlayerAnim.h"
-#include "Portfolio_cpp.h"
+
 #include "MainPlayer.h"
 
 
@@ -20,7 +20,7 @@ UMainPlayerAnim::UMainPlayerAnim()
 
 	damagedMontage = TempMontage.Object;
 	UE_LOG(Player, Warning, TEXT("Montage Name : %s"), *damagedMontage->GetFName().ToString());
-	//TryGetPawnOwner()
+	
 }
 
 
@@ -28,14 +28,17 @@ UMainPlayerAnim::UMainPlayerAnim()
 void UMainPlayerAnim::AnimNotify_PlayerDamagedStart()
 {
 	UE_LOG(Player, Warning, TEXT("Player Damaged Start"));
-	
+	Cast<AMainPlayer>(TryGetPawnOwner())->AllowInput(false);
+	Cast<AMainPlayer>(TryGetPawnOwner())->GetController()->StopMovement();
 }
 
 
 void UMainPlayerAnim::AnimNotify_PlayerDamagedEnd()
 {
 	UE_LOG(Player, Warning, TEXT("Player Damaged End"));
+	Cast<AMainPlayer>(TryGetPawnOwner())->AllowInput(true);
 }
+
 
 void UMainPlayerAnim::PlayDamageMontage()
 {

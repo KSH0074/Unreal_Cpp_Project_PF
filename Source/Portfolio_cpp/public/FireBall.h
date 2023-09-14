@@ -48,5 +48,6 @@ public:
 	//UPROPERTY()
 	//class AMainPlayer* master;
 
+	UPROPERTY()
 	int fireballDamage;
 };

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Animation/AnimInstance.h"
+#include "Portfolio_cpp.h"
 #include "MainPlayerAnim.generated.h"
 
 /**

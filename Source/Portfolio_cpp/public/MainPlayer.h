@@ -119,5 +119,9 @@ public:
 	UPROPERTY()
 		class UMainPlayerAnim* Playeranim{};
 
+	UFUNCTION()
+	void AllowInput(bool bInputAllow = true);
+
+	bool bInput = true;
 
 };
