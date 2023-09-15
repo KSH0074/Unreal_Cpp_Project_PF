@@ -11,6 +11,7 @@ UEnemyDeath::UEnemyDeath()
 EBTNodeResult::Type UEnemyDeath::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
 	ControlledEnemy = Cast<AEnemy>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("SelfActor")));
+	ControlledEnemy->StopAnimMontage();
 	ControlledEnemy->DeathState();
 	return EBTNodeResult::Succeeded;
 }

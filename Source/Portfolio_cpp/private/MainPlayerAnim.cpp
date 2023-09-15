@@ -19,29 +19,55 @@ UMainPlayerAnim::UMainPlayerAnim()
 		UE_LOG(Player, Warning, TEXT("found Montage"));
 
 	damagedMontage = TempMontage.Object;
-	UE_LOG(Player, Warning, TEXT("Montage Name : %s"), *damagedMontage->GetFName().ToString());
 	
+	ConstructorHelpers::FObjectFinder<UAnimMontage> TempMontageFire(TEXT("AnimMontage'/Game/ImportedAnimationAndCharacter/Player/Player_Animation/Active/Fireball_Montage.Fireball_Montage'"));
+
+	if (!TempMontageFire.Succeeded())
+	{
+		UE_LOG(Player, Warning, TEXT("Not found Montage"));
+	}
+	else
+		UE_LOG(Player, Warning, TEXT("found Montage"));
+	fireBallMontage = TempMontageFire.Object;
 }
 
+void UMainPlayerAnim::PlayDamageMontage()
+{
+	//함수 매개변수를 다 채우기 
+	Montage_Play(damagedMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+}
 
+void UMainPlayerAnim::NativeBeginPlay()
+{
+	mMainPlayer = Cast<AMainPlayer>(TryGetPawnOwner());
+}
 
 void UMainPlayerAnim::AnimNotify_PlayerDamagedStart()
 {
 	UE_LOG(Player, Warning, TEXT("Player Damaged Start"));
-	Cast<AMainPlayer>(TryGetPawnOwner())->AllowInput(false);
-	Cast<AMainPlayer>(TryGetPawnOwner())->GetController()->StopMovement();
+	mMainPlayer->AllowInput(false);
+	mMainPlayer-> GetController()->StopMovement();
 }
 
 
 void UMainPlayerAnim::AnimNotify_PlayerDamagedEnd()
 {
 	UE_LOG(Player, Warning, TEXT("Player Damaged End"));
-	Cast<AMainPlayer>(TryGetPawnOwner())->AllowInput(true);
+	mMainPlayer->AllowInput(true);
 }
 
 
-void UMainPlayerAnim::PlayDamageMontage()
+
+//fire ball 
+void UMainPlayerAnim::PlayFireBallMontage()
 {
-	//함수 매개변수를 다 채우기 
-	Montage_Play(damagedMontage,1.0f,EMontagePlayReturnType::MontageLength,0.0f,true);
+	Montage_Play(fireBallMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+	mMainPlayer->AllowInput(false);
+	mMainPlayer->GetController()->StopMovement();
+}
+
+void UMainPlayerAnim::AnimNotify_FireBallfire()
+{
+	mMainPlayer->ThrowFireball();
+	mMainPlayer->AllowInput(true);
 }

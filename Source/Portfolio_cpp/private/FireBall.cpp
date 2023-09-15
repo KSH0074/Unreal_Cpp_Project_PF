@@ -50,16 +50,10 @@ void AFireBall::BeginPlay()
 	GetWorld()->GetTimerManager().SetTimer(DeathTimer,this,&AFireBall::Die ,2.0f, false);
 	//¹ÙÀÎµå
 	collisionComp->OnComponentBeginOverlap.AddDynamic(this, &AFireBall::OnFireBallOverlap);
-	
 
 }
 
-// Called every frame
-void AFireBall::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
 
-}
 void AFireBall::Die()
 {
 	Destroy();

@@ -90,13 +90,13 @@ void AEnemy::Tick(float DeltaTime)
 	 if 사용하는 법만 봐도 프로그래밍을 할 줄 아는사람인지 알 수 있다는데 
 	 이 if문은 최선일까?
 	*/
-	if (distance.Size() < MeeleAttackRange && !(mController->getBlackBoardState("IsAttack")))
+	if (distance.Size() < fMeleeAttackRange && !(mController->getBlackBoardState("IsAttack")))
 	{
 			mController->ChangeBlackBoardState(EEnemyState::Attack, true);
 	
 	}
 	//isAttack 상태에서 근접 공격보다 멀어지면서 몽타주가 플레이중이 아닐때 상태변화 
-	else if(mController->getBlackBoardState("IsAttack") &&  distance.Size() > MeeleAttackRange && !isMontagePlaying)
+	else if(mController->getBlackBoardState("IsAttack") &&  distance.Size() > fMeleeAttackRange && !isMontagePlaying)
 	{
 		mController->ChangeBlackBoardState(EEnemyState::Attack, false);
 		UE_LOG(LogTemp, Warning, TEXT("Change State  IsAttack false"));
@@ -191,7 +191,7 @@ void AEnemy::attackZoneEndOverlap(
 
 //void AEnemy::getMontageSectionPlaytime(int32 index)
 //{
-//	//몽타주 재생할때 마다 호출되는 문제가 있다. 재생되고있는 몽타주의 플레이타임을 알고싶지 않다면  생성자 또는 BeginPlay에서 초기화 할 수 있도록 고치는 편이 나을 것 
+//	//몽타주 재생할때 마다 호출되는 문제가 있다. 재생되고있는 몽타주의 플레이타임을 알고싶지 않다면  생성자 또는 BeginPlay에서 알고싶은 몽타주만 변수에 초기화 할 수 있도록 고치는 편이 나을 것 
 //	//다만 섹션이 많아진다면 이대로 놔두는게 나을 수 있다.
 //
 //	UAnimMontage* montage = anim->GetCurrentActiveMontage();

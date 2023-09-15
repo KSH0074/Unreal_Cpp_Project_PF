@@ -20,8 +20,7 @@ protected:
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
 
 public:
 	//발사체 컴포넌트 , projectile 

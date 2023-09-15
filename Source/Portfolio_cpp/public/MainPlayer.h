@@ -94,6 +94,11 @@ public:
 
 	UFUNCTION()
 		void JangPoong(int Damage);
+	int mfireBalldamage{};
+
+	UFUNCTION(BlueprintCallable)
+	void ThrowFireball();
+
 	UFUNCTION()
 		void Hold(int Damage);
 	UFUNCTION()
@@ -124,4 +129,5 @@ public:
 
 	bool bInput = true;
 
+	
 };

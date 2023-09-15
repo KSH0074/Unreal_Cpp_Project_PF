@@ -76,7 +76,7 @@ public:
 
 	//공격범위변수
 	UPROPERTY(EditAnyWhere, Category = Attack)
-	float MeeleAttackRange = 120.0f;
+	float fMeleeAttackRange = 120.0f;
 
 	//공격 쿨타임
 	UPROPERTY(EditAnyWhere, Category = Attack)

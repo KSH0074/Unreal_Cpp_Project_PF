@@ -201,27 +201,31 @@ void AMainPlayer::InputCommand(FKey inputKey)
 
 void AMainPlayer::OutputCommand()
 {
-	//커맨드 Queue 를 FString 형태로 받는 변수
-	FString a{};
-	while (!commandQueue.empty())
+	if (bInput)
 	{
-		a.AppendInt(static_cast<int32>(commandQueue.front()));
-		commandQueue.pop();
-	}
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
-	int tempDmg = 0;
 
-	TableRead(a, tempDmg);
+		//커맨드 Queue 를 FString 형태로 받는 변수
+		FString a{};
+		while (!commandQueue.empty())
+		{
+			a.AppendInt(static_cast<int32>(commandQueue.front()));
+			commandQueue.pop();
+		}
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
+		int tempDmg = 0;
 
-	if (UseSkill.IsBound()&&bInput) //
-	{
-		FHitResult hitResult;
-		mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
+		TableRead(a, tempDmg);
 
-		FRotator turnPlayer = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), hitResult.Location);
-		SetActorRotation(FRotator(0.0f, turnPlayer.Yaw, 0.0f));
+		if (UseSkill.IsBound()) //
+		{
+			FHitResult hitResult;
+			mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
 
-		UseSkill.Execute(tempDmg);
+			FRotator turnPlayer = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), hitResult.Location);
+			SetActorRotation(FRotator(0.0f, turnPlayer.Yaw, 0.0f));
+
+			UseSkill.Execute(tempDmg);
+		}
 	}
 
 }
@@ -273,19 +277,23 @@ void AMainPlayer::TimeOver()
 void AMainPlayer::JangPoong(int Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
+	mfireBalldamage = Damage;
+	Playeranim->PlayFireBallMontage();
+}
 
+void AMainPlayer::ThrowFireball()
+{
 	FActorSpawnParameters SpawnPrams;
 	SpawnPrams.bNoFail = true;
 	AFireBall* FireBallInstance = GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition->GetComponentTransform());
-	
+
 	//생성위치가 겹칠때 생기는 문제를 방지하기 위해서 
 	if (FireBallInstance != nullptr)
 	{
-		FireBallInstance->fireballDamage = Damage;
+		FireBallInstance->fireballDamage = mfireBalldamage;
 		AMainPlayer* selfPointer = this;
 		FireBallInstance->SetInstigator(selfPointer);
 	}
-
 }
 
 void AMainPlayer::Hold(int Damage)

@@ -18,7 +18,7 @@ class PORTFOLIO_CPP_API UMainPlayerAnim : public UAnimInstance
 public:
 	UMainPlayerAnim();
 protected:
-//	virtual void NativeBeginPlay() override;
+	virtual void NativeBeginPlay() override;
 
 public:
 	UFUNCTION()
@@ -29,9 +29,15 @@ public:
 
 	UFUNCTION()
 	void PlayDamageMontage();
+
+	UFUNCTION()
+	void PlayFireBallMontage();
 	
+	UFUNCTION()
+	void AnimNotify_FireBallfire();
 
-
+	class AMainPlayer* mMainPlayer{};
 	class UAnimMontage* damagedMontage{};
+	class UAnimMontage* fireBallMontage{};
 	
 };
