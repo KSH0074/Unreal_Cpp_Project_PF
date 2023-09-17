@@ -20,7 +20,7 @@ UMainPlayerAnim::UMainPlayerAnim()
 
 	damagedMontage = TempMontage.Object;
 	
-	ConstructorHelpers::FObjectFinder<UAnimMontage> TempMontageFire(TEXT("AnimMontage'/Game/ImportedAnimationAndCharacter/Player/Player_Animation/Active/Fireball_Montage.Fireball_Montage'"));
+	ConstructorHelpers::FObjectFinder<UAnimMontage> TempMontageFire(TEXT("AnimMontage'/Game/ImportedAnimationAndCharacter/Player/Player_Animation/Active/PlayerSkillMontage.PlayerSkillMontage'"));
 
 	if (!TempMontageFire.Succeeded())
 	{
@@ -34,7 +34,7 @@ UMainPlayerAnim::UMainPlayerAnim()
 void UMainPlayerAnim::PlayDamageMontage()
 {
 	//함수 매개변수를 다 채우기 
-	Montage_Play(damagedMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+	Montage_Play(damagedMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, false);
 }
 
 void UMainPlayerAnim::NativeBeginPlay()
@@ -61,13 +61,26 @@ void UMainPlayerAnim::AnimNotify_PlayerDamagedEnd()
 //fire ball 
 void UMainPlayerAnim::PlayFireBallMontage()
 {
+	
 	Montage_Play(fireBallMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+	Montage_JumpToSection("FireBall", fireBallMontage);
+
 	mMainPlayer->AllowInput(false);
 	mMainPlayer->GetController()->StopMovement();
+
+	
 }
 
 void UMainPlayerAnim::AnimNotify_FireBallfire()
 {
 	mMainPlayer->ThrowFireball();
 	mMainPlayer->AllowInput(true);
+}
+
+//Hurricane Kick
+void UMainPlayerAnim::PlayHurricaneMontage()
+{
+	Montage_Play(fireBallMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+	Montage_JumpToSection(FName("HurricaneKick"), fireBallMontage);
+	
 }

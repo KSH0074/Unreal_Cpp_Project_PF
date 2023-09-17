@@ -129,7 +129,7 @@ public:
 
 	bool bInput = true;
 
-	UPROPERTY(BlueprintReadOnly)
-	bool mSkillUse = false;
+	//UPROPERTY(BlueprintReadOnly)
+	//bool mSkillUse = false;
 	
 };

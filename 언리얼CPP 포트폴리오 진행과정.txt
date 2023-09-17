@@ -78,4 +78,4 @@
 2023/09/14 : 피격시 입력 방지되도록 코드를 추가함, UPROPERTY/UFUNCTION 누락된 것 추가, 필요 없어진 약간의 코드 정리, Attack상태일때 피격시 State 가 변경되지 않는 버그를 수정하였다.
 2023/09/15 : Enemy가공격중 사망 바로 안되는 문제해결, JangPoong 스킬 사용시 Fireball 애니메이션(몽타주)를 재생하였다. 이 과정에서 JangPoong함수를 분해 => JangPoong은 몽타주 재생 ThrowFireball은 발사 로 분해하였다. 입력제한 함수 및 적용 개선
 
-2023/09/17 : MainPlayer의 FireBall 몽타주 재생중 피격될 시 JangPoong스킬이 발동 하지 않도록 함 ,TestCode로 시작했던 함수 GetABCharacter를 GetTableData로 함수명을 변경했다, 모든 int형 변수를 int32로 변경하였다.
+2023/09/17 : MainPlayer의 FireBall 몽타주 재생중 피격될 시 JangPoong스킬이 발동 하지 않도록 함 ,TestCode로 시작했던 함수 GetABCharacter를 GetTableData로 함수명을 변경했다, 모든 int형 변수를 int32로 변경하였다, Hold스킬을 삭제하고 HurricaneKick(스트리트 파이터에서 본듯한..) 을 추가하였다. 해당 스킬은 키 입력시 몽타주 재생이 되는 정도까지로 완성되었다.

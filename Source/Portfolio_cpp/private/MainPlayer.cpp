@@ -298,7 +298,8 @@ void AMainPlayer::ThrowFireball()
 
 void AMainPlayer::HurricaneKick(int32 Damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("use Skill Hold"));
+	UE_LOG(LogTemp, Warning, TEXT("use Skill HurricaneKick"));
+	Playeranim->PlayHurricaneMontage();
 }
 
 void AMainPlayer::Dodge(int32 Damage)
@@ -313,7 +314,7 @@ void AMainPlayer::BackDash(int32 Damage)
 
 void AMainPlayer::OnDamageProcess(int32 damage)
 {
-	//피격시 공격 취소됨 
+	//피격시 공격 취소됨, PlayDamageMontage 내에서 Play_Montage의 매개변수 중 bStopAllMontage = true,로 했음에도 몽타주가 취소되지 않았다. 
 	Playeranim->StopAllMontages(1.0f);
 
 	Playeranim->PlayDamageMontage();

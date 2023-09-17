@@ -21,6 +21,8 @@ protected:
 	virtual void NativeBeginPlay() override;
 
 public:
+
+	//Player ÇÇ°Ý
 	UFUNCTION()
 	void AnimNotify_PlayerDamagedStart();
 
@@ -30,12 +32,17 @@ public:
 	UFUNCTION()
 	void PlayDamageMontage();
 
+	//FireBall
 	UFUNCTION()
 	void PlayFireBallMontage();
 	
 	UFUNCTION()
 	void AnimNotify_FireBallfire();
 
+	//Hurricane Kick
+	UFUNCTION()
+	void PlayHurricaneMontage();
+	
 	class AMainPlayer* mMainPlayer{};
 	class UAnimMontage* damagedMontage{};
 	class UAnimMontage* fireBallMontage{};
