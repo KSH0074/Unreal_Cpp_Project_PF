@@ -21,6 +21,8 @@ public:
 		FString Text;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		FString SkillDamage;
+
+	//생성자 및 초기화
 	FCommandTable() :Command(""), Text(""), SkillDamage("")
 	{
 

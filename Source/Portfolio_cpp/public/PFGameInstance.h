@@ -19,7 +19,7 @@ class PORTFOLIO_CPP_API UPFGameInstance : public UGameInstance
 	GENERATED_BODY()
 public:
 	UPFGameInstance();
-	FCommandTable* GetABCharacterData(FString column);
+	FCommandTable* GetTableData(FString column);
 	
 	//TestCode
 	//int32 tableSize = 0;

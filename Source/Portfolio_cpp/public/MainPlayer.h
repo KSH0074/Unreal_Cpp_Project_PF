@@ -7,7 +7,7 @@
 #include <queue>
 #include "MainPlayer.generated.h"
 
-DECLARE_DYNAMIC_DELEGATE_OneParam(FCommandOutDelegate,int,Damage);
+DECLARE_DYNAMIC_DELEGATE_OneParam(FCommandOutDelegate,int32,Damage);
 
 UENUM(BlueprintType)
 enum class COMMAND : uint8
@@ -82,7 +82,7 @@ public:
 	FTimerHandle commandTimerHandle;
 	
 	UFUNCTION()
-	void TableRead(FString Command, int& damage);
+	void TableRead(FString Command, int32& damage);
 
 	UFUNCTION()
 	void TimeOver();
@@ -93,22 +93,22 @@ public:
 	FCommandOutDelegate UseSkill;
 
 	UFUNCTION()
-		void JangPoong(int Damage);
-	int mfireBalldamage{};
+		void JangPoong(int32 Damage);
+	int32 mfireBalldamage{};
 
 	UFUNCTION(BlueprintCallable)
 	void ThrowFireball();
 
 	UFUNCTION()
-		void Hold(int Damage);
+		void HurricaneKick(int32 Damage);
 	UFUNCTION()
-		void Dodge(int Damage);
+		void Dodge(int32 Damage);
 	UFUNCTION()
-		void BackDash(int Damage);
+		void BackDash(int32 Damage);
 
 	//대미지 받는 함수
 	UFUNCTION()
-		void OnDamageProcess(int damage);
+		void OnDamageProcess(int32 damage);
 
 
 	UPROPERTY(EditDefaultsOnly, Category = FireBallFactory)
@@ -119,7 +119,7 @@ public:
 
 	//Player's HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int HP = 10;
+	int32 HP = 10;
 
 	UPROPERTY()
 		class UMainPlayerAnim* Playeranim{};
@@ -129,5 +129,7 @@ public:
 
 	bool bInput = true;
 
+	UPROPERTY(BlueprintReadOnly)
+	bool mSkillUse = false;
 	
 };

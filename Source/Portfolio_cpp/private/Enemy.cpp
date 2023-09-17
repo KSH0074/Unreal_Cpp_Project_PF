@@ -106,7 +106,7 @@ void AEnemy::Tick(float DeltaTime)
 
 
 
-void AEnemy::OnDamageProcess(int damage)
+void AEnemy::OnDamageProcess(int32 damage)
 {
 		//BehaviorTree 에서바로 플레이추적하도록 함 
 		mController->BlackboardIsDamagedSet(true);

@@ -212,7 +212,7 @@ void AMainPlayer::OutputCommand()
 			commandQueue.pop();
 		}
 		UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
-		int tempDmg = 0;
+		int32 tempDmg = 0;
 
 		TableRead(a, tempDmg);
 
@@ -243,13 +243,13 @@ void AMainPlayer::CommandTimeOut()
 */
 
 // 인수 FString 으로 변경하여 위의 OutputCommand 에 적용할 수 있도록 하기 
-void AMainPlayer::TableRead(FString InputCommand, int& damage)
+void AMainPlayer::TableRead(FString InputCommand, int32& damage)
 {
 	UseSkill.Unbind();//이미 바인드 되어있는거 해제 
 	if (thisGameInstance == nullptr) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
 	FCommandTable* temp; //커맨드 테이블(행)을 저장할 임시변수 
-	temp = thisGameInstance->GetABCharacterData(InputCommand); // PFGameInstance에 구현한 GetABCharacterData사용 InputCommand와 이름이 같은 행을 찾아 반환 
+	temp = thisGameInstance->GetTableData(InputCommand); // PFGameInstance에 구현한 GetTableData사용 InputCommand와 이름이 같은 행을 찾아 반환 
 
 	if (temp != nullptr) // 찾은 경우 
 	{
@@ -274,7 +274,7 @@ void AMainPlayer::TimeOver()
 }
 
 
-void AMainPlayer::JangPoong(int Damage)
+void AMainPlayer::JangPoong(int32 Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
 	mfireBalldamage = Damage;
@@ -296,25 +296,28 @@ void AMainPlayer::ThrowFireball()
 	}
 }
 
-void AMainPlayer::Hold(int Damage)
+void AMainPlayer::HurricaneKick(int32 Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill Hold"));
 }
 
-void AMainPlayer::Dodge(int Damage)
+void AMainPlayer::Dodge(int32 Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill Dodge"));
 }
 
-void AMainPlayer::BackDash(int Damage)
+void AMainPlayer::BackDash(int32 Damage)
 {
 	UE_LOG(LogTemp, Warning, TEXT("use Skill BackDash"));
 }
 
-void AMainPlayer::OnDamageProcess(int damage)
+void AMainPlayer::OnDamageProcess(int32 damage)
 {
-	Playeranim->PlayDamageMontage();
+	//피격시 공격 취소됨 
+	Playeranim->StopAllMontages(1.0f);
 
+	Playeranim->PlayDamageMontage();
+	
 	HP -= damage;
 	UE_LOG(LogTemp, Warning, TEXT("Player HP:%d"), HP);
 	if (HP <= 0)

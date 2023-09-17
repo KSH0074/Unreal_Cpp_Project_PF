@@ -19,7 +19,7 @@ UPFGameInstance::UPFGameInstance()
 	}
 }
 
-FCommandTable* UPFGameInstance::GetABCharacterData(FString column)
+FCommandTable* UPFGameInstance::GetTableData(FString column)
 {
 	FCommandTable* temp;
 	temp = commandTable->FindRow<FCommandTable>(*FString::FString(column), TEXT(""));

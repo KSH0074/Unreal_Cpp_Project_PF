@@ -36,11 +36,11 @@ public:
 
 	//HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int HP = 100;
+	int32 HP = 100;
 
 	//피격함수 
 	UFUNCTION()
-	void OnDamageProcess(int damage);
+	void OnDamageProcess(int32 damage);
 
 	//사망할때 작동하는 함수
 	UFUNCTION()
@@ -68,7 +68,7 @@ public:
 	
 	//공격력
 	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	int mDamage = 2;
+	int32 mDamage = 2;
 
 	//BlueprintReadWrite로  Enemy_Controller 블루프린트에서 접근하려했으나 실패함
 	UPROPERTY(BlueprintReadWrite)
