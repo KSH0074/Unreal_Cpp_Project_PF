@@ -42,6 +42,15 @@ public:
 	//Hurricane Kick
 	UFUNCTION()
 	void PlayHurricaneMontage();
+
+	//Attack
+	UFUNCTION()
+	void AnimNotify_Attack();
+	
+	UFUNCTION()
+	void AnimNotify_AttackEnd();
+	
+
 	
 	class AMainPlayer* mMainPlayer{};
 	class UAnimMontage* damagedMontage{};

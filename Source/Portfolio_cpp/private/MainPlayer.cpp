@@ -25,14 +25,14 @@ AMainPlayer::AMainPlayer()
 	if (TempMesh.Succeeded())
 	{
 		GetMesh()->SetSkeletalMesh(TempMesh.Object);
-		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -90.0f), FRotator(0, -90.0f, 0));
+		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -70.0f), FRotator(0, -90.0f, 0));
 	}
 	//Spring Arm 설정 
 	springArmComp = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArmComp"));
 	springArmComp->SetupAttachment(RootComponent);
 	springArmComp->SetRelativeLocation(FVector(-45.0f, 0.0f, 135.0f));
 	springArmComp->SetRelativeRotation(FRotator(-60.0f, 0.0f, 0.0f));
-	springArmComp->TargetArmLength = 300;
+	springArmComp->TargetArmLength = 700;
 	springArmComp->bInheritYaw = false;
 
 	//카메라 설정 
@@ -50,6 +50,7 @@ AMainPlayer::AMainPlayer()
 	firePosition->bHiddenInGame = false;
 	firePosition->SetupAttachment(RootComponent);
 
+	//capsuleComponent 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel2);
@@ -67,6 +68,15 @@ AMainPlayer::AMainPlayer()
 	PlayerHitBox->SetCollisionResponseToAllChannels(ECR_Ignore);//모든 콜리전 무시
 	PlayerHitBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);//Enenmy에만 overlap
 
+	//attackBox
+	PlayerFootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox"));
+	PlayerFootBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,"LeftToeBase");
+	PlayerFootBox->bHiddenInGame = false;
+	PlayerFootBox->SetGenerateOverlapEvents(false);
+
+	//공격판정존 델리게이트 연결 
+	PlayerFootBox->OnComponentBeginOverlap.AddDynamic(this,&AMainPlayer::FootBoxBeginOverlap);
+	PlayerFootBox->OnComponentEndOverlap.AddDynamic(this,&AMainPlayer::FootBoxEndOverlap);
 }
 
 // Called when the game starts or when spawned
@@ -146,7 +156,7 @@ void AMainPlayer::MouseButtonRelease()
 void AMainPlayer::InputRight()
 {
 	mCommand = COMMAND::Right;
-	UE_LOG(LogTemp, Warning, TEXT("Right : % d"), mCommand);
+	UE_LOG(Player, Warning, TEXT("Right : % d"), mCommand);
 	commandQueue.push(mCommand);
 	CommandTimeOut();
 }
@@ -154,7 +164,7 @@ void AMainPlayer::InputRight()
 void AMainPlayer::InputLeft()
 {
 	mCommand = COMMAND::Left;
-	UE_LOG(LogTemp, Warning, TEXT("Left : %d"), mCommand);
+	UE_LOG(Player, Warning, TEXT("Left : %d"), mCommand);
 	commandQueue.push(mCommand);
 	CommandTimeOut();
 }
@@ -162,7 +172,7 @@ void AMainPlayer::InputLeft()
 void AMainPlayer::InputUp()
 {
 	mCommand = COMMAND::Up;
-	UE_LOG(LogTemp, Warning, TEXT("Up : %d"), mCommand);
+	UE_LOG(Player, Warning, TEXT("Up : %d"), mCommand);
 	commandQueue.push(mCommand);
 	CommandTimeOut();
 }
@@ -170,7 +180,7 @@ void AMainPlayer::InputUp()
 void AMainPlayer::InputDown()
 {
 	mCommand = COMMAND::Down;
-	UE_LOG(LogTemp, Warning, TEXT("Down : %d"), mCommand);
+	UE_LOG(Player, Warning, TEXT("Down : %d"), mCommand);
 	commandQueue.push(mCommand);
 	CommandTimeOut();
 }
@@ -211,7 +221,7 @@ void AMainPlayer::OutputCommand()
 			a.AppendInt(static_cast<int32>(commandQueue.front()));
 			commandQueue.pop();
 		}
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *a); //받은 커맨드 
+		UE_LOG(Player, Warning, TEXT("%s"), *a); //받은 커맨드 
 		int32 tempDmg = 0;
 
 		TableRead(a, tempDmg);
@@ -254,13 +264,13 @@ void AMainPlayer::TableRead(FString InputCommand, int32& damage)
 	if (temp != nullptr) // 찾은 경우 
 	{
 		FString skillDMG = temp->SkillDamage;
-		UE_LOG(LogTemp, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut); //출력로그에 출력  
+		UE_LOG(Player, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut); //출력로그에 출력  
 		UseSkill.BindUFunction(this, *thisGameInstance->TextOut); //해당 커맨드와 함수를 바인딩 
 		damage = FCString::Atoi(*skillDMG);
 	}
 	else //못 찾은 경우 
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Skill not found, faild TableReading"));
+		UE_LOG(Player, Warning, TEXT("Skill not found, faild TableReading"));
 		return;
 	}
 }
@@ -270,14 +280,14 @@ void AMainPlayer::TimeOver()
 	{
 		commandQueue.pop();
 	}
-	UE_LOG(LogTemp, Warning, TEXT("TimeOver : Input CommandRemoved"));
+	UE_LOG(Player, Warning, TEXT("TimeOver : Input CommandRemoved"));
 }
 
 
 void AMainPlayer::JangPoong(int32 Damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("use Skill jangpoong"));
-	mfireBalldamage = Damage;
+	UE_LOG(Player, Warning, TEXT("use Skill jangpoong"));
+	mPlayerPower = Damage;
 	Playeranim->PlayFireBallMontage();
 }
 
@@ -290,7 +300,7 @@ void AMainPlayer::ThrowFireball()
 	//생성위치가 겹칠때 생기는 문제를 방지하기 위해서 
 	if (FireBallInstance != nullptr)
 	{
-		FireBallInstance->fireballDamage = mfireBalldamage;
+		FireBallInstance->fireballDamage = mPlayerPower;
 		AMainPlayer* selfPointer = this;
 		FireBallInstance->SetInstigator(selfPointer);
 	}
@@ -298,18 +308,22 @@ void AMainPlayer::ThrowFireball()
 
 void AMainPlayer::HurricaneKick(int32 Damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("use Skill HurricaneKick"));
+	UE_LOG(Player, Warning, TEXT("use Skill HurricaneKick"));
+	
+	PlayerFootBox->SetGenerateOverlapEvents(true);
+	
 	Playeranim->PlayHurricaneMontage();
+	mPlayerPower = Damage;
 }
 
 void AMainPlayer::Dodge(int32 Damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("use Skill Dodge"));
+	UE_LOG(Player, Warning, TEXT("use Skill Dodge"));
 }
 
 void AMainPlayer::BackDash(int32 Damage)
 {
-	UE_LOG(LogTemp, Warning, TEXT("use Skill BackDash"));
+	UE_LOG(Player, Warning, TEXT("use Skill BackDash"));
 }
 
 void AMainPlayer::OnDamageProcess(int32 damage)
@@ -320,7 +334,7 @@ void AMainPlayer::OnDamageProcess(int32 damage)
 	Playeranim->PlayDamageMontage();
 	
 	HP -= damage;
-	UE_LOG(LogTemp, Warning, TEXT("Player HP:%d"), HP);
+	UE_LOG(Player, Warning, TEXT("Player HP:%d"), HP);
 	if (HP <= 0)
 	{
 		//사망 모션 이후 게임오버 창 띄우고 조작 안되도독 함, 
@@ -336,13 +350,41 @@ void AMainPlayer::AllowInput(bool bInputAllow)
 	bInput = bInputAllow;
 	if (bInput)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player Controller Input true"));
+		UE_LOG(Player, Warning, TEXT("Player Controller Input true"));
 	}
 	else
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Player Controller Input false"));
+		UE_LOG(Player, Warning, TEXT("Player Controller Input false"));
 
 	}
+}
+
+void AMainPlayer::FootBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, 
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp, 
+	int32 OtherBodyIndex,
+	bool bFromSweep, 
+	const FHitResult& SweepResult)
+{
+	
+	if (OtherActor->ActorHasTag("Enemy"))
+	{
+		mHittedEnemy = Cast<AEnemy>(OtherActor);
+		UE_LOG(Player, Warning, TEXT("Attack Enemy : %s "), *(OtherActor->GetFName().ToString()));
+	}
+	else
+	{
+		UE_LOG(Player, Warning, TEXT("Attack Enemy failed : %s "), *(OtherActor->GetFName().ToString()));
+	}
+	bHit = true;
+}
+
+void AMainPlayer::FootBoxEndOverlap(UPrimitiveComponent* OverlappedComponent,
+	AActor* OtherActor, 
+	UPrimitiveComponent* OtherComp, 
+	int32 OtherBodyIndex)
+{
+	bHit = false;
 }
 
 

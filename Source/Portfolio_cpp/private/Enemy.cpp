@@ -116,7 +116,7 @@ void AEnemy::OnDamageProcess(int32 damage)
 		isMontagePlaying = false;
 	
 	HP-= damage;
-	UE_LOG(LogTemp, Warning, TEXT("HP:%d"),HP );
+	UE_LOG(LogTemp, Warning, TEXT("Enemy HP: % d"),HP );
 	if (HP <= 0)
 	{
 		isDead = true;

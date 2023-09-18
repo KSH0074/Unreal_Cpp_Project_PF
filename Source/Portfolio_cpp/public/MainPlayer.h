@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "Enemy.h"
 #include <queue>
 #include "MainPlayer.generated.h"
 
@@ -46,7 +47,7 @@ public:
 	
 	//HitBox
 	UPROPERTY(VisibleAnywhere, Category = HitBox)
-		class UBoxComponent* PlayerHitBox;
+	class UBoxComponent* PlayerHitBox;
 
 	void MainCharacterMoveInput();
 
@@ -93,8 +94,9 @@ public:
 	FCommandOutDelegate UseSkill;
 
 	UFUNCTION()
-		void JangPoong(int32 Damage);
-	int32 mfireBalldamage{};
+	void JangPoong(int32 Damage);
+	
+	int32 mPlayerPower{};
 
 	UFUNCTION(BlueprintCallable)
 	void ThrowFireball();
@@ -128,6 +130,28 @@ public:
 	void AllowInput(bool bInputAllow = true);
 
 	bool bInput = true;
+
+	UPROPERTY(VisibleAnywhere, Category = HitBox)
+	class UBoxComponent* PlayerFootBox;
+
+	UFUNCTION()
+	void FootBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex,
+		bool bFromSweep,
+		const FHitResult& SweepResult);
+
+	UFUNCTION()
+	void FootBoxEndOverlap(UPrimitiveComponent* OverlappedComponent,
+		AActor* OtherActor,
+		UPrimitiveComponent* OtherComp,
+		int32 OtherBodyIndex);
+
+	bool bHit= false;
+
+	UPROPERTY()
+	class AEnemy* mHittedEnemy{};
 
 	//UPROPERTY(BlueprintReadOnly)
 	//bool mSkillUse = false;

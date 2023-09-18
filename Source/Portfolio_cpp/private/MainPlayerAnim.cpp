@@ -77,10 +77,33 @@ void UMainPlayerAnim::AnimNotify_FireBallfire()
 	mMainPlayer->AllowInput(true);
 }
 
-//Hurricane Kick
+//Hurricane Kick 섹션이름 뺴고 PlayFireBallMontage와 코드가 같다. 함수화 가능 
 void UMainPlayerAnim::PlayHurricaneMontage()
 {
 	Montage_Play(fireBallMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
 	Montage_JumpToSection(FName("HurricaneKick"), fireBallMontage);
-	
+
+	mMainPlayer->AllowInput(false);
+	mMainPlayer->GetController()->StopMovement();
+}
+
+
+//Attack 대부분의 물리형 공격에서 쓰일 노티파이 
+void UMainPlayerAnim::AnimNotify_Attack()
+{
+
+	if (mMainPlayer->bHit)
+	{
+		mMainPlayer->mHittedEnemy->OnDamageProcess(mMainPlayer->mPlayerPower);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Enemy aint HIt"));
+	}
+
+}
+
+void UMainPlayerAnim::AnimNotify_AttackEnd()
+{
+	mMainPlayer->AllowInput(true);
 }
