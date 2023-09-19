@@ -102,8 +102,8 @@ public:
 	UPROPERTY()
 	float fMontageSectionPlaytime{};
 
-	//UFUNCTION()
-	//void getMontageSectionPlaytime(int32 index);
+	UFUNCTION()
+	void KnockBack(float knocbackLength,bool tof);
 
 	UPROPERTY()
 	bool bHit = false;

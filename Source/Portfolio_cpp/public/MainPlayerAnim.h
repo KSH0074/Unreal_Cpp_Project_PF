@@ -53,7 +53,10 @@ public:
 
 	
 	class AMainPlayer* mMainPlayer{};
-	class UAnimMontage* damagedMontage{};
-	class UAnimMontage* fireBallMontage{};
+	class UAnimMontage* mDamagedMontage{};
+	class UAnimMontage* mSkillMontage{};
+
+	UFUNCTION()
+	void SkillSquence(float playRate,FName skillName);
 	
 };

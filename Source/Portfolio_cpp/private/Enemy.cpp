@@ -1,4 +1,4 @@
- // Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Enemy.h"
@@ -12,7 +12,7 @@
 // Sets default values
 AEnemy::AEnemy()
 {
- 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	ConstructorHelpers::FObjectFinder < USkeletalMesh> tempMesh(TEXT("SkeletalMesh'/Game/ImportedAnimationAndCharacter/Enemy/Mesh/Enemy_Skeletalmesh.Enemy_Skeletalmesh'"));
@@ -33,11 +33,11 @@ AEnemy::AEnemy()
 	{
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
 	}
-	
+
 	attackZoneComp = CreateDefaultSubobject<UBoxComponent>(TEXT("AttackZone"));
 	attackZoneComp->SetupAttachment(RootComponent);
 
-	attackZoneComp->SetRelativeLocation(FVector(70.0f,0.0f,0.0f),false,nullptr,ETeleportType::None);
+	attackZoneComp->SetRelativeLocation(FVector(70.0f, 0.0f, 0.0f), false, nullptr, ETeleportType::None);
 	attackZoneComp->SetRelativeScale3D(FVector(1.0f, 1.0f, 2.5f));
 	attackZoneComp->SetGenerateOverlapEvents(true);
 	attackZoneComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
@@ -45,14 +45,14 @@ AEnemy::AEnemy()
 	attackZoneComp->bHiddenInGame = false;
 	//반응채널 설정
 	attackZoneComp->SetCollisionResponseToAllChannels(ECR_Ignore);
-	attackZoneComp->SetCollisionResponseToChannel(ECC_GameTraceChannel6,ECollisionResponse::ECR_Overlap); // Player Hit Box
-	
+	attackZoneComp->SetCollisionResponseToChannel(ECC_GameTraceChannel6, ECollisionResponse::ECR_Overlap); // Player Hit Box
+
 	//attackZoneComp 의 BeginOverlap에대한 델리게이트 
 	attackZoneComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::attackZoneBeginOverlap);
 	attackZoneComp->OnComponentEndOverlap.AddDynamic(this, &AEnemy::attackZoneEndOverlap);  //Overlap이 끝났을 때 헛발질 해도 공격판정이 되지 않도록 
 
 
-	
+
 }
 
 
@@ -71,12 +71,12 @@ void AEnemy::BeginPlay()
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	
+
 
 	//관련 및 비슷한 부분 전부 테스트코드이며 테스트 완성후 FSM 또는 BT로 편입, DeathState, AttackPlayer 전부 BlackBoard에 관련 키를 추가하고 BT에서 판단하여 작동하도록 이 부분을 수정, 
 	if (isDead)
 	{
-		mController->ChangeBlackBoardState(EEnemyState::Die,true);
+		mController->ChangeBlackBoardState(EEnemyState::Die, true);
 	}
 
 	//플레이어 위치 업데이트 Player Location Update
@@ -89,16 +89,16 @@ void AEnemy::Tick(float DeltaTime)
 	/*
 	 IsAttack 이 아니고 가까울때 true // IsAttack은 Default가 False
 	 IsAttack 이면서 가깝지 않을때 False
-	 if 사용하는 법만 봐도 프로그래밍을 할 줄 아는사람인지 알 수 있다는데 
+	 if 사용하는 법만 봐도 프로그래밍을 할 줄 아는사람인지 알 수 있다는데
 	 이 if문은 최선일까?
 	*/
 	if (distance.Size() < fMeleeAttackRange && !(mController->getBlackBoardState("IsAttack")))
 	{
-			mController->ChangeBlackBoardState(EEnemyState::Attack, true);
-	
+		mController->ChangeBlackBoardState(EEnemyState::Attack, true);
+
 	}
 	//isAttack 상태에서 근접 공격보다 멀어지면서 몽타주가 플레이중이 아닐때 상태변화 
-	else if(mController->getBlackBoardState("IsAttack") &&  distance.Size() > fMeleeAttackRange && !isMontagePlaying)
+	else if (mController->getBlackBoardState("IsAttack") && distance.Size() > fMeleeAttackRange && !isMontagePlaying)
 	{
 		mController->ChangeBlackBoardState(EEnemyState::Attack, false);
 		UE_LOG(LogTemp, Warning, TEXT("Change State  IsAttack false"));
@@ -110,21 +110,27 @@ void AEnemy::Tick(float DeltaTime)
 
 void AEnemy::OnDamageProcess(int32 damage)
 {
-		//BehaviorTree 에서바로 플레이추적하도록 함 
-		mController->BlackboardIsDamagedSet(true);
-	
-		//공격중 데미지를 입었을 경우 
-		mController->ChangeBlackBoardState(EEnemyState::Attack, false);
-		isMontagePlaying = false;
-	
-	HP-= damage;
-	UE_LOG(LogTemp, Warning, TEXT("Enemy HP: % d"),HP );
+	//BehaviorTree 에서바로 플레이추적하도록 함 
+	mController->BlackboardIsDamagedSet(true);
+
+
+	//데미지를 입었을 경우 공격상태 해제
+	mController->ChangeBlackBoardState(EEnemyState::Attack, false);
+	isMontagePlaying = false;
+
+
+	HP -= damage;
+
+	//임시 넉백 테스트
+//	KnockBack(100.0f, true);
+
+	UE_LOG(LogTemp, Warning, TEXT("Enemy HP: % d"), HP);
 	if (HP <= 0)
 	{
 		isDead = true;
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
-	
+
 
 }
 void AEnemy::DeathState()
@@ -132,13 +138,13 @@ void AEnemy::DeathState()
 	//p = p0 + vt
 	FVector p0 = GetActorLocation();
 	FVector vt = FVector::DownVector * GetWorld()->DeltaTimeSeconds;
-	FVector p = p0 + (30.0f*vt);
+	FVector p = p0 + (30.0f * vt);
 	SetActorLocation(p);
 	if (p.Z < -200.0f)
 	{
 		Destroy();
 	}
-	
+
 }
 
 void AEnemy::Attack()
@@ -148,21 +154,21 @@ void AEnemy::Attack()
 
 	/*if (currentTime >= mAttackCoolTime)
 	{*/
-		
-		int32 index = FMath::RandRange(0.0f, 1.9f);
-		FString sectionName = FString::Printf(TEXT("Attack%d"), index);
-		anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
-		
-		//getMontageSectionPlaytime(index);
 
-		isMontagePlaying = true;
-		GetController()->StopMovement();
+	int32 index = FMath::RandRange(0.0f, 1.9f);
+	FString sectionName = FString::Printf(TEXT("Attack%d"), index);
+	anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
 
-		UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack! %d"), index);
-		//currentTime = 0.0f;
+	//getMontageSectionPlaytime(index);
 
-	/*}
-		currentTime = currentTime + GetWorld()->DeltaTimeSeconds;*/
+	isMontagePlaying = true;
+	GetController()->StopMovement();
+
+	UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack! %d"), index);
+	//currentTime = 0.0f;
+
+/*}
+	currentTime = currentTime + GetWorld()->DeltaTimeSeconds;*/
 }
 
 void AEnemy::attackZoneBeginOverlap(
@@ -180,15 +186,33 @@ void AEnemy::attackZoneBeginOverlap(
 		UE_LOG(LogTemp, Warning, TEXT("Overlapped Component : %s "), *(OtherComp->GetFName().ToString()));
 	}
 	bHit = true;
+	
 }
 
-void AEnemy::attackZoneEndOverlap( 
-	UPrimitiveComponent* OverlappedComponent, 
+void AEnemy::attackZoneEndOverlap(
+	UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor,
 	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 {
 	bHit = false;
+}
+
+//넉백 시키는 함수
+void AEnemy::KnockBack(float knocbackLength, bool tof)
+{
+	//이렇게 구현하면 뒤통수 맞을 경우 앞으로 오게 된다 
+	if (tof)
+	{
+		//Player의 특정 스킬 공격에만 반응하도록 If문을 추가했다 
+		FVector p0 = GetActorLocation();//현재위치 
+		FVector vt = GetActorForwardVector() * -1; // 뒤 방향 
+		FVector p = p0 + (knocbackLength * vt); // 새 위치 = 현재위치 + 뒤 방향*넉백길이
+		SetActorLocation(p);
+	}
+	else
+		return;
+
 }
 
 //void AEnemy::getMontageSectionPlaytime(int32 index)

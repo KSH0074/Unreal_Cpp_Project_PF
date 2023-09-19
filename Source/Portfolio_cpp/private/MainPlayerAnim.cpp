@@ -18,7 +18,7 @@ UMainPlayerAnim::UMainPlayerAnim()
 	else
 		UE_LOG(Player, Warning, TEXT("found Montage"));
 
-	damagedMontage = TempMontage.Object;
+	mDamagedMontage = TempMontage.Object;
 	
 	ConstructorHelpers::FObjectFinder<UAnimMontage> TempMontageFire(TEXT("AnimMontage'/Game/ImportedAnimationAndCharacter/Player/Player_Animation/Active/PlayerSkillMontage.PlayerSkillMontage'"));
 
@@ -28,7 +28,7 @@ UMainPlayerAnim::UMainPlayerAnim()
 	}
 	else
 		UE_LOG(Player, Warning, TEXT("found Montage"));
-	fireBallMontage = TempMontageFire.Object;
+	mSkillMontage = TempMontageFire.Object;
 }
 
 void UMainPlayerAnim::NativeBeginPlay()
@@ -36,12 +36,12 @@ void UMainPlayerAnim::NativeBeginPlay()
 	mMainPlayer = Cast<AMainPlayer>(TryGetPawnOwner());
 }
 
-
+//데미지 관련 
 void UMainPlayerAnim::PlayDamageMontage()
 {
 	//피격시 몽타주 재생
 	//함수 매개변수를 다 채우기 
-	Montage_Play(damagedMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, false);
+	Montage_Play(mDamagedMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
 }
 
 
@@ -65,17 +65,22 @@ void UMainPlayerAnim::AnimNotify_PlayerDamagedEnd()
 void UMainPlayerAnim::PlayFireBallMontage()
 {
 	
-	Montage_Play(fireBallMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
-	Montage_JumpToSection("FireBall", fireBallMontage);
+	SkillSquence(1.5f, "FireBall");
+	/*
+	Montage_Play(mSkillMontage, 1.5f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+	Montage_JumpToSection("FireBall", mSkillMontage);
 
 	mMainPlayer->AllowInput(false);
 	mMainPlayer->GetController()->StopMovement();
+	*/
+	
 
 	
 }
 
 void UMainPlayerAnim::AnimNotify_FireBallfire()
 {
+	//발사하고 Input 활성화 
 	mMainPlayer->ThrowFireball();
 	mMainPlayer->AllowInput(true);
 }
@@ -83,11 +88,15 @@ void UMainPlayerAnim::AnimNotify_FireBallfire()
 //Hurricane Kick 섹션이름 뺴고 PlayFireBallMontage와 코드가 같다. 함수화 가능 
 void UMainPlayerAnim::PlayHurricaneMontage()
 {
-	Montage_Play(fireBallMontage, 1.5f, EMontagePlayReturnType::MontageLength, 0.0f, true);
-	Montage_JumpToSection(FName("HurricaneKick"), fireBallMontage);
+	SkillSquence(0.5f, "HurricaneKick");
+	/*
+	Montage_Play(mSkillMontage, 1.5f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+	Montage_JumpToSection(FName("HurricaneKick"), mSkillMontage);
 
 	mMainPlayer->AllowInput(false);
 	mMainPlayer->GetController()->StopMovement();
+	*/
+	
 }
 
 
@@ -110,4 +119,14 @@ void UMainPlayerAnim::AnimNotify_AttackEnd()
 {
 	mMainPlayer->AllowInput(true);
 	mMainPlayer->AttackZoneControl(mMainPlayer->PlayerFootBox,false);
+}
+
+//스킬 발동시퀀스 
+void UMainPlayerAnim::SkillSquence(float playRate, FName skillName)
+{
+	Montage_Play(mSkillMontage, playRate, EMontagePlayReturnType::MontageLength, 0.0f, true);
+	Montage_JumpToSection(skillName, mSkillMontage);
+
+	mMainPlayer->AllowInput(false);
+	mMainPlayer->GetController()->StopMovement();
 }
