@@ -71,7 +71,7 @@ void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		
 		//DataTable에서 값을 받아와 적용하도록 해야함 
 		enemy->OnDamageProcess(fireballDamage);
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *(GetInstigator()->GetFName().ToString()));
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *(GetInstigator()->GetFName().ToString()));
 		
 		UE_LOG(LogTemp, Warning, TEXT("Damage test:%d"), fireballDamage);
 	}

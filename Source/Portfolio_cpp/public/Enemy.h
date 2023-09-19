@@ -29,9 +29,8 @@ public:
 	//Controller
 	class AEnemyAIController* mController;
 
-	//AttackZone
+	//AttackZone //공격판정 구역, 이 컴포넌트와 PlayerHitZone이 overlap되어있고 공격 애니메이션의 Notify가 호출될 때 데미지를 주도록 함
 	UPROPERTY(EditAnywhere)
-	//공격판정 구역, 이 컴포넌트와 PlayerHitZone이 overlap되어있고 공격 애니메이션의 Notify가 호출될 때 데미지를 주도록 함
 	class UBoxComponent* attackZoneComp;
 
 	//HP
@@ -88,7 +87,7 @@ public:
 
 
 	//사망여부 변수
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly,category = "state")
 	bool isDead = false;
 
 	//피격여부 변수

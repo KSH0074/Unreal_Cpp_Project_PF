@@ -153,6 +153,11 @@ public:
 	UPROPERTY()
 	class AEnemy* mHittedEnemy{};
 
+	UFUNCTION()
+	void AttackZoneControl(class UBoxComponent* box, bool tof);
+
+
+
 	//UPROPERTY(BlueprintReadOnly)
 	//bool mSkillUse = false;
 	

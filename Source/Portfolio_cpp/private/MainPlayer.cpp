@@ -74,6 +74,9 @@ AMainPlayer::AMainPlayer()
 	PlayerFootBox->bHiddenInGame = false;
 	PlayerFootBox->SetGenerateOverlapEvents(false);
 
+	PlayerFootBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	PlayerFootBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
+
 	//공격판정존 델리게이트 연결 
 	PlayerFootBox->OnComponentBeginOverlap.AddDynamic(this,&AMainPlayer::FootBoxBeginOverlap);
 	PlayerFootBox->OnComponentEndOverlap.AddDynamic(this,&AMainPlayer::FootBoxEndOverlap);
@@ -310,7 +313,7 @@ void AMainPlayer::HurricaneKick(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill HurricaneKick"));
 	
-	PlayerFootBox->SetGenerateOverlapEvents(true);
+	AttackZoneControl(PlayerFootBox,true);
 	
 	Playeranim->PlayHurricaneMontage();
 	mPlayerPower = Damage;
@@ -387,5 +390,7 @@ void AMainPlayer::FootBoxEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	bHit = false;
 }
 
-
-
+void AMainPlayer::AttackZoneControl(UBoxComponent* box, bool tof)
+{
+	box->SetGenerateOverlapEvents(tof);
+}

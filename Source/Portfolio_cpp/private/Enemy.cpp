@@ -41,9 +41,11 @@ AEnemy::AEnemy()
 	attackZoneComp->SetRelativeScale3D(FVector(1.0f, 1.0f, 2.5f));
 	attackZoneComp->SetGenerateOverlapEvents(true);
 	attackZoneComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	attackZoneComp->SetCollisionObjectType(ECC_GameTraceChannel7);
+	attackZoneComp->SetCollisionObjectType(ECC_GameTraceChannel7);//Enemy AttackZone
+	attackZoneComp->bHiddenInGame = false;
 	//반응채널 설정
 	attackZoneComp->SetCollisionResponseToAllChannels(ECR_Ignore);
+	attackZoneComp->SetCollisionResponseToChannel(ECC_GameTraceChannel6,ECollisionResponse::ECR_Overlap); // Player Hit Box
 	
 	//attackZoneComp 의 BeginOverlap에대한 델리게이트 
 	attackZoneComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::attackZoneBeginOverlap);

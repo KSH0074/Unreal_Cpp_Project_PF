@@ -31,16 +31,19 @@ UMainPlayerAnim::UMainPlayerAnim()
 	fireBallMontage = TempMontageFire.Object;
 }
 
-void UMainPlayerAnim::PlayDamageMontage()
-{
-	//함수 매개변수를 다 채우기 
-	Montage_Play(damagedMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, false);
-}
-
 void UMainPlayerAnim::NativeBeginPlay()
 {
 	mMainPlayer = Cast<AMainPlayer>(TryGetPawnOwner());
 }
+
+
+void UMainPlayerAnim::PlayDamageMontage()
+{
+	//피격시 몽타주 재생
+	//함수 매개변수를 다 채우기 
+	Montage_Play(damagedMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, false);
+}
+
 
 void UMainPlayerAnim::AnimNotify_PlayerDamagedStart()
 {
@@ -80,7 +83,7 @@ void UMainPlayerAnim::AnimNotify_FireBallfire()
 //Hurricane Kick 섹션이름 뺴고 PlayFireBallMontage와 코드가 같다. 함수화 가능 
 void UMainPlayerAnim::PlayHurricaneMontage()
 {
-	Montage_Play(fireBallMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
+	Montage_Play(fireBallMontage, 1.5f, EMontagePlayReturnType::MontageLength, 0.0f, true);
 	Montage_JumpToSection(FName("HurricaneKick"), fireBallMontage);
 
 	mMainPlayer->AllowInput(false);
@@ -106,4 +109,5 @@ void UMainPlayerAnim::AnimNotify_Attack()
 void UMainPlayerAnim::AnimNotify_AttackEnd()
 {
 	mMainPlayer->AllowInput(true);
+	mMainPlayer->AttackZoneControl(mMainPlayer->PlayerFootBox,false);
 }

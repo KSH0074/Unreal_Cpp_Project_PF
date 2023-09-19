@@ -80,3 +80,4 @@
 
 2023/09/17 : MainPlayer의 FireBall 몽타주 재생중 피격될 시 JangPoong스킬이 발동 하지 않도록 함 ,TestCode로 시작했던 함수 GetABCharacter를 GetTableData로 함수명을 변경했다, 모든 int형 변수를 int32로 변경하였다, Hold스킬을 삭제하고 HurricaneKick(스트리트 파이터에서 본듯한..) 을 추가하였다. 해당 스킬은 키 입력시 몽타주 재생이 되는 정도까지로 완성되었다.
 2023/09/18 : Player 물리공결 토대 완성/ HurricaneKick 작동 확인 및 데미지 적용 확인 , 플레이어 소켓에 충돌 컴포넌트 부착하여 공격 스킬 사용시 데미지 적용되게 함
+2023/09/19 : 공격판정 BoxComponent의 Overlap여부를 켜고 끄는 함수 만듦, HurricaneKick 스킬이 끝나면 공격판정 삭제, Enemy 콜리전 설정 변경으로 카메라 무시, 벽 통과버그 해결  
