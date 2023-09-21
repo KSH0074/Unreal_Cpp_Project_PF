@@ -82,3 +82,5 @@
 2023/09/18 : Player 물리공결 토대 완성/ HurricaneKick 작동 확인 및 데미지 적용 확인 , 플레이어 소켓에 충돌 컴포넌트 부착하여 공격 스킬 사용시 데미지 적용되게 함
 2023/09/19 : 공격판정 BoxComponent의 Overlap여부를 켜고 끄는 함수 만듦, HurricaneKick 스킬이 끝나면 공격판정 삭제, Enemy 콜리전 설정 변경으로 카메라 무시, 벽 통과버그 해결,
 playerAnim에 SkillSequence함수 추가함(스킬 사용시 사용되는 중복된 코드) , Enemy에 KnockBack함수를 추가함, 피격시 플레이어를 보게 함, MainPlayerAnim 의 일부 변수명 수정
+
+2023/09/21 : 넉백 구현을 시도했으나 잘 되지 않아 전부 DisCard, 이후 개발 방향은 스킬의 추가  
