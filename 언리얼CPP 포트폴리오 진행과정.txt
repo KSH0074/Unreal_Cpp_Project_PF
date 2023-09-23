@@ -84,4 +84,4 @@
 playerAnim에 SkillSequence함수 추가함(스킬 사용시 사용되는 중복된 코드) , Enemy에 KnockBack함수를 추가함, 피격시 플레이어를 보게 함, MainPlayerAnim 의 일부 변수명 수정
 
 2023/09/21 : 넉백 구현을 시도했으나 잘 되지 않아 전부 DisCard, 이후 개발 방향은 스킬의 추가  
-2023/09/22 : Enemy의 걷기 모션 새롭게 추가 및 대체=> 블렌드 스페이스1D 조정, 기타 사용하지 않는 애니메이션 삭제, HurricaneKick의 공격 판정주기 재조정 및 재생 배속 조정, Player의 평타 관련된 Punch애니메이션 추가, MainPlayer에 평타(NormalAttack) 함수 추가, 회피 관련 애니메이션 다운로드  
+2023/09/22 : Enemy의 걷기 모션 새롭게 추가 및 대체=> 블렌드 스페이스1D 조정, 기타 사용하지 않는 애니메이션 삭제, HurricaneKick의 공격 판정주기 재조정 및 재생 배속 조정, Player의 평타 관련된 Punch애니메이션 추가, MainPlayer에 평타(NormalAttack) 함수 추가, 회피 관련 애니메이션 다운로드 겸사겸사 여러가지 파티클 이펙트 및 효과 다운로드 및 테스트프로젝트에 임포트
