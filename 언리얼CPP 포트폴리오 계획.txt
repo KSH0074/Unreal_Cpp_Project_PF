@@ -372,7 +372,7 @@ HurricaneKick 같은 플레이어의 물리공격의 구현에 대해..
 1번으로 진행해본다. 
 
 개선사항:
-이 과정에서 Enemy의 공격코드가 겹치는 부분이 생겼다, 이를 함수화 할 수 있으면 하는 게 좋을 것으로 보인다.
+이 과정에서 코드가 겹치는 부분이 생겼다, 이를 함수화 할 수 있으면 하는 게 좋을 것으로 보인다.
 hurricaneKick의 공격판정이 좋지 않다
 
 아쉬운 사항 : DataTable -> 델리게이트 -> 함수 ->  MainPlayer ->Firball 또는 AnimNotify_Attack 의 흐름으로 데미지 값이 전달 되는데 
@@ -381,12 +381,11 @@ hurricaneKick의 공격판정이 좋지 않다
 ★애니메이션 노티파이를 이용하여 발동과동시에 특정 구간까지만 키 입력을 받지 못하도록 하는 것이다. 선입력을 위해서 애니메이션 마지막 몇  프레임에서는 입력이 되어야 한다. 
 
 
-추가사항 :	
 Montage_Play(fireBallMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
 Montage_JumpToSection("FireBall", fireBallMontage);  
 mMainPlayer->AllowInput(false);
 mMainPlayer->GetController()->StopMovement();
-을 함수 하나로 만들 것 
+을 함수 하나로 만들었다.
 
 Enemy 피격시 넉백 되도록 하는 함수를 추가하여 특정 스킬에 맞으면 뒤로 밀려나게 할 것, 이 함수만 추가하면 피격시 넉백되도록..On/Off 방식으로 만들고 싶다. 
 넉백을 발동시키는 함수는 Player와 Enemy 둘중 어느쪽에 있어야 하는가? 
@@ -398,13 +397,31 @@ Player의 스킬 공격에 대한  Enemy 넉백에 대하여
 추가하고자 하였지만 여러 이유로 잘 되지 않았다. 
 그래서 일단 나중으로 미루고 단순하게 Player와 Enemy의 벡터를 이용하여 Player의 반대 방향으로 Enemy의 위치를 뒤로 옮기는 수준으로 구현 할 것 
 */
-
+Unreal에서 무료 배포중인 Paragon 사용고려 but 
+PC의 남은 용량이 부족,Paragon 캐릭터들의 애니메이션 이질감(?) 으로  애니메이션은 MIXAMO 이용 할 계획 , 
 
 
 언리얼 라이브러리에 이달의 무료로 받은 공격 모션이 있을 것, 또한 다른 무료컨텐츠에서 애니메이션을 받아 이주하여 공격 스킬의 다양화를 시도할 것
 => 지금까지 만든 함수의 유틸성 테스트? 같은 느낌으로.. 뼈대는 만들었으니까 살 붙이기 같은 느낌
 
+테스트용 프로젝트에 리소스를 받고 필요한 것만 본 프로젝트에 이주하도록 하여야 한다.
+
 다단히트 아이디어: START이후 END까지 X초 마다 공격판정(미구현)
+
+반드시 해결하고 넘어가야 할 것 :
+AnimNotify_AttackEnd() 함수의 코드 
+mMainPlayer->AttackZoneControl(mMainPlayer->PlayerFootBox,false);
+는 발에 할당된 AttackZone하나만 비활성화 시키는데 
+이때 펀치 공격을 추가하여 AttackZone이 하나 더 추가될때 그 AttackZone을 오버랩 비활성화 해야함 
+
+스킬 함수에 어떤 AttackZone이 쓰이는지 저장하는 Temp변수를 두고 
+MainPlayerAnim에서 AttackZoneControl 함수를 부르면 자동으로 false 하도록 하는 방법을 생각했다.
+
+그러면 AttackZoneControl(bool tof)로 매개변수가 하나 줄고 
+현재 쓰이고 있는 AttackZone에 대한 Temp변수에서 비활성화 하는 방법으로 해결 가능 할 것 같다.
+
+본인은 코드를 짤때 범용성 있게 짤 수 있도록 노력하고자한다.
+
 
 현재 구현된 것 
 원거리 공격:JangPoong(이것도 언젠간 이름 바꿔야하는데..) 

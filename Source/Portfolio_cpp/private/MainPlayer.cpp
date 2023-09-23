@@ -329,6 +329,12 @@ void AMainPlayer::BackDash(int32 Damage)
 	UE_LOG(Player, Warning, TEXT("use Skill BackDash"));
 }
 
+void AMainPlayer::NormalAttack(int32 Damage)
+{
+	UE_LOG(Player, Warning, TEXT("use Skill NormalAttack"));
+	
+}
+
 void AMainPlayer::OnDamageProcess(int32 damage)
 {
 	//피격시 공격 취소됨, PlayDamageMontage 내에서 Play_Montage의 매개변수 중 bStopAllMontage = true,로 했음에도 몽타주가 취소되지 않았다. 
@@ -386,6 +392,7 @@ void AMainPlayer::FootBoxEndOverlap(UPrimitiveComponent* OverlappedComponent,
 	AActor* OtherActor, 
 	UPrimitiveComponent* OtherComp, 
 	int32 OtherBodyIndex)
+
 {
 	bHit = false;
 }

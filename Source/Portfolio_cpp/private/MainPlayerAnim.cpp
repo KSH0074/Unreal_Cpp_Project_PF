@@ -88,7 +88,7 @@ void UMainPlayerAnim::AnimNotify_FireBallfire()
 //Hurricane Kick 섹션이름 뺴고 PlayFireBallMontage와 코드가 같다. 함수화 가능 
 void UMainPlayerAnim::PlayHurricaneMontage()
 {
-	SkillSquence(0.5f, "HurricaneKick");
+	SkillSquence(0.8f, "HurricaneKick");
 	/*
 	Montage_Play(mSkillMontage, 1.5f, EMontagePlayReturnType::MontageLength, 0.0f, true);
 	Montage_JumpToSection(FName("HurricaneKick"), mSkillMontage);
@@ -118,6 +118,7 @@ void UMainPlayerAnim::AnimNotify_Attack()
 void UMainPlayerAnim::AnimNotify_AttackEnd()
 {
 	mMainPlayer->AllowInput(true);
+	//공격판정 박스 오버랩 비활성화 펀치 관련 공격 판정 존이 생긴다면?
 	mMainPlayer->AttackZoneControl(mMainPlayer->PlayerFootBox,false);
 }
 

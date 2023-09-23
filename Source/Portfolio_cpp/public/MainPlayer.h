@@ -107,6 +107,8 @@ public:
 		void Dodge(int32 Damage);
 	UFUNCTION()
 		void BackDash(int32 Damage);
+	UFUNCTION()
+		void NormalAttack(int32 Damage);
 
 	//대미지 받는 함수
 	UFUNCTION()
