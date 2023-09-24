@@ -22,7 +22,7 @@ UPFGameInstance::UPFGameInstance()
 FCommandTable* UPFGameInstance::GetTableData(FString column)
 {
 	FCommandTable* temp;
-	temp = commandTable->FindRow<FCommandTable>(*FString::FString(column), TEXT(""));
+	temp = commandTable->FindRow<FCommandTable>(*FString(column), TEXT(""));
 	if (temp != nullptr)
 	{
 		TextOut = temp->Text;

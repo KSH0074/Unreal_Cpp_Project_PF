@@ -47,7 +47,7 @@ AMainPlayer::AMainPlayer()
 	//firePosition 
 	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition2"));
 	firePosition->SetRelativeLocation(FVector(0.0f, 0.0f, 40.0f));
-	firePosition->bHiddenInGame = false;
+	firePosition->bHiddenInGame = true;
 	firePosition->SetupAttachment(RootComponent);
 
 	//capsuleComponent 
@@ -74,6 +74,8 @@ AMainPlayer::AMainPlayer()
 	PlayerFootBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,"LeftToeBase");
 	PlayerFootBox->bHiddenInGame = false;
 	PlayerFootBox->SetGenerateOverlapEvents(false);
+	PlayerFootBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+	PlayerFootBox->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 
 	PlayerFootBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	PlayerFootBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
@@ -83,6 +85,8 @@ AMainPlayer::AMainPlayer()
 	PlayerPunchBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "LeftHand");
 	PlayerPunchBox->bHiddenInGame = false;
 	PlayerPunchBox->SetGenerateOverlapEvents(false);
+	PlayerPunchBox->SetRelativeLocation(FVector(0.0f,-45.0f,0.0f));
+	PlayerPunchBox->SetRelativeScale3D(FVector(1.0f,1.3f,1.0f));
 
 	PlayerPunchBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	PlayerPunchBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
@@ -276,7 +280,10 @@ void AMainPlayer::TableRead(FString InputCommand, int32& damage)
 	if (thisGameInstance == nullptr) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
 	FCommandTable* temp; //커맨드 테이블(행)을 저장할 임시변수 
-	temp = thisGameInstance->GetTableData(InputCommand); // PFGameInstance에 구현한 GetTableData사용 InputCommand와 이름이 같은 행을 찾아 반환 
+	if(InputCommand.IsEmpty())
+		temp= thisGameInstance->GetTableData(FString("NoCommand"));//NormalAttack 
+	else
+		temp = thisGameInstance->GetTableData(InputCommand); // PFGameInstance에 구현한 GetTableData사용 InputCommand와 이름이 같은 행을 찾아 반환 
 
 	if (temp != nullptr) // 찾은 경우 
 	{
