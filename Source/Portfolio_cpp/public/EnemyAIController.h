@@ -6,10 +6,7 @@
 #include "AIController.h"
 #include "EnemyAIController.generated.h"
 
-/**
- * 이 C++파일과 이를 부모로하는 블루프린트 Enemy_Controller를 한 쪽으로 통일시킬 필요가 있음
- * 이는 리팩토링할때 반영바람 
- */
+
 UENUM(BlueprintType)
 enum class EEnemyState : uint8
 {
@@ -33,8 +30,8 @@ public:
 	AEnemyAIController();
 
 //Enemy에 접근을 용이하게 만들기 위한 변수 
-//	UPROPERTY()
-//	class AEnemy* me;
+	UPROPERTY(BlueprintReadOnly)
+	class AEnemy* me;
 
 	UPROPERTY()
 	class UBehaviorTreeComponent* behaviorComp;

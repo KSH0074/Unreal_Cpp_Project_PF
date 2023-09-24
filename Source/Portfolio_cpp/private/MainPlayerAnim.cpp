@@ -66,14 +66,7 @@ void UMainPlayerAnim::PlayFireBallMontage()
 {
 	
 	SkillSquence(1.5f, "FireBall");
-	/*
-	Montage_Play(mSkillMontage, 1.5f, EMontagePlayReturnType::MontageLength, 0.0f, true);
-	Montage_JumpToSection("FireBall", mSkillMontage);
 
-	mMainPlayer->AllowInput(false);
-	mMainPlayer->GetController()->StopMovement();
-	*/
-	
 
 	
 }
@@ -89,14 +82,11 @@ void UMainPlayerAnim::AnimNotify_FireBallfire()
 void UMainPlayerAnim::PlayHurricaneMontage()
 {
 	SkillSquence(0.8f, "HurricaneKick");
-	/*
-	Montage_Play(mSkillMontage, 1.5f, EMontagePlayReturnType::MontageLength, 0.0f, true);
-	Montage_JumpToSection(FName("HurricaneKick"), mSkillMontage);
+}
 
-	mMainPlayer->AllowInput(false);
-	mMainPlayer->GetController()->StopMovement();
-	*/
-	
+void UMainPlayerAnim::PlayNormailAttackMontage()
+{
+	SkillSquence(1.0f, "NormalAttack");
 }
 
 
@@ -118,8 +108,8 @@ void UMainPlayerAnim::AnimNotify_Attack()
 void UMainPlayerAnim::AnimNotify_AttackEnd()
 {
 	mMainPlayer->AllowInput(true);
-	//공격판정 박스 오버랩 비활성화 펀치 관련 공격 판정 존이 생긴다면?
-	mMainPlayer->AttackZoneControl(mMainPlayer->PlayerFootBox,false);
+	//공격판정 박스 오버랩 비활성화 
+	mMainPlayer->AttackZoneControl(mMainPlayer->PlayerTempBox,false);
 }
 
 //스킬 발동시퀀스 

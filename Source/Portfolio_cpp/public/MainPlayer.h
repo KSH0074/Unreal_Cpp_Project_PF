@@ -49,6 +49,16 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = HitBox)
 	class UBoxComponent* PlayerHitBox;
 
+	//AttackBox
+	UPROPERTY(VisibleAnywhere, Category = HitBox)
+		class UBoxComponent* PlayerFootBox;
+	UPROPERTY(VisibleAnywhere, Category = HitBox)
+		class UBoxComponent* PlayerPunchBox;
+	//Temporary AttackBox
+	UPROPERTY()
+		class UBoxComponent* PlayerTempBox{};
+	
+
 	void MainCharacterMoveInput();
 
 	UPROPERTY()
@@ -133,8 +143,7 @@ public:
 
 	bool bInput = true;
 
-	UPROPERTY(VisibleAnywhere, Category = HitBox)
-	class UBoxComponent* PlayerFootBox;
+
 
 	UFUNCTION()
 	void FootBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,

@@ -43,6 +43,10 @@ public:
 	UFUNCTION()
 	void PlayHurricaneMontage();
 
+	//Normal Attack
+	UFUNCTION()
+	void PlayNormailAttackMontage();
+	
 	//Attack
 	UFUNCTION()
 	void AnimNotify_Attack();

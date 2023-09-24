@@ -20,16 +20,16 @@ void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	//me = Cast<AEnemy>(GetPawn());
-	//if (me)
-	//{
-	//	UE_LOG(LogTemp, Warning, TEXT("me is Exist"));
+	me = Cast<AEnemy>(GetPawn());
+	if (me)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("me is Exist"));
 
-	//}
-	//
-	//생성자 단계에서 아래 코드가 작동되지 않는다. BeginPlay에 옮기거나 다른 방법을 강구한다.	
+	}
+	
+
 	behaviorComp = Cast<UBehaviorTreeComponent>(BrainComponent);
-	//blackboardComp = behaviorComp->GetBlackboardComponent();
+
 	if (behaviorComp)
 	{
 		blackboardComp = behaviorComp->GetBlackboardComponent();

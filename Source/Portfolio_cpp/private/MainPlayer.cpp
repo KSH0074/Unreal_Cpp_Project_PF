@@ -69,6 +69,7 @@ AMainPlayer::AMainPlayer()
 	PlayerHitBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);//Enenmy에만 overlap
 
 	//attackBox
+	//footBox
 	PlayerFootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox"));
 	PlayerFootBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,"LeftToeBase");
 	PlayerFootBox->bHiddenInGame = false;
@@ -77,9 +78,22 @@ AMainPlayer::AMainPlayer()
 	PlayerFootBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	PlayerFootBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
 
-	//공격판정존 델리게이트 연결 
-	PlayerFootBox->OnComponentBeginOverlap.AddDynamic(this,&AMainPlayer::FootBoxBeginOverlap);
-	PlayerFootBox->OnComponentEndOverlap.AddDynamic(this,&AMainPlayer::FootBoxEndOverlap);
+	//punchBox
+	PlayerPunchBox = CreateDefaultSubobject<UBoxComponent>(TEXT("PunchBox"));
+	PlayerPunchBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "LeftHand");
+	PlayerPunchBox->bHiddenInGame = false;
+	PlayerPunchBox->SetGenerateOverlapEvents(false);
+
+	PlayerPunchBox->SetCollisionResponseToAllChannels(ECR_Ignore);
+	PlayerPunchBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
+	/*------------------------------------------------------------------------------------*/
+	//공격판정존 델리게이트 연결 //이름 변경이 필요해보임 
+	PlayerFootBox->OnComponentBeginOverlap.AddDynamic(this, &AMainPlayer::FootBoxBeginOverlap);
+	PlayerFootBox->OnComponentEndOverlap.AddDynamic(this, &AMainPlayer::FootBoxEndOverlap);
+
+	PlayerPunchBox->OnComponentBeginOverlap.AddDynamic(this, &AMainPlayer::FootBoxBeginOverlap);
+	PlayerPunchBox->OnComponentEndOverlap.AddDynamic(this, &AMainPlayer::FootBoxEndOverlap);
+
 }
 
 // Called when the game starts or when spawned
@@ -312,8 +326,8 @@ void AMainPlayer::ThrowFireball()
 void AMainPlayer::HurricaneKick(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill HurricaneKick"));
-	
-	AttackZoneControl(PlayerFootBox,true);
+	PlayerTempBox = PlayerFootBox;
+	AttackZoneControl(PlayerTempBox,true);
 	
 	Playeranim->PlayHurricaneMontage();
 	mPlayerPower = Damage;
@@ -332,7 +346,10 @@ void AMainPlayer::BackDash(int32 Damage)
 void AMainPlayer::NormalAttack(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill NormalAttack"));
-	
+	PlayerTempBox = PlayerFootBox;
+	AttackZoneControl(PlayerTempBox, true);
+	Playeranim->PlayNormailAttackMontage();
+	mPlayerPower = Damage;
 }
 
 void AMainPlayer::OnDamageProcess(int32 damage)
