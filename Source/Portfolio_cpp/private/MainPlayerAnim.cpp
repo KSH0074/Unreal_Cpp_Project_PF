@@ -59,18 +59,6 @@ void UMainPlayerAnim::AnimNotify_PlayerDamagedEnd()
 	mMainPlayer->AllowInput(true);
 }
 
-
-
-//fire ball 
-void UMainPlayerAnim::PlayFireBallMontage()
-{
-	
-	SkillSquence(1.5f, "FireBall");
-
-
-	
-}
-
 void UMainPlayerAnim::AnimNotify_FireBallfire()
 {
 	//발사하고 Input 활성화 
@@ -78,15 +66,32 @@ void UMainPlayerAnim::AnimNotify_FireBallfire()
 	mMainPlayer->AllowInput(true);
 }
 
-//Hurricane Kick 섹션이름 뺴고 PlayFireBallMontage와 코드가 같다. 함수화 가능 
-void UMainPlayerAnim::PlayHurricaneMontage()
-{
-	SkillSquence(0.8f, "HurricaneKick");
-}
+//fire ball 
+//void UMainPlayerAnim::PlayFireBallMontage()
+//{	
+//	SkillSquence(1.5f, "FireBall");
+//}
+//
+////Hurricane Kick 섹션이름 뺴고 PlayFireBallMontage와 코드가 같다. 함수화 가능 
+//void UMainPlayerAnim::PlayHurricaneMontage()
+//{
+//	SkillSquence(0.8f, "HurricaneKick");
+//}
+//
+//void UMainPlayerAnim::PlayNormailAttackMontage()
+//{
+//	SkillSquence(1.0f, "NormalAttack");
+//}
+//
+//void UMainPlayerAnim::PlayFlyingKickMontage()
+//{
+//	SkillSquence(1.0f, "FlyingKick");
+//}
 
-void UMainPlayerAnim::PlayNormailAttackMontage()
+
+void UMainPlayerAnim::PlaySkillMontage(float playRate, const FName& MontageName)
 {
-	SkillSquence(1.0f, "NormalAttack");
+	SkillSequence(playRate, MontageName);
 }
 
 
@@ -113,7 +118,7 @@ void UMainPlayerAnim::AnimNotify_AttackEnd()
 }
 
 //스킬 발동시퀀스 
-void UMainPlayerAnim::SkillSquence(float playRate, FName skillName)
+void UMainPlayerAnim::SkillSequence(float playRate, const FName& skillName)
 {
 	Montage_Play(mSkillMontage, playRate, EMontagePlayReturnType::MontageLength, 0.0f, true);
 	Montage_JumpToSection(skillName, mSkillMontage);

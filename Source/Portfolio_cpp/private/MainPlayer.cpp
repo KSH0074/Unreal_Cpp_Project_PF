@@ -311,8 +311,9 @@ void AMainPlayer::TimeOver()
 void AMainPlayer::JangPoong(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill jangpoong"));
+	
+	Playeranim->SkillSequence(1.5f, "FireBall");
 	mPlayerPower = Damage;
-	Playeranim->PlayFireBallMontage();
 }
 
 void AMainPlayer::ThrowFireball()
@@ -333,10 +334,11 @@ void AMainPlayer::ThrowFireball()
 void AMainPlayer::HurricaneKick(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill HurricaneKick"));
+	
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox,true);
-	
-	Playeranim->PlayHurricaneMontage();
+
+	Playeranim->SkillSequence(1.5f, "HurricaneKick");
 	mPlayerPower = Damage;
 }
 
@@ -353,9 +355,22 @@ void AMainPlayer::BackDash(int32 Damage)
 void AMainPlayer::NormalAttack(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill NormalAttack"));
+	
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox, true);
-	Playeranim->PlayNormailAttackMontage();
+
+	Playeranim->SkillSequence(0.8f,"NormalAttack");
+	mPlayerPower = Damage;
+}
+
+void AMainPlayer::FlyingKick(int32 Damage)
+{
+	UE_LOG(Player, Warning, TEXT("use Skill FlyingKick"));
+	
+	PlayerTempBox = PlayerFootBox;
+	AttackZoneControl(PlayerTempBox, true);
+
+	Playeranim->SkillSequence(1.0,"FlyingKick");
 	mPlayerPower = Damage;
 }
 
