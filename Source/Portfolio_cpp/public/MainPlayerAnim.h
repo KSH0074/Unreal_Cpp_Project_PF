@@ -32,20 +32,16 @@ public:
 	UFUNCTION()
 	void PlayDamageMontage();
 
-	//FireBall
-	UFUNCTION()
-	void PlayFireBallMontage();
-	
+	//FireBall 투사체 발사 노티파이
 	UFUNCTION()
 	void AnimNotify_FireBallfire();
 
-	//Hurricane Kick
-	UFUNCTION()
-	void PlayHurricaneMontage();
 
-	//Normal Attack
+	
+	//스킬 사용시 이 함수 사용하면 몽타주 재생 
 	UFUNCTION()
-	void PlayNormailAttackMontage();
+	void PlaySkillMontage(float PlayRate, const FName& MontageName);
+	
 	
 	//Attack
 	UFUNCTION()
@@ -61,6 +57,6 @@ public:
 	class UAnimMontage* mSkillMontage{};
 
 	UFUNCTION()
-	void SkillSquence(float playRate,FName skillName);
+	void SkillSequence(float playRate, const FName& skillName);
 	
 };
