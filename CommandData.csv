@@ -1,7 +1,6 @@
 Command,Command,Text,SkillDamage
-41,41,JangPoong,15
+41,41,JangPoong,49
 121,121,HurricaneKick,30
 4,4,Dodge,0
 44,44,BackDash,0
-NoCommand,NoCommand,NormalAttack,10
-421,421,FlyingKick,20
+NoCommand,NoCommand,normalAttack,10
