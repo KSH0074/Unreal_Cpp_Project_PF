@@ -251,7 +251,7 @@ void AMainPlayer::OutputCommand()
 		{
 			FHitResult hitResult;
 			mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
-
+			hitResult.Location.Z = GetActorLocation().Z;
 			FRotator turnPlayer = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), hitResult.Location);
 			SetActorRotation(FRotator(0.0f, turnPlayer.Yaw, 0.0f));
 
