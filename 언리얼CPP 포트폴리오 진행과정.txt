@@ -87,4 +87,5 @@ playerAnim에 SkillSequence함수 추가함(스킬 사용시 사용되는 중복
 2023/09/22 : Enemy의 걷기 모션 새롭게 추가 및 대체=> 블렌드 스페이스1D 조정, 기타 사용하지 않는 애니메이션 삭제, HurricaneKick의 공격 판정주기 재조정 및 재생 배속 조정, Player의 평타 관련된 Punch애니메이션 추가, MainPlayer에 평타(NormalAttack) 함수 추가, 회피 관련 애니메이션 다운로드 겸사겸사 여러가지 파티클 이펙트 및 효과 다운로드 및 테스트프로젝트에 임포트
 2023/09/24 : EnemyAI 의 Is TooFar 관련 버그 해결, NormalAttack 커맨드 및 공격기능 추가 등 작동확인, footBox 조정, Punch판정박스 추가, 공격판정 박스를 가리키는 PlayerTempBox 변수를 추가하였다. AttackZoneController 등 다른 기존함수에서 footBox 사용부분을 TempBox로 대체하였다. NormalAttack의 커맨드를 NoCommand로 바꾸고 스킬 출력 알고리즘에 입력 커맨드가 없을 경우 NormalAttack을 하도록 만듦, Enemy의 기본속도 75로 변경, 추적속도 300으로 변경.  Enemy 사망시 좀더 빠른 속도로 사라짐, 생성자에서 Player의 AttackBox 크기 조정, Player 사망, Flying Kick애니메이션 추가 
 2023/09/26 : HurricaneKick 애니메이션 루트모션 옵션 조정, 중복되는 코드 함수화  
-2023/09/28 : 스킬 아웃풋 시 우클릭 된 지점을 바라보게 하는 코드에서 Z 값을 플레이어 캐릭터와 동일하게 설정, MainPlayer의 스켈레탈 메시에 Root 를 추가하면서 기존의 애니메이션을 전부 새로 변환하여 임포트 하였다.
+2023/09/28 : 스킬 아웃풋 시 우클릭 된 지점을 바라보게 하는 코드에서 Z 값을 플레이어 캐릭터와 동일하게 설정, MainPlayer의 스켈레탈 메시에 Root 를 추가하면서 기존의 애니메이션을 전부 새로 변환하여 임포트 하였다.MainPlayer의 스켈레탈 메시에 Root 를 추가하면서 기존의 애니메이션을 전부 새로 변환하여 임포트 하였다.
+2023/09/28 : 2023/09/28을 진행하며 생긴 버그를 처리, 일부 애니메이션 리임포트
