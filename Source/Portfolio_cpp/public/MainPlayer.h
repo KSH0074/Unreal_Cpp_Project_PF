@@ -53,6 +53,8 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = HitBox)
 		class UBoxComponent* PlayerFootBox;
 	UPROPERTY(VisibleAnywhere, Category = HitBox)
+		class UBoxComponent* PlayerFootBox2;
+	UPROPERTY(VisibleAnywhere, Category = HitBox)
 		class UBoxComponent* PlayerPunchBox;
 	//Temporary AttackBox
 	UPROPERTY()

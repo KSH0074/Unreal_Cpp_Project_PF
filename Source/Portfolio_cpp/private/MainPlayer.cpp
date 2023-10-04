@@ -62,6 +62,7 @@ AMainPlayer::AMainPlayer()
 	//hitBox 설정
 	PlayerHitBox = CreateDefaultSubobject<UBoxComponent>(TEXT("HitBox"));
 	PlayerHitBox->SetRelativeScale3D(FVector(1.0f, 1.0f, 3.25f));
+	
 	PlayerHitBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); //Overlap만 이용하므로
 	PlayerHitBox->SetCollisionObjectType(ECC_GameTraceChannel6);//PlayerHitBox
 
@@ -69,9 +70,11 @@ AMainPlayer::AMainPlayer()
 	PlayerHitBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);//Enenmy에만 overlap
 
 	//attackBox
+	// 
 	//footBox
 	PlayerFootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox"));
-	PlayerFootBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform,"LeftToeBase");
+	PlayerFootBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::LocationRule,"LeftToeBase");
+	//PlayerFootBox->AttachTo(GetMesh(),"");
 	PlayerFootBox->bHiddenInGame = false;
 	PlayerFootBox->SetGenerateOverlapEvents(false);
 	PlayerFootBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
@@ -80,9 +83,21 @@ AMainPlayer::AMainPlayer()
 	PlayerFootBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	PlayerFootBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
 
+	//footBox2
+	PlayerFootBox2 = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox2"));
+	PlayerFootBox2->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform,"RightToeBase");
+	
+	PlayerFootBox2->bHiddenInGame = false;
+	PlayerFootBox2->SetGenerateOverlapEvents(false);
+	PlayerFootBox2->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+	PlayerFootBox2->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
+
+	PlayerFootBox2->SetCollisionResponseToAllChannels(ECR_Ignore);
+	PlayerFootBox2->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
+
 	//punchBox
 	PlayerPunchBox = CreateDefaultSubobject<UBoxComponent>(TEXT("PunchBox"));
-	PlayerPunchBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, "LeftHand");
+	PlayerPunchBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform, "LeftHand");
 	PlayerPunchBox->bHiddenInGame = false;
 	PlayerPunchBox->SetGenerateOverlapEvents(false);
 	PlayerPunchBox->SetRelativeLocation(FVector(0.0f,-45.0f,0.0f));
@@ -110,6 +125,7 @@ void AMainPlayer::BeginPlay()
 	//TableRead("41");
 	Playeranim = Cast<UMainPlayerAnim>(GetMesh()->GetAnimInstance());
 
+	PlayerHitBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 
 }
 

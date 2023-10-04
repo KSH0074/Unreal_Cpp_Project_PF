@@ -59,6 +59,7 @@ void UMainPlayerAnim::AnimNotify_PlayerDamagedEnd()
 	mMainPlayer->AllowInput(true);
 }
 
+//fireBall
 void UMainPlayerAnim::AnimNotify_FireBallfire()
 {
 	//발사하고 Input 활성화 
