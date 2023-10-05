@@ -168,10 +168,11 @@ public:
 	UPROPERTY()
 	class AEnemy* mHittedEnemy{};
 
-	UFUNCTION()
+	UFUNCTION()	
 	void AttackZoneControl(class UBoxComponent* box, bool tof);
 
-
+	UFUNCTION()
+		void MovementModeChange(UCharacterMovementComponent* const MovementComp, EMovementMode moveMode);
 
 	//UPROPERTY(BlueprintReadOnly)
 	//bool mSkillUse = false;

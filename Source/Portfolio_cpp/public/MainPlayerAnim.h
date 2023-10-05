@@ -50,6 +50,9 @@ public:
 	UFUNCTION()
 	void AnimNotify_AttackEnd();
 	
+	//Dodge
+	UFUNCTION()
+	void AnimNotify_DodgeEnd();
 
 	
 	class AMainPlayer* mMainPlayer{};

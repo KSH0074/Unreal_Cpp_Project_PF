@@ -73,7 +73,7 @@ AMainPlayer::AMainPlayer()
 	// 
 	//footBox
 	PlayerFootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox"));
-	PlayerFootBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::LocationRule,"LeftToeBase");
+	PlayerFootBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform,"LeftUpLeg");
 	//PlayerFootBox->AttachTo(GetMesh(),"");
 	PlayerFootBox->bHiddenInGame = false;
 	PlayerFootBox->SetGenerateOverlapEvents(false);
@@ -85,7 +85,7 @@ AMainPlayer::AMainPlayer()
 
 	//footBox2
 	PlayerFootBox2 = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox2"));
-	PlayerFootBox2->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform,"RightToeBase");
+	PlayerFootBox2->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform,"RightUpLeg");
 	
 	PlayerFootBox2->bHiddenInGame = false;
 	PlayerFootBox2->SetGenerateOverlapEvents(false);
@@ -113,6 +113,7 @@ AMainPlayer::AMainPlayer()
 	PlayerPunchBox->OnComponentBeginOverlap.AddDynamic(this, &AMainPlayer::FootBoxBeginOverlap);
 	PlayerPunchBox->OnComponentEndOverlap.AddDynamic(this, &AMainPlayer::FootBoxEndOverlap);
 
+	GetCharacterMovement()->DefaultLandMovementMode=EMovementMode::MOVE_NavWalking;
 }
 
 // Called when the game starts or when spawned
@@ -126,7 +127,7 @@ void AMainPlayer::BeginPlay()
 	Playeranim = Cast<UMainPlayerAnim>(GetMesh()->GetAnimInstance());
 
 	PlayerHitBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
-
+	
 }
 
 // Called every frame
@@ -350,7 +351,10 @@ void AMainPlayer::ThrowFireball()
 void AMainPlayer::HurricaneKick(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill HurricaneKick"));
-	
+
+	MovementModeChange(GetCharacterMovement(), EMovementMode::MOVE_Flying);
+
+	//이 아래 네 줄의 코드를 함수화 할 수 있을것 
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox,true);
 
@@ -361,6 +365,12 @@ void AMainPlayer::HurricaneKick(int32 Damage)
 void AMainPlayer::Dodge(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill Dodge"));
+
+	PlayerTempBox = PlayerHitBox;
+	AttackZoneControl(PlayerTempBox,false);
+
+	Playeranim->SkillSequence(1.0f, "Dodge");
+	mPlayerPower = Damage;
 }
 
 void AMainPlayer::BackDash(int32 Damage)
@@ -383,10 +393,13 @@ void AMainPlayer::FlyingKick(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill FlyingKick"));
 	
+	//z축 움직임이 안되어서 넣은 코드 
+	MovementModeChange(GetCharacterMovement(), EMovementMode::MOVE_Flying);
+
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox, true);
 
-	Playeranim->SkillSequence(1.0,"FlyingKick");
+	Playeranim->SkillSequence(1.5,"FlyingKick");
 	mPlayerPower = Damage;
 }
 
@@ -455,4 +468,9 @@ void AMainPlayer::FootBoxEndOverlap(UPrimitiveComponent* OverlappedComponent,
 void AMainPlayer::AttackZoneControl(UBoxComponent* box, bool tof)
 {
 	box->SetGenerateOverlapEvents(tof);
+}
+
+void AMainPlayer::MovementModeChange(UCharacterMovementComponent* const MovementComp, EMovementMode moveMode)
+{
+	MovementComp->SetMovementMode(moveMode);
 }

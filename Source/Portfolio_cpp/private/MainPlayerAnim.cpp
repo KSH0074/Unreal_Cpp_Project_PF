@@ -116,6 +116,17 @@ void UMainPlayerAnim::AnimNotify_AttackEnd()
 	mMainPlayer->AllowInput(true);
 	//공격판정 박스 오버랩 비활성화 
 	mMainPlayer->AttackZoneControl(mMainPlayer->PlayerTempBox,false);
+	mMainPlayer->MovementModeChange(mMainPlayer->GetCharacterMovement(), EMovementMode::MOVE_NavWalking);
+}
+
+void UMainPlayerAnim::AnimNotify_DodgeEnd()
+{	
+	UE_LOG(LogTemp, Warning, TEXT("DodgeEnd"));
+	//AnimNotify_AttackEnd 와 거의 동일 AttackZoneControl의 매개변수하나만 다른 경우인데 이 함수를 이렇게 그냥 둬도 되나?
+	mMainPlayer->AllowInput(true);
+	//피격판정 박스 오버랩 비활성화 
+	mMainPlayer->AttackZoneControl(mMainPlayer->PlayerTempBox, true);
+	mMainPlayer->MovementModeChange(mMainPlayer->GetCharacterMovement(), EMovementMode::MOVE_NavWalking);
 }
 
 //스킬 발동시퀀스 
