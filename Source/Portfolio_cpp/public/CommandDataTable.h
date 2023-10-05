@@ -13,7 +13,7 @@ struct FCommandTable : public FTableRowBase
 	GENERATED_BODY()
 
 public:
-	//FCommandTable() : Command(""), Text("") {};
+
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		FString Command;
