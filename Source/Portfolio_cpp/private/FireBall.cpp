@@ -62,16 +62,16 @@ void AFireBall::Die()
 void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	UE_LOG(LogTemp, Warning, TEXT("Overlap!!"));
+	
 	// OtherActor => 충돌한 다른 물체를 Enemy로 형 변환 시도 
-	AEnemy* enemy = Cast<AEnemy>(OtherActor);  
-	//UE_LOG(LogTemp, Warning, TEXT("%s"), *OtherComp->GetFName().ToString()); Enemy의 CollisionCylinder와 Overlap
+	//AEnemy* enemy = Cast<AEnemy>(OtherActor);  
+	
 	//형 변환성공 == Enemy가 맞은 경우 
-	if (enemy != nullptr)
+	if (OtherActor->ActorHasTag("Enemy"))
 	{
 		
 		//DataTable에서 값을 받아와 적용하도록 해야함 
-		enemy->OnDamageProcess(fireballDamage);
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *(GetInstigator()->GetFName().ToString()));
+		Cast<AEnemy>(OtherActor)->OnDamageProcess(fireballDamage);
 		
 		UE_LOG(LogTemp, Warning, TEXT("Damage test:%d"), fireballDamage);
 	}

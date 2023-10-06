@@ -52,7 +52,7 @@ AEnemy::AEnemy()
 	attackZoneComp->OnComponentEndOverlap.AddDynamic(this, &AEnemy::attackZoneEndOverlap);  //Overlap이 끝났을 때 헛발질 해도 공격판정이 되지 않도록 
 
 
-
+	
 }
 
 
@@ -65,6 +65,7 @@ void AEnemy::BeginPlay()
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
 	anim = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
 	mController = Cast<AEnemyAIController>(GetController());
+	UE_LOG(LogTemp, Warning, TEXT("parent %s"), *this->GetName());
 }
 
 // Called every frame
@@ -72,7 +73,7 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-
+	
 	//관련 및 비슷한 부분 전부 테스트코드이며 테스트 완성후 FSM 또는 BT로 편입, DeathState, AttackPlayer 전부 BlackBoard에 관련 키를 추가하고 BT에서 판단하여 작동하도록 이 부분을 수정, 
 	if (isDead)
 	{
@@ -150,25 +151,17 @@ void AEnemy::DeathState()
 void AEnemy::Attack()
 {
 
-	//UE_LOG(LogTemp, Warning, TEXT("CurrentTime is : %f"), currentTime);
-
-	/*if (currentTime >= mAttackCoolTime)
-	{*/
-
 	int32 index = FMath::RandRange(0.0f, 1.9f);
 	FString sectionName = FString::Printf(TEXT("Attack%d"), index);
 	anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
 
-	//getMontageSectionPlaytime(index);
+	
 
 	isMontagePlaying = true;
 	GetController()->StopMovement();
 
 	UE_LOG(LogTemp, Warning, TEXT("Enemy's Attack! %d"), index);
-	//currentTime = 0.0f;
 
-/*}
-	currentTime = currentTime + GetWorld()->DeltaTimeSeconds;*/
 }
 
 void AEnemy::attackZoneBeginOverlap(

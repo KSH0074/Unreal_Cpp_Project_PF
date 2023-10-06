@@ -77,12 +77,7 @@ public:
 	UPROPERTY(EditAnyWhere, Category = Attack)
 	float fMeleeAttackRange = 120.0f;
 
-	//공격 쿨타임
-	UPROPERTY(EditAnyWhere, Category = Attack)
-	float mAttackCoolTime = 1.0f;
 
-	UPROPERTY()
-	float currentTime = 0.9f;
 	
 
 

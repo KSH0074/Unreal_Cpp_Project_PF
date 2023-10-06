@@ -36,7 +36,7 @@ void UMainPlayerAnim::NativeBeginPlay()
 	mMainPlayer = Cast<AMainPlayer>(TryGetPawnOwner());
 }
 
-//데미지 관련 
+//피격 관련 
 void UMainPlayerAnim::PlayDamageMontage()
 {
 	//피격시 몽타주 재생
@@ -66,28 +66,6 @@ void UMainPlayerAnim::AnimNotify_FireBallfire()
 	mMainPlayer->ThrowFireball();
 	mMainPlayer->AllowInput(true);
 }
-
-//fire ball 
-//void UMainPlayerAnim::PlayFireBallMontage()
-//{	
-//	SkillSquence(1.5f, "FireBall");
-//}
-//
-////Hurricane Kick 섹션이름 뺴고 PlayFireBallMontage와 코드가 같다. 함수화 가능 
-//void UMainPlayerAnim::PlayHurricaneMontage()
-//{
-//	SkillSquence(0.8f, "HurricaneKick");
-//}
-//
-//void UMainPlayerAnim::PlayNormailAttackMontage()
-//{
-//	SkillSquence(1.0f, "NormalAttack");
-//}
-//
-//void UMainPlayerAnim::PlayFlyingKickMontage()
-//{
-//	SkillSquence(1.0f, "FlyingKick");
-//}
 
 
 void UMainPlayerAnim::PlaySkillMontage(float playRate, const FName& MontageName)

@@ -92,3 +92,4 @@ playerAnim에 SkillSequence함수 추가함(스킬 사용시 사용되는 중복
 -추석-
 2023/10/04 : PlayerHitBox 가 생성자 변경사항이 있을때마다 이상한데에 적용되는 현상을 수정하고자 BeginPlaye에서 PlayerHitBox의 위치를 조정, HurricaneKick에서 알수없는 애니메이션 재생오류 발생하여 리임포트,KeepWorldTransform로 Player공격판정 존 부착 룰 변경
 2023/10/05 : flyingKick모션의 Z축 제한 문제 해결, 그 과정에서 MovementModeChange함수를 구현하여 MovementMode를 변경 할 수 있게함, 기본 무브먼트모드 설정, 플레이어 회전속도 증가 z축 720으로, Dodge 구현, AttackBox 부착위치 변경, BossMonster로 쓸 에셋(Grux)를 마켓플레이스에서 다운로드하여 필요한 부분 이주, 블루프린트 내 불필요해 보이는 기능 정리, 앞으로의 구현 방향 계획, 목표 다음주 이내    
+2023/10/06 : 필요없는 주석된 코드 정리, 보스몬스터 구현 방향 고민, Enemy.h 파생 C++ BossMonster파일 생성 및 테스트  

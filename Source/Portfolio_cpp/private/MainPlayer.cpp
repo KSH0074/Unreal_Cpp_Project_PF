@@ -83,17 +83,18 @@ AMainPlayer::AMainPlayer()
 	PlayerFootBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	PlayerFootBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
 
-	//footBox2
-	PlayerFootBox2 = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox2"));
-	PlayerFootBox2->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform,"RightUpLeg");
-	
-	PlayerFootBox2->bHiddenInGame = false;
-	PlayerFootBox2->SetGenerateOverlapEvents(false);
-	PlayerFootBox2->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
-	PlayerFootBox2->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
+	// Player가 왼발로 공격하는 것으로 모션 통일함, 따라서 필요 없어짐 
+	////footBox2 
+	//PlayerFootBox2 = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox2"));
+	//PlayerFootBox2->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform,"RightUpLeg");
+	//
+	//PlayerFootBox2->bHiddenInGame = false;
+	//PlayerFootBox2->SetGenerateOverlapEvents(false);
+	//PlayerFootBox2->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+	//PlayerFootBox2->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
 
-	PlayerFootBox2->SetCollisionResponseToAllChannels(ECR_Ignore);
-	PlayerFootBox2->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
+	//PlayerFootBox2->SetCollisionResponseToAllChannels(ECR_Ignore);
+	//PlayerFootBox2->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
 
 	//punchBox
 	PlayerPunchBox = CreateDefaultSubobject<UBoxComponent>(TEXT("PunchBox"));
@@ -329,7 +330,7 @@ void AMainPlayer::JangPoong(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill jangpoong"));
 	
-	Playeranim->SkillSequence(1.5f, "FireBall");
+	Playeranim->PlaySkillMontage(1.5f, "FireBall");
 	mPlayerPower = Damage;
 }
 
@@ -358,7 +359,7 @@ void AMainPlayer::HurricaneKick(int32 Damage)
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox,true);
 
-	Playeranim->SkillSequence(1.5f, "HurricaneKick");
+	Playeranim->PlaySkillMontage(1.5f, "HurricaneKick");
 	mPlayerPower = Damage;
 }
 
@@ -369,7 +370,7 @@ void AMainPlayer::Dodge(int32 Damage)
 	PlayerTempBox = PlayerHitBox;
 	AttackZoneControl(PlayerTempBox,false);
 
-	Playeranim->SkillSequence(1.0f, "Dodge");
+	Playeranim->PlaySkillMontage(1.0f, "Dodge");
 	mPlayerPower = Damage;
 }
 
@@ -385,7 +386,7 @@ void AMainPlayer::NormalAttack(int32 Damage)
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox, true);
 
-	Playeranim->SkillSequence(0.8f,"NormalAttack");
+	Playeranim->PlaySkillMontage(0.8f,"NormalAttack");
 	mPlayerPower = Damage;
 }
 
@@ -399,7 +400,7 @@ void AMainPlayer::FlyingKick(int32 Damage)
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox, true);
 
-	Playeranim->SkillSequence(1.5,"FlyingKick");
+	Playeranim->PlaySkillMontage(1.5,"FlyingKick");
 	mPlayerPower = Damage;
 }
 
