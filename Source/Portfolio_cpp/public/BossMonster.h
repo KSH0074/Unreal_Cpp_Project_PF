@@ -26,7 +26,7 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	//피격함수 
-	 void OnDamageProcess(int32 damage) override;
+	void OnDamageProcess(int32 damage) override;
 
 	//사망할때 작동하는 함수
 	void DeathState() override;
@@ -48,6 +48,7 @@ public:
 			UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex) override;
 
+	
 	////공격범위변수
 	//UPROPERTY(EditAnyWhere, Category = Attack)
 	//	float fMeleeAttackRange = 120.0f;

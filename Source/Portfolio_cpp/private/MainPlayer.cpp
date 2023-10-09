@@ -2,6 +2,7 @@
 
 
 #include "MainPlayer.h"
+#include "BossMonster.h"
 #include <GameFramework/SpringArmComponent.h>
 #include <GameFramework/CharacterMovementComponent.h>
 #include <Camera/CameraComponent.h>
@@ -448,7 +449,12 @@ void AMainPlayer::FootBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	if (OtherActor->ActorHasTag("Enemy"))
 	{
 		mHittedEnemy = Cast<AEnemy>(OtherActor);
+		
 		UE_LOG(Player, Warning, TEXT("Attack Enemy : %s "), *(OtherActor->GetFName().ToString()));
+	}
+	else if(OtherActor->ActorHasTag("Boss"))
+	{
+		mHittedEnemy = Cast<ABossMonster>(OtherActor);
 	}
 	else
 	{

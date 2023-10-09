@@ -511,7 +511,15 @@ Enemy.h->Enemy.cpp
 
 피격시 OnDamageProcess 를 작동시키는 단계 
 Player는 Overlap된 객체를 AEnemy로 캐스트하기때문에 OnDamageProcess가 AEnemy의 것으로 호출 => 오류발생 
-조건에 따라 캐스트를 ABossMonster로 하는 코드를 추가하게 되면 해결 될 문제지만, 만약 적의 종류가 많아지면? 
-Controller 또한 상속받아서 구현하는게 옳은 방법?
-EnemyController로 Boss를 컨트롤 같이 할 방법?
 
+조건에 따라 캐스트를 ABossMonster로 하는 코드를 추가하게 되면 해결 될 문제지만, 만약 적의 종류가 많아지면? 
+일일히 다 Cast? 얼마나 많은 헤더파일을 Include? >> 다른 방법을 최대한 강구해보자 
+
+모듈화가 되지 않아 Animation, Controller,Enemy(Player) 간의 응집성 큼 
+
+ MainPlayer가 때린 캐릭터에 따라 OnDamageProcess가 각각 다른 클래스로 적용되게 하였다.
+사실 OnDamageProcess 는 상속 그대로 받았기 때문에 어떻게 잘만 하면 될거 같은데.. 
+프로젝트 마무리단계에서 코드를 모듈화 또는 리팩토링 하면서 정리를 잘 해보면 될 것 같은 느낌 
+
+최대한 BP를 이용해서 Boss를 컨트롤해보려고 한다. 이유는 Enemy 에서 충분히 C++을 이용해서 
+이번에는 BP를 최대한 이용해보는 방향

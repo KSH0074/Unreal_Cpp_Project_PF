@@ -2,7 +2,7 @@
 
 
 #include "MainPlayerAnim.h"
-
+#include "BossMonster.h"
 #include "MainPlayer.h"
 
 
@@ -80,13 +80,21 @@ void UMainPlayerAnim::AnimNotify_Attack()
 
 	if (mMainPlayer->bHit)
 	{
-		mMainPlayer->mHittedEnemy->OnDamageProcess(mMainPlayer->mPlayerPower);
+		if (ABossMonster* Boss = Cast<ABossMonster>(mMainPlayer->mHittedEnemy))
+		{
+			// mHittedEnemy가 BossMonster인 경우
+			Boss->OnDamageProcess(mMainPlayer->mPlayerPower);
+		}
+		else if (AEnemy* Enemy = Cast<AEnemy>(mMainPlayer->mHittedEnemy))
+		{
+			// mHittedEnemy가 Enemy인 경우
+			Enemy->OnDamageProcess(mMainPlayer->mPlayerPower);
+		}
 	}
 	else
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Enemy aint HIt"));
 	}
-
 }
 
 void UMainPlayerAnim::AnimNotify_AttackEnd()
