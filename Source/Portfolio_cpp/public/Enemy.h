@@ -39,19 +39,19 @@ public:
 
 	//피격함수 
 	UFUNCTION()
-	void OnDamageProcess(int32 damage);
+		virtual	void OnDamageProcess(int32 damage);
 
 	//사망할때 작동하는 함수
 	UFUNCTION()
-	void DeathState();
+		virtual void DeathState();
 
 	//공격함수
 	UFUNCTION()
-	void Attack();
+		virtual void Attack();
 	
 	//공격판정함수 
 	UFUNCTION()
-	void attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
+		virtual void attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
 		AActor* OtherActor,
 		UPrimitiveComponent* OtherComp,
 		int32 OtherBodyIndex,
@@ -59,7 +59,7 @@ public:
 		const FHitResult& SweepResult);
 
 	UFUNCTION()
-		void attackZoneEndOverlap(
+		virtual void attackZoneEndOverlap(
 			UPrimitiveComponent* OverlappedComponent,
 			AActor* OtherActor, 
 			UPrimitiveComponent* OtherComp, 

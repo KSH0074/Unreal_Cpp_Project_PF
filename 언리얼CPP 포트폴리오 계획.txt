@@ -500,7 +500,8 @@ MeleeJumpAttack,BackJump 모션은 Boss의 스킬로 구현 예정 (Ex: 플레�
 작업 착수하면서 생각하여 보니  
 이미 Enemy를 작업하면서 필요한 기능 구현되어있음 
 
-=> Enemy.h 상속을 통해서 기능확장 및 수정 하기 또는
+=> Enemy.h 상속을 통해서 기능확장 및 수정 하기
+ 또는
  EnemyBase 동적 컴포넌트를 만들어서 Enemy와 Boss 구현 
 
 일단은 작업을 빨리 진행하기위해 Enemy.h 파생 C++ 구현해보는 것으로 
@@ -508,5 +509,9 @@ MeleeJumpAttack,BackJump 모션은 Boss의 스킬로 구현 예정 (Ex: 플레�
 Enemy.h->Enemy.cpp
        ->BossMonster.cpp
 
-
+피격시 OnDamageProcess 를 작동시키는 단계 
+Player는 Overlap된 객체를 AEnemy로 캐스트하기때문에 OnDamageProcess가 AEnemy의 것으로 호출 => 오류발생 
+조건에 따라 캐스트를 ABossMonster로 하는 코드를 추가하게 되면 해결 될 문제지만, 만약 적의 종류가 많아지면? 
+Controller 또한 상속받아서 구현하는게 옳은 방법?
+EnemyController로 Boss를 컨트롤 같이 할 방법?
 

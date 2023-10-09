@@ -51,8 +51,9 @@ AEnemy::AEnemy()
 	attackZoneComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::attackZoneBeginOverlap);
 	attackZoneComp->OnComponentEndOverlap.AddDynamic(this, &AEnemy::attackZoneEndOverlap);  //Overlap이 끝났을 때 헛발질 해도 공격판정이 되지 않도록 
 
-
+	UE_LOG(LogTemp, Warning, TEXT("parent %s"), *this->GetName());
 	
+	HP = 100;
 }
 
 
@@ -65,7 +66,7 @@ void AEnemy::BeginPlay()
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
 	anim = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
 	mController = Cast<AEnemyAIController>(GetController());
-	UE_LOG(LogTemp, Warning, TEXT("parent %s"), *this->GetName());
+
 }
 
 // Called every frame
