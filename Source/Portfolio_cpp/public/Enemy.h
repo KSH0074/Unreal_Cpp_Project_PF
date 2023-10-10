@@ -35,7 +35,7 @@ public:
 
 	//HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 HP = 100;
+	int32 HP {};
 
 	//피격함수 
 	UFUNCTION()
