@@ -75,7 +75,7 @@ public:
 
 	//공격범위변수
 	UPROPERTY(EditAnyWhere, Category = Attack)
-	float fMeleeAttackRange = 120.0f;
+	float fMeleeAttackRange{};
 
 
 	

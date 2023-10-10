@@ -6,7 +6,8 @@
 #include "MainPlayer.h"
 #include "Kismet/GameplayStatics.h"
 #include "Animation/AnimInstance.h" 
-
+#include "test_BossController.h"
+#include "test_BossAnim.h"
 #include <Components/BoxComponent.h>
 
 ABossMonster::ABossMonster()
@@ -32,6 +33,7 @@ ABossMonster::ABossMonster()
 	UE_LOG(LogTemp, Warning, TEXT("child %s"), *this->GetName());
 
 	HP = 500;
+	fMeleeAttackRange = 300.0f;
 }
 
 void ABossMonster::BeginPlay()
@@ -39,39 +41,8 @@ void ABossMonster::BeginPlay()
 	//Super::BeginPlay(); //부모클래스 호출 막기 애니메이션컴포넌트와 컨트롤러가 다른 클래스이므로 캐스트 되지 않음 
 	Super::Super::BeginPlay();
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
+	anim = Cast<Utest_BossAnim>(GetMesh()->GetAnimInstance());
+	mController = Cast<Atest_BossController>(GetController());
 
-}
-
-void ABossMonster::Tick(float DeltaTime)	
-{
 	
-}
-
-void ABossMonster::OnDamageProcess(int32 damage)
-{
-	HP -= damage;
-
-	UE_LOG(LogTemp, Warning, TEXT("Boss HP: % d"), HP);
-	if (HP <= 0)
-	{
-		isDead = true;
-		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	}
-
-}
-
-void ABossMonster::DeathState()
-{
-}
-
-void ABossMonster::Attack()
-{
-}
-
-void ABossMonster::attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
-{
-}
-
-void ABossMonster::attackZoneEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
-{
 }

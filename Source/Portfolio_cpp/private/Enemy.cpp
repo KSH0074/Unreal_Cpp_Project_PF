@@ -54,6 +54,7 @@ AEnemy::AEnemy()
 	UE_LOG(LogTemp, Warning, TEXT("parent %s"), *this->GetName());
 	
 	HP = 100;
+	fMeleeAttackRange = 120.0f;
 }
 
 
@@ -87,7 +88,7 @@ void AEnemy::Tick(float DeltaTime)
 
 	//플레이어와 거리가 공격범위 이하로 내려가면 
 	FVector distance = PlayerLocation - GetActorLocation();
-
+	
 	/*
 	 IsAttack 이 아니고 가까울때 true // IsAttack은 Default가 False
 	 IsAttack 이면서 가깝지 않을때 False
@@ -96,6 +97,7 @@ void AEnemy::Tick(float DeltaTime)
 	*/
 	if (distance.Size() < fMeleeAttackRange && !(mController->getBlackBoardState("IsAttack")))
 	{
+		UE_LOG(LogTemp, Warning, TEXT("parent call Distance: %f"), distance.Size());
 		mController->ChangeBlackBoardState(EEnemyState::Attack, true);
 
 	}

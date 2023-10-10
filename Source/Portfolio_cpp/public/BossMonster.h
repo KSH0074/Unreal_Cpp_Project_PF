@@ -23,30 +23,30 @@ protected:
 
 public:
 	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+	//virtual void Tick(float DeltaTime);
 
-	//피격함수 
-	void OnDamageProcess(int32 damage) override;
+	////피격함수 
+	//void OnDamageProcess(int32 damage) override;
 
-	//사망할때 작동하는 함수
-	void DeathState() override;
+	////사망할때 작동하는 함수
+	//void DeathState() override;
 
-	//공격함수
-	void Attack() override;
+	////공격함수
+	//void Attack() override;
 
-	//공격판정함수 
-	void attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex,
-			bool bFromSweep,
-			const FHitResult& SweepResult) override;
+	////공격판정함수 
+	//void attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
+	//		AActor* OtherActor,
+	//		UPrimitiveComponent* OtherComp,
+	//		int32 OtherBodyIndex,
+	//		bool bFromSweep,
+	//		const FHitResult& SweepResult) override;
 
-	void attackZoneEndOverlap(
-			UPrimitiveComponent* OverlappedComponent,
-			AActor* OtherActor,
-			UPrimitiveComponent* OtherComp,
-			int32 OtherBodyIndex) override;
+	//void attackZoneEndOverlap(
+	//		UPrimitiveComponent* OverlappedComponent,
+	//		AActor* OtherActor,
+	//		UPrimitiveComponent* OtherComp,
+	//		int32 OtherBodyIndex) override;
 
 	
 	////공격범위변수
