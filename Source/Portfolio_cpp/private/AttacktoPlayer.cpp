@@ -3,6 +3,7 @@
 
 #include "AttacktoPlayer.h"
 #include "Enemy.h"
+#include "BossMonster.h"
 #include "BehaviorTree/BlackboardComponent.h"
 UAttacktoPlayer::UAttacktoPlayer()
 {
@@ -15,8 +16,9 @@ EBTNodeResult::Type UAttacktoPlayer::ExecuteTask(UBehaviorTreeComponent & OwnerC
 {
 	EBTNodeResult::Type Result = Super::ExecuteTask(OwnerComp, NodeMemory);
 
-	ControlledEnemy = Cast<AEnemy>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("SelfActor")));
+	ControlledEnemy = Cast<ABossMonster	>(OwnerComp.GetOwner()); //Cast<AEnemy>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("SelfActor")));
 	
+
 	//형 변환 실패할 경우 Faliled 
 	if (ControlledEnemy == nullptr)
 	{

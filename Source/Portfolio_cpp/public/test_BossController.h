@@ -13,5 +13,12 @@ UCLASS()
 class PORTFOLIO_CPP_API Atest_BossController : public AEnemyAIController
 {
 	GENERATED_BODY()
-	
+protected:
+	virtual void BeginPlay() override;
+	virtual void OnPossess(APawn* InPawn) override;
+public:
+	Atest_BossController();
+
+	class ABossMonster* me;
+
 };

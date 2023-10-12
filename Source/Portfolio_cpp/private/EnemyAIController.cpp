@@ -9,6 +9,7 @@
 void AEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
+	me = Cast<AEnemy>(InPawn);
 }
 
 AEnemyAIController::AEnemyAIController()
@@ -20,7 +21,7 @@ void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	me = Cast<AEnemy>(GetPawn());
+	
 	if (me)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("me is Exist"));

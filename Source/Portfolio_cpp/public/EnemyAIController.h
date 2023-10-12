@@ -41,7 +41,6 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void BlackboardIsDamagedSet(bool setIsDamaged);
 
-	//FName 매개변수 대신 Enum을 통해서 사용할 수는 없나? 실험해보도록 한다.
 	UFUNCTION(BlueprintCallable)
 	void ChangeBlackBoardState(EEnemyState EState,bool setState);
 	

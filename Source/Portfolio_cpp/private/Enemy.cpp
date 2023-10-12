@@ -28,12 +28,16 @@ AEnemy::AEnemy()
 	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
 
 	//애미네이션 블루프린트 할당 
-	ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/ImportedAnimationAndCharacter/Enemy/Enemy_Animation/Enemy_AnimBP.Enemy_AnimBP_C'"));
-	if (tempClass.Succeeded())
+	
+	if (strcmp(typeid(this).name(), "AEnmey") == 0)
 	{
-		GetMesh()->SetAnimInstanceClass(tempClass.Class);
-	}
+		ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/ImportedAnimationAndCharacter/Enemy/Enemy_Animation/Enemy_AnimBP.Enemy_AnimBP_C'"));
 
+		if (tempClass.Succeeded())
+		{
+			GetMesh()->SetAnimInstanceClass(tempClass.Class);
+		}
+	}
 	attackZoneComp = CreateDefaultSubobject<UBoxComponent>(TEXT("AttackZone"));
 	attackZoneComp->SetupAttachment(RootComponent);
 
