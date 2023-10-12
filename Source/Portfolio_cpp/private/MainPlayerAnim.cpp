@@ -11,23 +11,23 @@ UMainPlayerAnim::UMainPlayerAnim()
 	//생성자에서 ConstructorHelpers 를 쓰는 것 이름부터가 생성자도우미
 	ConstructorHelpers::FObjectFinder<UAnimMontage> TempMontage(TEXT("AnimMontage'/Game/ImportedAnimationAndCharacter/Player/Player_Animation/Active/Body_Block_Montage.Body_Block_Montage'"));
 
-	if (!TempMontage.Succeeded())
+	if (TempMontage.Succeeded())
 	{
-		UE_LOG(Player, Warning, TEXT("Not found Montage"));
+		UE_LOG(Player, Warning, TEXT("Main Player found Damaged Montage"));
 	}
 	else
-		UE_LOG(Player, Warning, TEXT("found Montage"));
+		UE_LOG(Player, Warning, TEXT("Main Player Not found Damaged Montage"));
 
 	mDamagedMontage = TempMontage.Object;
 	
 	ConstructorHelpers::FObjectFinder<UAnimMontage> TempMontageFire(TEXT("AnimMontage'/Game/ImportedAnimationAndCharacter/Player/Player_Animation/Active/PlayerSkillMontage.PlayerSkillMontage'"));
 
-	if (!TempMontageFire.Succeeded())
+	if (TempMontageFire.Succeeded())
 	{
-		UE_LOG(Player, Warning, TEXT("Not found Montage"));
+		UE_LOG(Player, Warning, TEXT("Main Player found Skill Montage"));
 	}
 	else
-		UE_LOG(Player, Warning, TEXT("found Montage"));
+		UE_LOG(Player, Warning, TEXT("Main Player Not found Skill Montage"));
 	mSkillMontage = TempMontageFire.Object;
 }
 

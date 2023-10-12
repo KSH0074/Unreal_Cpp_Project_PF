@@ -15,21 +15,8 @@ AEnemy::AEnemy()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	ConstructorHelpers::FObjectFinder < USkeletalMesh> tempMesh(TEXT("SkeletalMesh'/Game/ImportedAnimationAndCharacter/Enemy/Mesh/Enemy_Skeletalmesh.Enemy_Skeletalmesh'"));
-
-	if (tempMesh.Succeeded())
-	{
-		GetMesh()->SetSkeletalMesh(tempMesh.Object);
-
-		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
-	}
-	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
-	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
-
-	//애미네이션 블루프린트 할당 
-	
-	if (strcmp(typeid(this).name(), "AEnmey") == 0)
+	//Enemy클래스일 경우 애미네이션 블루프린트, 스켈레탈 메시 할당 
+	if (GetClass()->GetSuperClass()->GetName() == FString("Enemy"))
 	{
 		ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/ImportedAnimationAndCharacter/Enemy/Enemy_Animation/Enemy_AnimBP.Enemy_AnimBP_C'"));
 
@@ -37,7 +24,24 @@ AEnemy::AEnemy()
 		{
 			GetMesh()->SetAnimInstanceClass(tempClass.Class);
 		}
+
+
+		ConstructorHelpers::FObjectFinder < USkeletalMesh> tempMesh(TEXT("SkeletalMesh'/Game/ImportedAnimationAndCharacter/Enemy/Mesh/Enemy_Skeletalmesh.Enemy_Skeletalmesh'"));
+
+		if (tempMesh.Succeeded())
+		{
+			GetMesh()->SetSkeletalMesh(tempMesh.Object);
+
+			GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
+		}
+		UE_LOG(LogTemp, Warning, TEXT("Enemy Initialize"));
 	}
+	
+
+	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	GetCapsuleComponent()->SetCollisionObjectType(ECC_GameTraceChannel3);
+
 	attackZoneComp = CreateDefaultSubobject<UBoxComponent>(TEXT("AttackZone"));
 	attackZoneComp->SetupAttachment(RootComponent);
 
@@ -56,7 +60,7 @@ AEnemy::AEnemy()
 	attackZoneComp->OnComponentEndOverlap.AddDynamic(this, &AEnemy::attackZoneEndOverlap);  //Overlap이 끝났을 때 헛발질 해도 공격판정이 되지 않도록 
 
 	UE_LOG(LogTemp, Warning, TEXT("parent %s"), *this->GetName());
-	
+
 	HP = 100;
 	fMeleeAttackRange = 120.0f;
 }
@@ -79,7 +83,7 @@ void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
+
 	//관련 및 비슷한 부분 전부 테스트코드이며 테스트 완성후 FSM 또는 BT로 편입, DeathState, AttackPlayer 전부 BlackBoard에 관련 키를 추가하고 BT에서 판단하여 작동하도록 이 부분을 수정, 
 	if (isDead)
 	{
@@ -92,7 +96,7 @@ void AEnemy::Tick(float DeltaTime)
 
 	//플레이어와 거리가 공격범위 이하로 내려가면 
 	FVector distance = PlayerLocation - GetActorLocation();
-	
+
 	/*
 	 IsAttack 이 아니고 가까울때 true // IsAttack은 Default가 False
 	 IsAttack 이면서 가깝지 않을때 False
@@ -162,7 +166,7 @@ void AEnemy::Attack()
 	FString sectionName = FString::Printf(TEXT("Attack%d"), index);
 	anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
 
-	
+
 
 	isMontagePlaying = true;
 	GetController()->StopMovement();
@@ -186,7 +190,7 @@ void AEnemy::attackZoneBeginOverlap(
 		UE_LOG(LogTemp, Warning, TEXT("Overlapped Component : %s "), *(OtherComp->GetFName().ToString()));
 	}
 	bHit = true;
-	
+
 }
 
 void AEnemy::attackZoneEndOverlap(

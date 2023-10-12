@@ -13,5 +13,6 @@ UCLASS()
 class PORTFOLIO_CPP_API Utest_BossAnim : public UEnemyAnim
 {
 	GENERATED_BODY()
-	
+
+
 };

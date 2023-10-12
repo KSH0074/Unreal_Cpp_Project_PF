@@ -96,5 +96,5 @@ playerAnim에 SkillSequence함수 추가함(스킬 사용시 사용되는 중복
 2023/10/09 : MainPlayer가 때린 캐릭터에 따라 OnDamageProcess가 각각 다른 클래스로 적용됨, 이 부분은 아쉬운 부문 추후 수정 필수 
 2023/10/10 : 본격적인 Boss AI 개발착수, Black Board의 Key값에 따라 True or False 나타내는 Decorator 완성 , 공격하는 단순한 단계까지 완성, 시작하자마자 levelStart 몽타주 재생, 사용하지 않을것 같은 블렌드스페이스를 1D짜리로 대체하여 간략하게 만듦, Default 스테이트 머신 생성, BP_BossController 수정, 추후 개발방향 BP상에 표시 
 BossMonster에서 상속된 기능을 활용 및 이용 하는 테스트 진행, 테스트 파일 생성, 좀더 화려해보이는 스킨 추가 
-2023/10/12 : EnemyController의 OnPossess 수정하면서 Boss의 Controller 그것 또한 추가 ,  Boss공격 몽타주 및 노티파이 생성, 시작 몽타주 길이 조정, 컨트롤러 변수 Distance to player 삭제
+2023/10/12 : EnemyController의 OnPossess 수정하면서 Boss의 Controller 그것 또한 추가 ,  Boss공격 몽타주 및 노티파이 생성, 시작 몽타주 길이 조정, 컨트롤러 변수 Distance to player 삭제, AttackToPlayer와 Enemy에서 클래스이름으로 다르게 값 적용하도록 함, 이외 자잘한 버그 픽스, LevelStart 몽타주 수정, BossMonster의 BT에 AttackToPlayer추가 및 정상작동확인  
  

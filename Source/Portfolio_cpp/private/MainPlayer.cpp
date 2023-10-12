@@ -74,7 +74,7 @@ AMainPlayer::AMainPlayer()
 	// 
 	//footBox
 	PlayerFootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox"));
-	PlayerFootBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform,"LeftUpLeg");
+	PlayerFootBox->SetupAttachment(GetMesh(), "LeftUpLeg");
 	//PlayerFootBox->AttachTo(GetMesh(),"");
 	PlayerFootBox->bHiddenInGame = false;
 	PlayerFootBox->SetGenerateOverlapEvents(false);
@@ -99,7 +99,7 @@ AMainPlayer::AMainPlayer()
 
 	//punchBox
 	PlayerPunchBox = CreateDefaultSubobject<UBoxComponent>(TEXT("PunchBox"));
-	PlayerPunchBox->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepWorldTransform, "LeftHand");
+	PlayerPunchBox->SetupAttachment(GetMesh(), "LeftHand");
 	PlayerPunchBox->bHiddenInGame = false;
 	PlayerPunchBox->SetGenerateOverlapEvents(false);
 	PlayerPunchBox->SetRelativeLocation(FVector(0.0f,-45.0f,0.0f));

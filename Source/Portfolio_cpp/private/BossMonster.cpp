@@ -23,17 +23,18 @@ ABossMonster::ABossMonster()
 		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
 	}
 
-	/*ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/BossMonster/Characters/Heroes/Grux/Grux_AnimBlueprint.Grux_AnimBlueprint_C'"));
+	ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/BossMonster/Characters/Heroes/Grux/Grux_AnimBlueprint.Grux_AnimBlueprint_C'"));
 	if (tempClass.Succeeded())
 	{
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
-	}*/
+	}
+	UE_LOG(LogTemp, Warning, TEXT("BossMonster Initialize"));
 
 	attackZoneComp->SetRelativeScale3D(FVector(2.0f, 2.0f, 3.5f));
 	UE_LOG(LogTemp, Warning, TEXT("child %s"), *this->GetName());
 
 	HP = 500;
-	fMeleeAttackRange = 300.0f;
+	fMeleeAttackRange = 250.0f;
 }
 
 void ABossMonster::BeginPlay()
