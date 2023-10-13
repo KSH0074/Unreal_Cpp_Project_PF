@@ -5,6 +5,7 @@
 #include <Components/SphereComponent.h>
 #include <GameFramework/ProjectileMovementComponent.h>
 #include "Enemy.h"
+#include "BossMonster.h"
 #include "MainPlayer.h"
 // Sets default values
 AFireBall::AFireBall()
@@ -73,6 +74,14 @@ void AFireBall::OnFireBallOverlap(UPrimitiveComponent* OverlappedComponent, AAct
 		//DataTable에서 값을 받아와 적용하도록 해야함 
 		Cast<AEnemy>(OtherActor)->OnDamageProcess(fireballDamage);
 		
+		UE_LOG(LogTemp, Warning, TEXT("Damage test:%d"), fireballDamage);
+	}
+	else if (OtherActor->ActorHasTag("Boss"))
+	{
+
+		//DataTable에서 값을 받아와 적용하도록 해야함 
+		Cast<ABossMonster>(OtherActor)->OnDamageProcess(fireballDamage);
+
 		UE_LOG(LogTemp, Warning, TEXT("Damage test:%d"), fireballDamage);
 	}
 

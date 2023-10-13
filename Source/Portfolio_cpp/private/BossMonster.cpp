@@ -35,6 +35,7 @@ ABossMonster::ABossMonster()
 
 	HP = 500;
 	fMeleeAttackRange = 250.0f;
+	mDamage = 1;
 }
 
 void ABossMonster::BeginPlay()
@@ -45,5 +46,27 @@ void ABossMonster::BeginPlay()
 	anim = Cast<Utest_BossAnim>(GetMesh()->GetAnimInstance());
 	mController = Cast<Atest_BossController>(GetController());
 
-	
+
+}
+
+void ABossMonster::Attack()
+{
+	FString sectionName{};
+	if (bLeftAttack)
+	{
+		 sectionName ="Attack0";
+	}
+	else 
+		 sectionName = "Attack1";
+
+	anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
+
+
+
+	isMontagePlaying = true;
+	GetController()->StopMovement();
+
+	UE_LOG(LogTemp, Warning, TEXT("Boss's Attack! %s"), *sectionName);
+
+	bLeftAttack = !bLeftAttack;
 }

@@ -137,7 +137,7 @@ public:
 
 	//Player's HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 HP = 10;
+	int32 HP = 100;
 
 	UPROPERTY()
 		class UMainPlayerAnim* Playeranim{};

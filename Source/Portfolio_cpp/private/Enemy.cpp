@@ -63,6 +63,7 @@ AEnemy::AEnemy()
 
 	HP = 100;
 	fMeleeAttackRange = 120.0f;
+	mDamage = 2;
 }
 
 

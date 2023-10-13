@@ -66,8 +66,8 @@ public:
 			int32 OtherBodyIndex);
 	
 	//공격력
-	UPROPERTY(EditAnywhere,BlueprintReadWrite)
-	int32 mDamage = 2;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 mDamage {};
 
 	//BlueprintReadWrite로  Enemy_Controller 블루프린트에서 접근하려했으나 실패함
 	UPROPERTY(BlueprintReadWrite)

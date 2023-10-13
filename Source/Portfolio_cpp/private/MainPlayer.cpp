@@ -74,7 +74,7 @@ AMainPlayer::AMainPlayer()
 	// 
 	//footBox
 	PlayerFootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox"));
-	PlayerFootBox->SetupAttachment(GetMesh(), "LeftUpLeg");
+	PlayerFootBox->SetupAttachment(GetMesh(), "LeftLeg");
 	//PlayerFootBox->AttachTo(GetMesh(),"");
 	PlayerFootBox->bHiddenInGame = false;
 	PlayerFootBox->SetGenerateOverlapEvents(false);
@@ -407,10 +407,13 @@ void AMainPlayer::FlyingKick(int32 Damage)
 
 void AMainPlayer::OnDamageProcess(int32 damage)
 {
+	//공중공격중 피격시 날아가는 문제 해결 
+	MovementModeChange(GetCharacterMovement(), EMovementMode::MOVE_NavWalking);
+	GetCharacterMovement()->StopMovementImmediately();
 	//피격시 공격 취소됨, PlayDamageMontage 내에서 Play_Montage의 매개변수 중 bStopAllMontage = true,로 했음에도 몽타주가 취소되지 않았다. 
 	Playeranim->StopAllMontages(1.0f);
-
 	Playeranim->PlayDamageMontage();
+	mainPlayerController->StopMovement();
 	
 	HP -= damage;
 	UE_LOG(Player, Warning, TEXT("Player HP:%d"), HP);
@@ -455,6 +458,8 @@ void AMainPlayer::FootBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	else if(OtherActor->ActorHasTag("Boss"))
 	{
 		mHittedEnemy = Cast<ABossMonster>(OtherActor);
+
+		UE_LOG(Player, Warning, TEXT("Attack Boss : %s "), *(OtherActor->GetFName().ToString()));
 	}
 	else
 	{

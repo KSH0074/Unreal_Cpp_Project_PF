@@ -31,9 +31,11 @@ public:
 	////사망할때 작동하는 함수
 	//void DeathState() override;
 
-	////공격함수
-	//void Attack() override;
+	//공격함수
+	void Attack() override;
 
+	//번갈아 공격하는 변수 
+	bool bLeftAttack = true;
 	////공격판정함수 
 	//void attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	//		AActor* OtherActor,

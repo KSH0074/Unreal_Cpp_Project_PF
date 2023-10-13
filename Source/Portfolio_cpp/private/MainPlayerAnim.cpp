@@ -39,6 +39,7 @@ void UMainPlayerAnim::NativeBeginPlay()
 //피격 관련 
 void UMainPlayerAnim::PlayDamageMontage()
 {
+	
 	//피격시 몽타주 재생
 	//함수 매개변수를 다 채우기 
 	Montage_Play(mDamagedMontage, 1.0f, EMontagePlayReturnType::MontageLength, 0.0f, true);
@@ -82,11 +83,13 @@ void UMainPlayerAnim::AnimNotify_Attack()
 	{
 		if (ABossMonster* Boss = Cast<ABossMonster>(mMainPlayer->mHittedEnemy))
 		{
+			UE_LOG(LogTemp, Warning, TEXT("BossDamaged"));
 			// mHittedEnemy가 BossMonster인 경우
 			Boss->OnDamageProcess(mMainPlayer->mPlayerPower);
 		}
 		else if (AEnemy* Enemy = Cast<AEnemy>(mMainPlayer->mHittedEnemy))
 		{
+			UE_LOG(LogTemp, Warning, TEXT("EnemyDamaged"));
 			// mHittedEnemy가 Enemy인 경우
 			Enemy->OnDamageProcess(mMainPlayer->mPlayerPower);
 		}
