@@ -25,8 +25,8 @@ public:
 	// Called every frame
 	//virtual void Tick(float DeltaTime);
 
-	////피격함수 
-	//void OnDamageProcess(int32 damage) override;
+	//피격함수 
+	void OnDamageProcess(int32 damage) override;
 
 	////사망할때 작동하는 함수
 	//void DeathState() override;
@@ -34,7 +34,7 @@ public:
 	//공격함수
 	void Attack() override;
 
-	//번갈아 공격하는 변수 
+	//번갈아 공격할때 사용되는 판정 변수 
 	bool bLeftAttack = true;
 	////공격판정함수 
 	//void attackZoneBeginOverlap(UPrimitiveComponent* OverlappedComp,

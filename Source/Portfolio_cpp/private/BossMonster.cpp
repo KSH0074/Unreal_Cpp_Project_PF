@@ -7,6 +7,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "Animation/AnimInstance.h" 
 #include "test_BossController.h"
+#include "BehaviorTree/BlackboardComponent.h"
 #include "test_BossAnim.h"
 #include <Components/BoxComponent.h>
 
@@ -45,8 +46,14 @@ void ABossMonster::BeginPlay()
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
 	anim = Cast<Utest_BossAnim>(GetMesh()->GetAnimInstance());
 	mController = Cast<Atest_BossController>(GetController());
+	mController->blackboardComp->SetValueAsInt(FName::FName("HP"), HP); // BossMonster에만 있는 BB 키값 
 
+}
 
+void ABossMonster::OnDamageProcess(int32 damage)
+{
+	Super::OnDamageProcess(damage);
+	mController->blackboardComp->SetValueAsInt(FName::FName("HP"), HP);
 }
 
 void ABossMonster::Attack()

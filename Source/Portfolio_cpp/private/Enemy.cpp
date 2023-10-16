@@ -85,11 +85,8 @@ void AEnemy::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 
-	//관련 및 비슷한 부분 전부 테스트코드이며 테스트 완성후 FSM 또는 BT로 편입, DeathState, AttackPlayer 전부 BlackBoard에 관련 키를 추가하고 BT에서 판단하여 작동하도록 이 부분을 수정, 
-	if (isDead)
-	{
-		mController->ChangeBlackBoardState(EEnemyState::Die, true);
-	}
+	
+
 
 	//플레이어 위치 업데이트 Player Location Update
 	FVector PlayerLocation = Scene_Placed_PlayerPawn->GetActorLocation();
@@ -134,14 +131,14 @@ void AEnemy::OnDamageProcess(int32 damage)
 
 	HP -= damage;
 
-	//임시 넉백 테스트
-//	KnockBack(100.0f, true);
+
 
 	UE_LOG(LogTemp, Warning, TEXT("Enemy HP: % d"), HP);
 	if (HP <= 0)
 	{
 		isDead = true;
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		mController->ChangeBlackBoardState(EEnemyState::Die, true);
 	}
 
 
@@ -203,22 +200,6 @@ void AEnemy::attackZoneEndOverlap(
 	bHit = false;
 }
 
-//넉백 시키는 함수
-void AEnemy::KnockBack(float knocbackLength, bool tof)
-{
-	//이렇게 구현하면 뒤통수 맞을 경우 앞으로 오게 된다 
-	if (tof)
-	{
-		//Player의 특정 스킬 공격에만 반응하도록 If문을 추가했다 
-		FVector p0 = GetActorLocation();//현재위치 
-		FVector vt = GetActorForwardVector() * -1; // 뒤 방향 
-		FVector p = p0 + (knocbackLength * vt); // 새 위치 = 현재위치 + 뒤 방향*넉백길이
-		SetActorLocation(p);
-	}
-	else
-		return;
-
-}
 
 //void AEnemy::getMontageSectionPlaytime(int32 index)
 //{

@@ -48,7 +48,7 @@ void AFireBall::BeginPlay()
 {
 	Super::BeginPlay();
 	
-	GetWorld()->GetTimerManager().SetTimer(DeathTimer,this,&AFireBall::Die ,2.0f, false);
+	GetWorld()->GetTimerManager().SetTimer(DeathTimer,this,&AFireBall::Die ,1.0f, false);
 	//¹ÙÀÎµå
 	collisionComp->OnComponentBeginOverlap.AddDynamic(this, &AFireBall::OnFireBallOverlap);
 
