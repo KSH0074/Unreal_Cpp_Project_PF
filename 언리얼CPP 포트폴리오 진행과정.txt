@@ -99,3 +99,4 @@ BossMonster에서 상속된 기능을 활용 및 이용 하는 테스트 진행,
 2023/10/12 : EnemyController의 OnPossess 수정하면서 Boss의 Controller 그것 또한 추가 ,  Boss공격 몽타주 및 노티파이 생성, 시작 몽타주 길이 조정, 컨트롤러 변수 Distance to player 삭제, AttackToPlayer와 Enemy에서 클래스이름으로 다르게 값 적용하도록 함, 이외 자잘한 버그 픽스, LevelStart 몽타주 수정, BossMonster의 BT에 AttackToPlayer추가 및 정상작동확인, 주석처리되어있던 BossMonster의 생성자 다시 활성화,Player의 AttachToComponent를 SetupAttachment로 바꾸었는데 문제가 생길지 두고 봐야함, BossMonster 공격속도 반토막 
 2023/10/13 : 보스공격 몽타주에 후딜레이를 위한 애니메션 추가, BossMonster.cpp 에서 Attack함수 오버라이드(왼쪽, 오른쪽 번갈아 공격, 변수 추가), 테스트위한 Boss데미지와 Player HP 임시 변경,공중공격 중 피격시 날아가는 문제 해결, BTT_SetEnemyState Boss에도 작동하게 수정, Boss 피격범위 넓게 설정, fireBall.cpp에도 BossMonster 공격판정추가, BossMonster 사망이벤트 추가  
 2023/10/16 : 노티파이 위치 및 기타 수치 조정, 쓰지않는 함수 제거, BossMonster에서 OnDamageProcess 오버라이드, HP 일정 이하 될 시에 공격 모션 변경 되도록 비헤이비어 트리 조정 준비, Enemy 사용하지 않는 knockBack함수 제거 
+2023/10/17 : BT_Boss에 일정확률로 다음 노드를 실행하는 비헤이비어트리 태스크 생성, 폴더정리, 특정 조건에서 Enemy를 스폰하려는 시도 
