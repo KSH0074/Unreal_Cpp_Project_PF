@@ -570,7 +570,8 @@ AttackToPlayer에서 Attack()을 불러오는데 NullPointer 오류 발생하여
 이후 작업해야할 것 : 
 -HP에따른 공격패턴 변화
 	-> 일정 확률로 일반 Enemy 소환 
-		-> 체력 400 미만일때 40% 확률로 Enemy 소환 => Spawn과정에 문제 발생 
+		-> 체력 400 미만일때 40% 확률로 Enemy 소환 => Spawn과정에 문제 발생 mController 는 존재하나 BlackBoard가 할당되지 않은 문제 
+		-> 문제 해결 방법: BP의 Enemy_Controller의 Construction Script에 BlackBoard,BehaviorTree 할당
 	-> 플레이어 방향으로 돌진 
 		->400 미만이면서 플레이어와의 거리가 500이상일때, 이때 Enemy는 소환하지 않는다 
 	-> 양손공격

@@ -27,10 +27,11 @@ public:
 
 
 	//Controller
+	UPROPERTY()
 	class AEnemyAIController* mController;
 
 	//AttackZone //공격판정 구역, 이 컴포넌트와 PlayerHitZone이 overlap되어있고 공격 애니메이션의 Notify가 호출될 때 데미지를 주도록 함
-	UPROPERTY(EditAnywhere)
+	UPROPERTY()
 	class UBoxComponent* attackZoneComp;
 
 	//HP

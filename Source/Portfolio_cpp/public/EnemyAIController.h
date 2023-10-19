@@ -33,10 +33,12 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	class AEnemy* me;
 
-	UPROPERTY()
+	UPROPERTY(BlueprintReadWrite)
 	class UBehaviorTreeComponent* behaviorComp;
-	UPROPERTY()
+
+	UPROPERTY(BlueprintReadWrite)
 	class UBlackboardComponent* blackboardComp;
+
 	//데미지 입을 시 BlackBoard 값을 셋 하는 함수 추가 
 	UFUNCTION(BlueprintCallable)
 	void BlackboardIsDamagedSet(bool setIsDamaged);

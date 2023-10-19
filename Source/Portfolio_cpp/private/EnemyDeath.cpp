@@ -10,6 +10,7 @@ UEnemyDeath::UEnemyDeath()
 }
 EBTNodeResult::Type UEnemyDeath::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
+	//이 부분도 AttackToPlayer와 같이 Tick을 사용해서 분리 요망
 	ControlledEnemy = Cast<AEnemy>(OwnerComp.GetBlackboardComponent()->GetValueAsObject(FName("SelfActor")));
 	ControlledEnemy->StopAnimMontage();
 	ControlledEnemy->DeathState();
