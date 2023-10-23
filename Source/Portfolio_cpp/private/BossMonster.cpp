@@ -29,6 +29,18 @@ ABossMonster::ABossMonster()
 	{
 		GetMesh()->SetAnimInstanceClass(tempClass.Class);
 	}
+
+	ConstructorHelpers::FClassFinder <AAIController> tempAIClass(TEXT("Blueprint'/Game/BossMonster/Characters/Heroes/Grux/Boss_AI/BP_BossController.BP_BossController_C'"));
+	if (tempAIClass.Succeeded())
+	{
+		AIControllerClass = tempAIClass.Class;
+		
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Faild give Default AIclass to Boss"));
+	}
+
 	UE_LOG(LogTemp, Warning, TEXT("BossMonster Initialize"));
 
 	attackZoneComp->SetRelativeScale3D(FVector(2.0f, 2.0f, 3.5f));
@@ -37,6 +49,8 @@ ABossMonster::ABossMonster()
 	HP = 500;
 	fMeleeAttackRange = 250.0f;
 	mDamage = 1;
+
+	
 }
 
 void ABossMonster::BeginPlay()

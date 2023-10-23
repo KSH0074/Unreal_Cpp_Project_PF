@@ -16,7 +16,7 @@ AEnemy::AEnemy()
 	PrimaryActorTick.bCanEverTick = true;
 
 	//Enemy클래스일 경우 애미네이션 블루프린트, 스켈레탈 메시 할당 
-	if (GetClass()->GetSuperClass()->GetName() == FString("Enemy"))
+	if (GetClass()->GetName() == FString("Enemy"))
 	{
 		ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/ImportedAnimationAndCharacter/Enemy/Enemy_Animation/Enemy_AnimBP.Enemy_AnimBP_C'"));
 
@@ -35,6 +35,16 @@ AEnemy::AEnemy()
 			GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
 		}
 		UE_LOG(LogTemp, Warning, TEXT("Enemy Initialize"));
+
+		ConstructorHelpers::FClassFinder <AAIController> tempAIClass(TEXT("Blueprint'/Game/Blueprints/Enemy_AI/Enemy_Controller.Enemy_Controller_C'"));
+		if (tempAIClass.Succeeded())
+		{
+			AIControllerClass = tempAIClass.Class;
+		}
+		else
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Faild give Default AIclass to Boss"));
+		}
 	}
 	
 
@@ -59,11 +69,14 @@ AEnemy::AEnemy()
 	attackZoneComp->OnComponentBeginOverlap.AddDynamic(this, &AEnemy::attackZoneBeginOverlap);
 	attackZoneComp->OnComponentEndOverlap.AddDynamic(this, &AEnemy::attackZoneEndOverlap);  //Overlap이 끝났을 때 헛발질 해도 공격판정이 되지 않도록 
 
-	UE_LOG(LogTemp, Warning, TEXT("parent %s"), *this->GetName());
 
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+	
 	HP = 100;
 	fMeleeAttackRange = 120.0f;
 	mDamage = 2;
+
+	
 }
 
 

@@ -3,19 +3,30 @@
 
 #include "EnemyAIController.h"
 #include "Enemy.h"
-#include "BehaviorTree/BehaviorTreeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
+
+
+
+AEnemyAIController::AEnemyAIController()
+{
+	if (GetClass()->GetName() == FString("EnemyAIController")) 
+	{
+		blackboardComp = CreateDefaultSubobject<UBlackboardComponent>(TEXT("BlackBoard_Enemy"));
+		
+		ConstructorHelpers::FObjectFinder<UBlackboardData> tempObject(TEXT("BlackboardData'/Game/Blueprints/Enemy_AI/BB_Enemy.BB_Enemy'"));
+		if (tempObject.Succeeded())
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Test Blackboard Enemy"));
+			blackboardComp->InitializeBlackboard(*tempObject.Object);
+		}
+	}
+} 
 
 void AEnemyAIController::OnPossess(APawn* InPawn)
 {
 	Super::OnPossess(InPawn);
 	me = Cast<AEnemy>(InPawn);
 }
-
-AEnemyAIController::AEnemyAIController()
-{
-	
-} 
 
 void AEnemyAIController::BeginPlay()
 {
@@ -30,16 +41,7 @@ void AEnemyAIController::BeginPlay()
 	
 	blackboardComp = GetBlackboardComponent();
 	UE_LOG(LogTemp, Warning, TEXT("TestCode is BlackBoard Exist %s"), *blackboardComp->GetName());
-	/*behaviorComp = Cast<UBehaviorTreeComponent>(BrainComponent);
 
-	if (behaviorComp)
-	{
-		blackboardComp = behaviorComp->GetBlackboardComponent();
-		if (blackboardComp)
-		{
-			UE_LOG(LogTemp, Warning, TEXT("TestCode is BlackBoard Exist"));
-		}
-	}*/
 
 }
 //blueprint에서도 사용가능하도록 함 단, 매개변수로 bool 형을 받아 blackboardComp->SetValueAsBool(FName::FName("isDamaged"), 여기); 여기에다 적용하도록 만듦 
