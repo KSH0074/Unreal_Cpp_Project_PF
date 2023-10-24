@@ -75,7 +75,6 @@ AEnemy::AEnemy()
 	HP = 100;
 	fMeleeAttackRange = 120.0f;
 	mDamage = 2;
-
 	
 }
 
@@ -85,21 +84,16 @@ void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
 
-	//GetPlayerPawn으로 대체해도 무방함 
-	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
 	anim = Cast<UEnemyAnim>(GetMesh()->GetAnimInstance());
 	mController = Cast<AEnemyAIController>(GetController());
-
+	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
+	UE_LOG(LogTemp, Warning, TEXT("Test %s : "), *Scene_Placed_PlayerPawn->GetName());
 }
 
 // Called every frame
 void AEnemy::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-
-	
-
 
 	//플레이어 위치 업데이트 Player Location Update
 	FVector PlayerLocation = Scene_Placed_PlayerPawn->GetActorLocation();

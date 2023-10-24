@@ -22,28 +22,22 @@ AEnemyAIController::AEnemyAIController()
 	}
 } 
 
-void AEnemyAIController::OnPossess(APawn* InPawn)
-{
-	Super::OnPossess(InPawn);
-	me = Cast<AEnemy>(InPawn);
-}
-
 void AEnemyAIController::BeginPlay()
 {
 	Super::BeginPlay();
-	
-	
-	if (me)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("me is Exist"));
-
-	}
 	
 	blackboardComp = GetBlackboardComponent();
 	UE_LOG(LogTemp, Warning, TEXT("TestCode is BlackBoard Exist %s"), *blackboardComp->GetName());
 
 
 }
+
+void AEnemyAIController::OnPossess(APawn* InPawn)
+{
+	Super::OnPossess(InPawn);
+	me = Cast<AEnemy>(InPawn);
+}
+
 //blueprint에서도 사용가능하도록 함 단, 매개변수로 bool 형을 받아 blackboardComp->SetValueAsBool(FName::FName("isDamaged"), 여기); 여기에다 적용하도록 만듦 
 //ChangeBlackBoardState로 대체를 권장 
 void AEnemyAIController::BlackboardIsDamagedSet(bool setIsDamaged)

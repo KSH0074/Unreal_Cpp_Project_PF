@@ -564,6 +564,7 @@ AttackToPlayer에서 Attack()을 불러오는데 NullPointer 오류 발생하여
 개선사항 : 피격 경직에 쿨타임을 넣어서 연속으로 경직되지 않게(기본공격 연타하면 보스가 아무것도 못함)하기, 또는 플레이어에게 스테미너 게이지를 주는 방법을 생각중이나 후자는 마무리작업하고 UI작업 시작전에 시간적 여유가 있을때   BehaviorTree를 할당하지 않아도 BlackBoard가 할당되어있으면 알아서 BT대로 AI가 작동함, 이는 BT의 BlackBoard Asset에 BlackBoard 가 연결되어있기 때문이라고 추정
 
 깨달음 : 상속은 하드코딩 상속받는 클래스가 많아질수록 관리가 힘드므로 되도록 자제(코드의 응집도가 높다), 상속대신 모듈화하는 것이 많은 클래스를 관리하는데 도움(유지보수 편리).  언리얼에는 Get Class라는 편리한 함수가있다. BehaviorTree를 할당하지 않아도 BlackBoard가 할당되어있으면 알아서 BT대로 AI가 작동함, 이는 BT에 BlackBoard 가 연결되어있기 때문이라고 추정,
+레벨에 Placed되어있을때와 Spawn으로 컨트롤러가 할당될때 Possess실행 타이밍이 다름 
 
 공통부분을 Base로 두고 Enemy와 Boss로 분할하는 쪽이 더 괜찮았던거 같음, 그러나 시간이 없었다.
 노하우? : 저장하고 바로 테스트하지 말것, PureFunction, 폴더의 파일 리디렉터 고치기 해야 파일 삭제시 오류가 나지않는다.블루프린트에 접근 = UBlueprintGeneratedClass; 
@@ -573,14 +574,14 @@ AttackToPlayer에서 Attack()을 불러오는데 NullPointer 오류 발생하여
 이후 작업해야할 것 : 
 -HP에따른 공격패턴 변화
 	-> 일정 확률로 일반 Enemy 소환 
-		-> 체력 400 미만일때 40% 확률로 Enemy 소환 => Spawn과정에 문제 발생 Enemy의 변수 중 mController 는 존재하나(Nulptr이 아니나) BlackBoard가 할당되지 않은 문제 
+		-> 체력 400 미만일때 20% 확률로 Enemy 소환 => Spawn과정에 문제 발생 Enemy의 변수 중 mController 는 존재하나(Nulptr이 아니나) BlackBoard가 할당되지 않은 문제 
 		-> 문제 해결 방법: BP의 Enemy_Controller의 Construction Script의 Set BlackboardComp 에 BlackBoard 할당
 		-> PrototypeMap에서는 Enemy 뿐이라 버그가 생기지 않았지만 여러개체를 만들게 되면 기존의 코드에서는 새로운 Enemy에게 BlackBoard를 할당하지 않았다. 
 		->Construction Script 대신 C++의 생성자에서 할당하도록 했다.
-		-> 다른 해결방법일 수도 있는것(확인되지 않음):이를 바탕으로 생각하면, Enemy를 관리하는 컴포넌트를 만들어 배치를한다면, Enemy소환시 BB를 할당하고 스폰하면 될 것.
-		
+		-> 다른 해결방법일 수도 있는것(확인되지 않음):이를 바탕으로 생각하면, Enemy를 관리하는 컴포넌트를 만들어 배치를한다면, Enemy소환시 RunBehaviorTree이후 BB를 할당하		고 스폰하면 될 것.
+	
 	-> 플레이어 방향으로 돌진 
-		->400 미만이면서 플레이어와의 거리가 500이상일때, 이때 Enemy는 소환하지 않는다 
+		->400 미만이면서 플레이어와의 거리가 일반공격 범위 이상일때, 이때 Enemy는 소환하지 않는다 
 	-> 양손공격
 		-> 플레이어의 체력이 200이하일때  일반공격을 대체함, Boss의 데미지가 상승됨  
 		
@@ -590,14 +591,20 @@ AttackToPlayer에서 Attack()을 불러오는데 NullPointer 오류 발생하여
 BP의 Enemy_Controller의 Construction Script의 Set BlackboardComp 에 BlackBoard 할당 부분을 C++로 구현하려 했지만 잘 안되었다.
 
 Enemy_Controller에서 BB와 BT 컴포넌트를 추가한 뒤에 할당했을때는 정상 작동 But C++로 구현하려고 하면 문제 
-Controller 블루프린트에서 World에서 BP_MainPlayer클래스를 검색하여 할당하도록 하여 문제 해결
+EnemyController에 RunBehaviorTree를 BeginPlayer연결하여 해결, World에서 Player를 검색하여 할당하는 방법은 느린 탓에 작동된 것인 듯 
 
-결론 :BeginPlay 시에 player가 BB의 PlayerActor에 할당되지 않았던 것, GetPlayer노드 대신 GetActorofClass로 문제해결 
+결론 :BeginPlay 시에 player가 BB의 PlayerActor에 할당되지 않았던 것, RunBehaviorTree를 BeginPlayer연결하여 해결
 의문 : BP의 Enemy_Controller의 Construction Script의 Set BlackboardComp 에 BlackBoard 할당했을때는 어찌하여 정상작동 되었는가?
- => 언리얼엔진의 싸이클상 BeginPlayer 시점이 다름  
+ =>	Construction Script->BeginPlayer ->OnPossess 순서로  작동, RunBehaviorTree가 먼저 작동하여야 BlackBoard의 데이터가 정상입력 
 
-이제 Enemy들은 스폰시에도 잘 정상 작동된다. 
+이제 Enemy들은 스폰 시에도 잘 정상 작동된다. 
 C++파일의 생성자 부분에서 할당한 이유 : BP에서 되었다면 Cpp에서도 될 것이라 생각, 검증 = 단순 호기심
+
+
+
+
+
+
 ----------------------------------------------------------------------------------
 중간 생각정리 2023/10/16 
 - 플레이어 공격 : 애니메이션 특정 프레임에 적이 공격Zone에 들어있는 경우 처리 
@@ -621,6 +628,8 @@ Enemy 부분에서는 코드가 복잡한 형태(공격State ->오버랩 되어�
 ++ 10/23
 Enemy 각 객체는 Player와의 거리를 계산하여 isAttack 판별 
 Player는 Level에서 유일무이한 객체 (싱글턴 적용 하면 좋을 듯) 
-=> 현재는 플레이어 클래스를 가진 객체를 월드에서 검색한 뒤에 Scene_Placed_PlayerPawn/ EnemyController블루프린트에서는 PlayerActor 에 저장하는데 
-좀더 효율적으로 변할 것 같음, 프로젝트 마무리단계에서 적극적으로 해당 문제 개선하는 방향 검토 
-//두 변수 같은 것을 가리키고 있다.(이런 변수 중복 문제도 해결해야함) 
+=> 현재는 플레이어 클래스를 가진 객체를 월드에서 검색한 뒤에 Scene_Placed_PlayerPawn에 저장함 , MainPlayer를 어디서든 바로 참조 가능하도록 하는게 좋을 듯 
+
+
+개선사항 : Bluprint와C++파일간 겹치는 부분이 더 있다면 적극적으로 하나로 통일하는 것을 (가급적C++변수로)진행해야함
+생성된 Enemy를 관리, 핸들링 하여야한다.

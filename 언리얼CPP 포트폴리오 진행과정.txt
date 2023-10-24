@@ -103,3 +103,4 @@ BossMonster에서 상속된 기능을 활용 및 이용 하는 테스트 진행,
 2023/10/19 : SpawnEnemy 부분을 구현하는 과정에서 BTT_SetEnemyState에서 클래스명 비교하는 부분이 잘못되어 있었던 것을 발견. 이것을 수정, Prototype맵에서 BP_EnemyCharacter를 여럿 배치하여 작동을 확인하였으나 SpawnEnemy 부분에서 BlackBoard할당 문제도 해결됨
 2023/10/23 : Enemy.cpp의 생성자에서 클래스이름 판별식 수정, BehaviorTree 초기화(할당) 파트 제거(불필요 판단), BT_Boss의 HP판단 노드의 관찰자 중단 옵션 LowerPriority로 수정
 AIControllerClass C++단에서 Blackboard 데이터 할당, EnemyController BP에서 PlayerActor 할당방법 변경
+2023/10/24 : Enemy와 Boss의 BP에서도 Scene_Placed_PlayerPawn 사용하는 것으로 변경, Placed상태와 Spawn되었을때 BB_Enemy의 FirstLocation과 PlayerActor에 값 할당, Boss의 BehaviorTree 변경(EnemySpawn확률 정상화 및 구조 변경), 다음 공격패턴을 위한 밑작업(공격모션 변황 함수 및 BTT_chasePlayer 수정 등)
