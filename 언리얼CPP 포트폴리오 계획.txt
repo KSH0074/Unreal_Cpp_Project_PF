@@ -574,18 +574,22 @@ AttackToPlayer에서 Attack()을 불러오는데 NullPointer 오류 발생하여
 이후 작업해야할 것 : 
 -HP에따른 공격패턴 변화
 	-> 일정 확률로 일반 Enemy 소환 
-		-> 체력 400 미만일때 20% 확률로 Enemy 소환 => Spawn과정에 문제 발생 Enemy의 변수 중 mController 는 존재하나(Nulptr이 아니나) BlackBoard가 할당되지 않은 문제 
+		-> 체력 400 미만일때 10% 확률로 Enemy 소환 => Spawn과정에 문제 발생 Enemy의 변수 중 mController 는 존재하나(Nulptr이 아니나) BlackBoard가 할당되지 않은 문제 
 		-> 문제 해결 방법: BP의 Enemy_Controller의 Construction Script의 Set BlackboardComp 에 BlackBoard 할당
 		-> PrototypeMap에서는 Enemy 뿐이라 버그가 생기지 않았지만 여러개체를 만들게 되면 기존의 코드에서는 새로운 Enemy에게 BlackBoard를 할당하지 않았다. 
 		->Construction Script 대신 C++의 생성자에서 할당하도록 했다.
 		-> 다른 해결방법일 수도 있는것(확인되지 않음):이를 바탕으로 생각하면, Enemy를 관리하는 컴포넌트를 만들어 배치를한다면, Enemy소환시 RunBehaviorTree이후 BB를 할당하		고 스폰하면 될 것.
-	
+		
 	-> 플레이어 방향으로 돌진 
 		->400 미만이면서 플레이어와의 거리가 일반공격 범위 이상일때, 이때 Enemy는 소환하지 않는다 
+		-> 1. 먼저 현재 플레이어의 위치를 저장(이때 돌진 애니메이션을 재생한 채로 1~2초 대기
+		-> 2. walkSpeed를 800으로 변경(이동 애니메이션이 돌진 애니메이션으로 변경됨, 2D 블렌드 스페이스에서 설정됨) 
+		-> 3. 저장된 플레이어의 위치로 이동  
+		-> 4.공격범위 안에 플레이어 있는경우 데미지 플레이어에게 적용 
 	-> 양손공격
 		-> 플레이어의 체력이 200이하일때  일반공격을 대체함, Boss의 데미지가 상승됨  
 		
--피격 경직 쿨타임 
+-피격 경직 쿨타임 : 임시로 우선순위를 바꾸어 스킬(공격, 소환)중일때는 반응 하지 않게 함, 피격 쿨타임 구현 후 Skill BT에서 셀렉터와 피격 시퀀스의 위치를 바꾸면 된다.
 
 
 BP의 Enemy_Controller의 Construction Script의 Set BlackboardComp 에 BlackBoard 할당 부분을 C++로 구현하려 했지만 잘 안되었다.
@@ -629,6 +633,7 @@ Enemy 부분에서는 코드가 복잡한 형태(공격State ->오버랩 되어�
 Enemy 각 객체는 Player와의 거리를 계산하여 isAttack 판별 
 Player는 Level에서 유일무이한 객체 (싱글턴 적용 하면 좋을 듯) 
 => 현재는 플레이어 클래스를 가진 객체를 월드에서 검색한 뒤에 Scene_Placed_PlayerPawn에 저장함 , MainPlayer를 어디서든 바로 참조 가능하도록 하는게 좋을 듯 
+Enemy_Controller블루프린트에서는 GetPlayerPawn을 이용해 플레이어를 찾는다. 이 부분이 C++ 에서 ScenePlacedPlayer 변수랑 같아 효율적이지 못하다고 생각, 이 부분 추후 플레이어 정보를 레벨단위에서 관리할때 참조하도록 변경할 예정 
 
 
 개선사항 : Bluprint와C++파일간 겹치는 부분이 더 있다면 적극적으로 하나로 통일하는 것을 (가급적C++변수로)진행해야함
