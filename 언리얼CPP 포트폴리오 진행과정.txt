@@ -105,5 +105,5 @@ BossMonster에서 상속된 기능을 활용 및 이용 하는 테스트 진행,
 AIControllerClass C++단에서 Blackboard 데이터 할당, EnemyController BP에서 PlayerActor 할당방법 변경
 2023/10/24 : Enemy와 Boss의 BP에서도 Scene_Placed_PlayerPawn 사용하는 것으로 변경, Placed상태와 Spawn되었을때 BB_Enemy의 FirstLocation과 PlayerActor에 값 할당, Boss의 BehaviorTree 변경(EnemySpawn확률 정상화 및 구조 변경), 다음 공격패턴을 위한 밑작업(공격모션 변황 함수 및 BTT_chasePlayer 수정 등),
 버그 수정과 BossMonster의 돌진 구현방향에 대한 계획, BT에서 IsTrace가 True 일때 MoveTo 되도록 설정 
-일단 공격, 일반 적 소환시 피격경직 면역되도록 구현, Enemy_Controller에서 ScenePlacedPlayer변수를 사용하는 것을 시도하였으나 실패, 이는 추후 플레이어 정보를 레벨단위에서 관리할때 참조하도록 변경할 예정 
+일단 공격, 일반 적 소환시 피격경직 면역되도록 구현
 
