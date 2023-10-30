@@ -14,7 +14,7 @@
 ABossMonster::ABossMonster()
 {
 	PrimaryActorTick.bCanEverTick = true;
-
+	
 	ConstructorHelpers::FObjectFinder < USkeletalMesh> tempMesh(TEXT("SkeletalMesh'/Game/BossMonster/Characters/Heroes/Grux/Meshes/Grux.Grux'"));
 
 	if (tempMesh.Succeeded())
@@ -61,6 +61,19 @@ void ABossMonster::BeginPlay()
 	anim = Cast<Utest_BossAnim>(GetMesh()->GetAnimInstance());
 	mController = Cast<Atest_BossController>(GetController());
 	mController->blackboardComp->SetValueAsInt(FName::FName("HP"), HP); // BossMonster에만 있는 BB 키값 
+
+}
+
+void ABossMonster::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	UE_LOG(LogTemp, Warning, TEXT("parent call Distance: %f"), distance.Size());
+	//아래 부분 blueprint로 구현
+	if(distance.Size() >=500.0f)
+		mController->blackboardComp->SetValueAsBool(FName::FName("IsCharge"), true);
+	else 
+		mController->blackboardComp->SetValueAsBool(FName::FName("IsCharge"), false);
 
 }
 

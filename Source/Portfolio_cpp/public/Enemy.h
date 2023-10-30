@@ -98,6 +98,8 @@ public:
 	UPROPERTY()
 	float fMontageSectionPlaytime{};
 
+	UPROPERTY()
+	FVector distance {};
 
 	UPROPERTY()
 	bool bHit = false;

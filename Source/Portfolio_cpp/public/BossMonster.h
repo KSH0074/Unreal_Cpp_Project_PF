@@ -22,8 +22,8 @@ protected:
 	virtual void BeginPlay() override;
 
 public:
-	// Called every frame
-	//virtual void Tick(float DeltaTime);
+	//Called every frame
+	virtual void Tick(float DeltaTime);
 
 	//피격함수 
 	void OnDamageProcess(int32 damage) override;

@@ -9,6 +9,18 @@
 /**
  * 
  */
+UENUM(BlueprintType)
+enum class EBossState : uint8
+{
+	Idle,
+	Patrol,
+	Damaged,
+	Trace,
+	Attack,
+	Die,
+	Toofar,
+	Charge,
+};
 UCLASS()
 class PORTFOLIO_CPP_API Atest_BossController : public AEnemyAIController
 {
@@ -18,6 +30,9 @@ protected:
 	virtual void OnPossess(APawn* InPawn) override;
 public:
 	Atest_BossController();
+
+	UFUNCTION(BlueprintCallable)
+	 void ChangeBlackBoardState_Boss(EBossState EState, bool setState) ;
 
 	class ABossMonster* me;
 

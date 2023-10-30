@@ -100,7 +100,7 @@ void AEnemy::Tick(float DeltaTime)
 	//UE_LOG(LogTemp, Warning, TEXT("%s is Enemy recognize playerFVector"),*PlayerLocation.ToString());
 
 	//플레이어와 거리가 공격범위 이하로 내려가면 
-	FVector distance = PlayerLocation - GetActorLocation();
+	 distance = PlayerLocation - GetActorLocation();
 
 	/*
 	 IsAttack 이 아니고 가까울때 true // IsAttack은 Default가 False
