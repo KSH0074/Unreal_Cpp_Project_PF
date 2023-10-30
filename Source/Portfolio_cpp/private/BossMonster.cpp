@@ -47,7 +47,7 @@ ABossMonster::ABossMonster()
 	UE_LOG(LogTemp, Warning, TEXT("child %s"), *this->GetName());
 
 	HP = 500;
-	fMeleeAttackRange = 250.0f;
+	//sfMeleeAttackRange = 350.0f;
 	mDamage = 1;
 
 	
@@ -70,11 +70,9 @@ void ABossMonster::Tick(float DeltaTime)
 
 	UE_LOG(LogTemp, Warning, TEXT("parent call Distance: %f"), distance.Size());
 	//아래 부분 blueprint로 구현
-	if(distance.Size() >=500.0f)
+	if(distance.Size() >=500.0f && !(mController->getBlackBoardState("IsCharge")))
 		mController->blackboardComp->SetValueAsBool(FName::FName("IsCharge"), true);
-	else 
-		mController->blackboardComp->SetValueAsBool(FName::FName("IsCharge"), false);
-
+	
 }
 
 void ABossMonster::OnDamageProcess(int32 damage)
