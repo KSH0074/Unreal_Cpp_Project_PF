@@ -110,7 +110,7 @@ void AEnemy::Tick(float DeltaTime)
 	*/
 	if (distance.Size() < fMeleeAttackRange && !(mController->getBlackBoardState("IsAttack")))
 	{
-		UE_LOG(LogTemp, Warning, TEXT("parent call Distance: %f"), distance.Size());
+		//UE_LOG(LogTemp, Warning, TEXT("parent call Distance: %f"), distance.Size());
 		mController->ChangeBlackBoardState(EEnemyState::Attack, true);
 
 	}
@@ -118,7 +118,7 @@ void AEnemy::Tick(float DeltaTime)
 	else if (mController->getBlackBoardState("IsAttack") && distance.Size() > fMeleeAttackRange && !isMontagePlaying)
 	{
 		mController->ChangeBlackBoardState(EEnemyState::Attack, false);
-		UE_LOG(LogTemp, Warning, TEXT("Change State  IsAttack false"));
+		//UE_LOG(LogTemp, Warning, TEXT("Change State  IsAttack false"));
 	}
 }
 
