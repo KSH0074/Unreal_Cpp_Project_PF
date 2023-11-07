@@ -265,8 +265,9 @@ void AMainPlayer::OutputCommand()
 		int32 tempDmg = 0;
 
 		TableRead(a, tempDmg);
-
-		if (UseSkill.IsBound()) //
+		
+		//스킬사용 방향으로 플레이어 회전 
+		if (UseSkill.IsBound()) 
 		{
 			FHitResult hitResult;
 			mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
@@ -306,10 +307,10 @@ void AMainPlayer::TableRead(FString InputCommand, int32& damage)
 
 	if (temp != nullptr) // 찾은 경우 
 	{
-		FString skillDMG = temp->SkillDamage;
+		int32 skillDMG = temp->SkillDamage;
 		UE_LOG(Player, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut); //출력로그에 출력  
 		UseSkill.BindUFunction(this, *thisGameInstance->TextOut); //해당 커맨드와 함수를 바인딩 
-		damage = FCString::Atoi(*skillDMG);
+		damage = skillDMG;
 	}
 	else //못 찾은 경우 
 	{

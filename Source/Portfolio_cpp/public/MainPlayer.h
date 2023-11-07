@@ -139,6 +139,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 HP = 100;
 
+	//Player Stamina 추후 구현 
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite)
+		int32 mStamina = 100;*/
 	UPROPERTY()
 		class UMainPlayerAnim* Playeranim{};
 

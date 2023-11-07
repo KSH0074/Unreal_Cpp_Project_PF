@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
+//#include "GameFramework/Actor.h"
 #include "Engine/DataTable.h" 
 #include "CommandDataTable.generated.h"
 
@@ -20,10 +20,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
 		FString Text;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
-		FString SkillDamage;
+		int32 SkillDamage;
+	/*UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Data")
+		int32 Stamina;*/
 
 	//생성자 및 초기화
-	FCommandTable() :Command(""), Text(""), SkillDamage("")
+	FCommandTable() :Command(""), Text(""), SkillDamage()
 	{
 
 	};
