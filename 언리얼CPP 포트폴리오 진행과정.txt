@@ -114,3 +114,5 @@ AIControllerClass C++단에서 Blackboard 데이터 할당, EnemyController BP�
 2023/11/1 : 쿨다운 데코레이터 이용해서 피격 애니메이션 발동에 쿨타임 적용, 테스트결과 따로 Damaged 상태를 해제 하지 않아도 정상작동하는 것으로 보임 
 
 2023/11/07 : 스킬 데미지 조정, Player스테미나 조정을 위한 데이터시트 변경, DataTable.h에서 SkillDamage 부분 FString 에서 Int32 로 변경 이에 따라 MainPlayer.cpp 에서  TableRead함수 일부 변경, 스테미너 회복스킬로 쓰일 애니메이션 추가, BossMonster의 HP가 400(임시값)이하일때 DoublePain으로 공격 몽타주 변경   
+
+2023/11/30 :Boss공격 애니메이션 아웃풋 안되는 현상 수정, 리뷰 
