@@ -116,3 +116,5 @@ AIControllerClass C++단에서 Blackboard 데이터 할당, EnemyController BP�
 2023/11/07 : 스킬 데미지 조정, Player스테미나 조정을 위한 데이터시트 변경, DataTable.h에서 SkillDamage 부분 FString 에서 Int32 로 변경 이에 따라 MainPlayer.cpp 에서  TableRead함수 일부 변경, 스테미너 회복스킬로 쓰일 애니메이션 추가, BossMonster의 HP가 400(임시값)이하일때 DoublePain으로 공격 몽타주 변경   
 
 2023/11/30 :Boss공격 애니메이션 아웃풋 안되는 현상 수정, 리뷰 
+2023/12/11 : 학원의 계약 불이행으로 환불조치 이후 다시 작업착수계획 수립, 12/12 Continue
+2024/02/20 : UI 개발에 앞서 코드 리뷰 
