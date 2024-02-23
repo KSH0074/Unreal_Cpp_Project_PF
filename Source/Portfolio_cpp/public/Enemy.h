@@ -68,7 +68,7 @@ public:
 	
 	//공격력
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 mDamage {};
+	int32 mDamage = 190;
 
 	//BlueprintReadWrite로  Enemy_Controller 블루프린트에서 접근하려했으나 실패함
 	UPROPERTY(BlueprintReadWrite)

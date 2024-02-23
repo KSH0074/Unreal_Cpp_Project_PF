@@ -47,7 +47,7 @@ ABossMonster::ABossMonster()
 	UE_LOG(LogTemp, Warning, TEXT("child %s"), *this->GetName());
 
 	HP = 500;
-	//sfMeleeAttackRange = 350.0f;
+	fMeleeAttackRange = 350.0f;
 	mDamage = 10;
 
 	

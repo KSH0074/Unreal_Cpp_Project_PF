@@ -73,7 +73,7 @@ AEnemy::AEnemy()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 	
 	HP = 100;
-	//fMeleeAttackRange = 120.0f;
+	
 	mDamage = 2;
 	
 }
@@ -88,6 +88,7 @@ void AEnemy::BeginPlay()
 	mController = Cast<AEnemyAIController>(GetController());
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
 	UE_LOG(LogTemp, Warning, TEXT("Test %s : "), *Scene_Placed_PlayerPawn->GetName());
+	fMeleeAttackRange = 120.0f;
 }
 
 // Called every frame
