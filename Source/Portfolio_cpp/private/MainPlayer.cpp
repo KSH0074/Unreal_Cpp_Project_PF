@@ -16,6 +16,7 @@
 #include "FireBall.h"
 #include "MainPlayerAnim.h"
 #include <Kismet/KismetMathLibrary.h>
+
 // Sets default values
 AMainPlayer::AMainPlayer()
 {
@@ -129,6 +130,8 @@ void AMainPlayer::BeginPlay()
 	Playeranim = Cast<UMainPlayerAnim>(GetMesh()->GetAnimInstance());
 
 	PlayerHitBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+
+	
 	
 }
 
@@ -176,9 +179,9 @@ void AMainPlayer::MainCharacterMoveInput()
 		if (isMoveAble)
 		{
 			UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
+			
 		}
-
-
+		
 
 	}
 }
@@ -186,6 +189,7 @@ void AMainPlayer::MainCharacterMoveInput()
 void AMainPlayer::MouseButtonDown()
 {
 	bMouseDown = true;
+	
 }
 
 void AMainPlayer::MouseButtonRelease()

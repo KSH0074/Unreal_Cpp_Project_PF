@@ -75,7 +75,7 @@ public:
 	class AMainPlayer* Scene_Placed_PlayerPawn;
 
 	//공격범위변수
-	UPROPERTY(EditAnyWhere, Category = Attack)
+	//플레이 중 변환하면 Error 
 	float fMeleeAttackRange{};
 
 
