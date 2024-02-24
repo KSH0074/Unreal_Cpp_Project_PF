@@ -124,9 +124,7 @@ void AMainPlayer::BeginPlay()
 {
 	Super::BeginPlay();
 	mainPlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-	//	UE_LOG(LogTemp, Warning, TEXT("%d"), commandQueue.size());
 	thisGameInstance = Cast<UPFGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
-	//TableRead("41");
 	Playeranim = Cast<UMainPlayerAnim>(GetMesh()->GetAnimInstance());
 
 	PlayerHitBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
@@ -189,18 +187,20 @@ void AMainPlayer::MainCharacterMoveInput()
 void AMainPlayer::MouseButtonDown()
 {
 	bMouseDown = true;
-	
+
+
 }
 
 void AMainPlayer::MouseButtonRelease()
 {
+	UE_LOG(Player, Warning, TEXT("Mouse release"));
 	bMouseDown = false;
 }
 
 void AMainPlayer::InputRight()
 {
 	mCommand = COMMAND::Right;
-	UE_LOG(Player, Warning, TEXT("Right : % d"), mCommand);
+	UE_LOG(Player, Warning, TEXT("Right : %d"), mCommand);
 	commandQueue.push(mCommand);
 	CommandTimeOut();
 }
@@ -400,7 +400,7 @@ void AMainPlayer::FlyingKick(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill FlyingKick"));
 	
-	//z축 움직임이 안되어서 넣은 코드 
+	//z축 움직임이 제한되어 일시적으로 Flying 하게 하는코드 
 	MovementModeChange(GetCharacterMovement(), EMovementMode::MOVE_Flying);
 
 	PlayerTempBox = PlayerFootBox;
@@ -410,7 +410,7 @@ void AMainPlayer::FlyingKick(int32 Damage)
 	mPlayerPower = Damage;
 }
 
-void AMainPlayer::OnDamageProcess(int32 damage)
+void AMainPlayer::OnDamageProcess_Implementation(int32 damage)
 {
 	//공중공격중 피격시 날아가는 문제 해결 
 	MovementModeChange(GetCharacterMovement(), EMovementMode::MOVE_NavWalking);
