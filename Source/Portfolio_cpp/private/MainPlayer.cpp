@@ -410,7 +410,7 @@ void AMainPlayer::FlyingKick(int32 Damage)
 	mPlayerPower = Damage;
 }
 
-void AMainPlayer::OnDamageProcess_Implementation(int32 damage)
+void AMainPlayer::OnDamageProcess(int32 damage)
 {
 	//공중공격중 피격시 날아가는 문제 해결 
 	MovementModeChange(GetCharacterMovement(), EMovementMode::MOVE_NavWalking);
