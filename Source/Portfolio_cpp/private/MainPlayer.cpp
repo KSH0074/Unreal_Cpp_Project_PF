@@ -64,7 +64,7 @@ AMainPlayer::AMainPlayer()
 	//hitBox 설정
 	PlayerHitBox = CreateDefaultSubobject<UBoxComponent>(TEXT("HitBox"));
 	PlayerHitBox->SetRelativeScale3D(FVector(1.0f, 1.0f, 3.25f));
-	
+
 	PlayerHitBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics); //Overlap만 이용하므로
 	PlayerHitBox->SetCollisionObjectType(ECC_GameTraceChannel6);//PlayerHitBox
 
@@ -103,8 +103,8 @@ AMainPlayer::AMainPlayer()
 	PlayerPunchBox->SetupAttachment(GetMesh(), "LeftHand");
 	PlayerPunchBox->bHiddenInGame = false;
 	PlayerPunchBox->SetGenerateOverlapEvents(false);
-	PlayerPunchBox->SetRelativeLocation(FVector(0.0f,-45.0f,0.0f));
-	PlayerPunchBox->SetRelativeScale3D(FVector(1.0f,1.3f,1.0f));
+	PlayerPunchBox->SetRelativeLocation(FVector(0.0f, -45.0f, 0.0f));
+	PlayerPunchBox->SetRelativeScale3D(FVector(1.0f, 1.3f, 1.0f));
 
 	PlayerPunchBox->SetCollisionResponseToAllChannels(ECR_Ignore);
 	PlayerPunchBox->SetCollisionResponseToChannel(ECC_GameTraceChannel3, ECR_Overlap);
@@ -116,7 +116,7 @@ AMainPlayer::AMainPlayer()
 	PlayerPunchBox->OnComponentBeginOverlap.AddDynamic(this, &AMainPlayer::FootBoxBeginOverlap);
 	PlayerPunchBox->OnComponentEndOverlap.AddDynamic(this, &AMainPlayer::FootBoxEndOverlap);
 
-	GetCharacterMovement()->DefaultLandMovementMode=EMovementMode::MOVE_NavWalking;
+	GetCharacterMovement()->DefaultLandMovementMode = EMovementMode::MOVE_NavWalking;
 }
 
 // Called when the game starts or when spawned
@@ -129,8 +129,8 @@ void AMainPlayer::BeginPlay()
 
 	PlayerHitBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 
-	
-	
+
+
 }
 
 // Called every frame
@@ -177,9 +177,9 @@ void AMainPlayer::MainCharacterMoveInput()
 		if (isMoveAble)
 		{
 			UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
-			
+
 		}
-		
+
 
 	}
 }
@@ -193,7 +193,6 @@ void AMainPlayer::MouseButtonDown()
 
 void AMainPlayer::MouseButtonRelease()
 {
-	UE_LOG(Player, Warning, TEXT("Mouse release"));
 	bMouseDown = false;
 }
 
@@ -235,16 +234,25 @@ void AMainPlayer::InputCommand(FKey inputKey)
 	switch (inputKey.GetFName().GetPlainNameString()[0])//GetPlainNameString => 이름부분만 추출 FString 으로 변환
 	{
 	case 'D':
+	{
 		InputRight();
+		commandUI += 'D';
 		break;
+	}
+
 	case 'A':
+	{
 		InputLeft();
+		commandUI += 'A';
 		break;
+	}
 	case 'S':
 		InputDown();
+		commandUI += 'S';
 		break;
 	case 'W':
 		InputUp();
+		commandUI += 'W';
 		break;
 	default:
 		break;
@@ -269,16 +277,16 @@ void AMainPlayer::OutputCommand()
 		int32 tempDmg = 0;
 
 		TableRead(a, tempDmg);
-		
+		commandUI = "";
 		//스킬사용 방향으로 플레이어 회전 
-		if (UseSkill.IsBound()) 
+		if (UseSkill.IsBound())
 		{
 			FHitResult hitResult;
-			mainPlayerController->GetHitResultUnderCursor(ECC_Visibility, false, hitResult);
+			mainPlayerController->GetHitResultUnderCursor(ECC_GameTraceChannel5, false, hitResult);
 			hitResult.Location.Z = GetActorLocation().Z;
 			FRotator turnPlayer = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), hitResult.Location);
 			SetActorRotation(FRotator(0.0f, turnPlayer.Yaw, 0.0f));
-
+			SkillUI = *thisGameInstance->TextOut;
 			UseSkill.Execute(tempDmg);
 		}
 	}
@@ -304,8 +312,8 @@ void AMainPlayer::TableRead(FString InputCommand, int32& damage)
 	if (thisGameInstance == nullptr) return; // 게임인스턴스가 설정하지 않았을 경우 등.. 
 
 	FCommandTable* temp; //커맨드 테이블(행)을 저장할 임시변수 
-	if(InputCommand.IsEmpty())
-		temp= thisGameInstance->GetTableData(FString("NoCommand"));//NormalAttack 
+	if (InputCommand.IsEmpty())
+		temp = thisGameInstance->GetTableData(FString("NoCommand"));//NormalAttack 
 	else
 		temp = thisGameInstance->GetTableData(InputCommand); // PFGameInstance에 구현한 GetTableData사용 InputCommand와 이름이 같은 행을 찾아 반환 
 
@@ -315,10 +323,13 @@ void AMainPlayer::TableRead(FString InputCommand, int32& damage)
 		UE_LOG(Player, Warning, TEXT("OutputCommand : %s"), *thisGameInstance->TextOut); //출력로그에 출력  
 		UseSkill.BindUFunction(this, *thisGameInstance->TextOut); //해당 커맨드와 함수를 바인딩 
 		damage = skillDMG;
+		
 	}
 	else //못 찾은 경우 
 	{
+		UseSkill.BindUFunction(this, "NormalAttack");
 		UE_LOG(Player, Warning, TEXT("Skill not found, faild TableReading"));
+		SkillUI = "NormalAttack";
 		return;
 	}
 }
@@ -329,13 +340,14 @@ void AMainPlayer::TimeOver()
 		commandQueue.pop();
 	}
 	UE_LOG(Player, Warning, TEXT("TimeOver : Input CommandRemoved"));
+	commandUI = "";
 }
 
 
 void AMainPlayer::JangPoong(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill jangpoong"));
-	
+
 	Playeranim->PlaySkillMontage(1.5f, "FireBall");
 	mPlayerPower = Damage;
 }
@@ -363,7 +375,7 @@ void AMainPlayer::HurricaneKick(int32 Damage)
 
 	//이 아래 네 줄의 코드를 함수화 할 수 있을것 
 	PlayerTempBox = PlayerFootBox;
-	AttackZoneControl(PlayerTempBox,true);
+	AttackZoneControl(PlayerTempBox, true);
 
 	Playeranim->PlaySkillMontage(1.5f, "HurricaneKick");
 	mPlayerPower = Damage;
@@ -374,7 +386,7 @@ void AMainPlayer::Dodge(int32 Damage)
 	UE_LOG(Player, Warning, TEXT("use Skill Dodge"));
 
 	PlayerTempBox = PlayerHitBox;
-	AttackZoneControl(PlayerTempBox,false);
+	AttackZoneControl(PlayerTempBox, false);
 
 	Playeranim->PlaySkillMontage(1.0f, "Dodge");
 	mPlayerPower = Damage;
@@ -388,25 +400,25 @@ void AMainPlayer::BackDash(int32 Damage)
 void AMainPlayer::NormalAttack(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill NormalAttack"));
-	
+
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox, true);
 
-	Playeranim->PlaySkillMontage(0.8f,"NormalAttack");
+	Playeranim->PlaySkillMontage(0.8f, "NormalAttack");
 	mPlayerPower = Damage;
 }
 
 void AMainPlayer::FlyingKick(int32 Damage)
 {
 	UE_LOG(Player, Warning, TEXT("use Skill FlyingKick"));
-	
+
 	//z축 움직임이 제한되어 일시적으로 Flying 하게 하는코드 
 	MovementModeChange(GetCharacterMovement(), EMovementMode::MOVE_Flying);
 
 	PlayerTempBox = PlayerFootBox;
 	AttackZoneControl(PlayerTempBox, true);
 
-	Playeranim->PlaySkillMontage(1.5,"FlyingKick");
+	Playeranim->PlaySkillMontage(1.5, "FlyingKick");
 	mPlayerPower = Damage;
 }
 
@@ -419,7 +431,7 @@ void AMainPlayer::OnDamageProcess(int32 damage)
 	Playeranim->StopAllMontages(1.0f);
 	Playeranim->PlayDamageMontage();
 	mainPlayerController->StopMovement();
-	
+
 	HP -= damage;
 	UE_LOG(Player, Warning, TEXT("Player HP:%d"), HP);
 	if (HP <= 0)
@@ -446,21 +458,21 @@ void AMainPlayer::AllowInput(bool bInputAllow)
 	}
 }
 
-void AMainPlayer::FootBoxBeginOverlap(UPrimitiveComponent* OverlappedComp, 
+void AMainPlayer::FootBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 	AActor* OtherActor,
-	UPrimitiveComponent* OtherComp, 
+	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex,
-	bool bFromSweep, 
+	bool bFromSweep,
 	const FHitResult& SweepResult)
 {
-	
+
 	if (OtherActor->ActorHasTag("Enemy"))
 	{
 		mHittedEnemy = Cast<AEnemy>(OtherActor);
-		
+
 		UE_LOG(Player, Warning, TEXT("Attack Enemy : %s "), *(OtherActor->GetFName().ToString()));
 	}
-	else if(OtherActor->ActorHasTag("Boss"))
+	else if (OtherActor->ActorHasTag("Boss"))
 	{
 		mHittedEnemy = Cast<ABossMonster>(OtherActor);
 
@@ -474,8 +486,8 @@ void AMainPlayer::FootBoxBeginOverlap(UPrimitiveComponent* OverlappedComp,
 }
 
 void AMainPlayer::FootBoxEndOverlap(UPrimitiveComponent* OverlappedComponent,
-	AActor* OtherActor, 
-	UPrimitiveComponent* OtherComp, 
+	AActor* OtherActor,
+	UPrimitiveComponent* OtherComp,
 	int32 OtherBodyIndex)
 
 {
