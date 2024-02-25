@@ -83,9 +83,12 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Command)
 	COMMAND mCommand = COMMAND::None;
 
-	
 	std::queue<COMMAND> commandQueue;
 
+	UPROPERTY(BlueprintReadOnly)
+		FString commandUI{};
+	UPROPERTY(BlueprintReadOnly)
+		FString SkillUI{};
 	UFUNCTION()
 	void CommandTimeOut();
 
