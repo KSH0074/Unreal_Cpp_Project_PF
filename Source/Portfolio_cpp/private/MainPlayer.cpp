@@ -329,7 +329,7 @@ void AMainPlayer::TableRead(FString InputCommand, int32& damage)
 	{
 		UseSkill.BindUFunction(this, "NormalAttack");
 		UE_LOG(Player, Warning, TEXT("Skill not found, faild TableReading"));
-		SkillUI = "NormalAttack";
+		
 		return;
 	}
 }

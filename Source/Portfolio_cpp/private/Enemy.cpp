@@ -8,6 +8,7 @@
 #include "Animation/AnimInstance.h" 
 #include "EnemyAnim.h"
 #include "EnemyAIController.h"
+#include "Components/BillboardComponent.h"
 #include <Components/BoxComponent.h>
 // Sets default values
 AEnemy::AEnemy()
@@ -45,6 +46,10 @@ AEnemy::AEnemy()
 		{
 			UE_LOG(LogTemp, Warning, TEXT("Faild give Default AIclass to Boss"));
 		}
+
+
+		
+
 	}
 	
 

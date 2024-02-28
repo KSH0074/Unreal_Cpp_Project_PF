@@ -103,5 +103,6 @@ public:
 
 	UPROPERTY()
 	bool bHit = false;
-
+	UPROPERTY()
+	class UBillboardComponent* HPbar{};
 };
