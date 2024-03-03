@@ -128,7 +128,7 @@ void AEnemy::DeathState()
 	FVector vt = FVector::DownVector * GetWorld()->DeltaTimeSeconds;
 	FVector p = p0 + (40.0f * vt);
 	SetActorLocation(p);
-	if (p.Z < -200.0f)
+	if (p.Z < -50.0f)
 	{
 		Destroy();
 	}
