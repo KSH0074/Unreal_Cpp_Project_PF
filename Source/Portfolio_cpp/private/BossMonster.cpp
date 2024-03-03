@@ -17,30 +17,7 @@ ABossMonster::ABossMonster()
 	
 	ConstructorHelpers::FObjectFinder < USkeletalMesh> tempMesh(TEXT("SkeletalMesh'/Game/BossMonster/Characters/Heroes/Grux/Meshes/Grux.Grux'"));
 
-	if (tempMesh.Succeeded())
-	{
-		GetMesh()->SetSkeletalMesh(tempMesh.Object);
-
-		GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
-	}
-
-	ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/BossMonster/Characters/Heroes/Grux/Grux_AnimBlueprint.Grux_AnimBlueprint_C'"));
-	if (tempClass.Succeeded())
-	{
-		GetMesh()->SetAnimInstanceClass(tempClass.Class);
-	}
-
-	ConstructorHelpers::FClassFinder <AAIController> tempAIClass(TEXT("Blueprint'/Game/BossMonster/Characters/Heroes/Grux/Boss_AI/BP_BossController.BP_BossController_C'"));
-	if (tempAIClass.Succeeded())
-	{
-		AIControllerClass = tempAIClass.Class;
-		
-	}
-	else
-	{
-		UE_LOG(LogTemp, Warning, TEXT("Faild give Default AIclass to Boss"));
-	}
-
+	
 	UE_LOG(LogTemp, Warning, TEXT("BossMonster Initialize"));
 
 	attackZoneComp->SetRelativeScale3D(FVector(2.0f, 2.0f, 3.5f));
@@ -60,7 +37,7 @@ void ABossMonster::BeginPlay()
 	Scene_Placed_PlayerPawn = Cast<AMainPlayer>(UGameplayStatics::GetActorOfClass(GetWorld(), AMainPlayer::StaticClass()));
 	anim = Cast<Utest_BossAnim>(GetMesh()->GetAnimInstance());
 	mController = Cast<Atest_BossController>(GetController());
-	mController->blackboardComp->SetValueAsInt(FName::FName("HP"), HP); // BossMonster에만 있는 BB 키값 
+	//mController->blackboardComp->SetValueAsInt(FName::FName("HP"), HP); // BossMonster에만 있는 BB 키값 
 
 }
 

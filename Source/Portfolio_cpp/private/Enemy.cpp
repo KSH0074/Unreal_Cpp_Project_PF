@@ -15,37 +15,7 @@ AEnemy::AEnemy()
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	//Enemy클래스일 경우 애미네이션 블루프린트, 스켈레탈 메시 할당 
-	if (GetClass()->GetName() == FString("Enemy"))
-	{
-		ConstructorHelpers::FClassFinder<UAnimInstance> tempClass(TEXT("AnimBlueprint'/Game/ImportedAnimationAndCharacter/Enemy/Enemy_Animation/Enemy_AnimBP.Enemy_AnimBP_C'"));
-
-		if (tempClass.Succeeded())
-		{
-			GetMesh()->SetAnimInstanceClass(tempClass.Class);
-		}
-
-
-		ConstructorHelpers::FObjectFinder < USkeletalMesh> tempMesh(TEXT("SkeletalMesh'/Game/ImportedAnimationAndCharacter/Enemy/Mesh/Enemy_Skeletalmesh.Enemy_Skeletalmesh'"));
-
-		if (tempMesh.Succeeded())
-		{
-			GetMesh()->SetSkeletalMesh(tempMesh.Object);
-
-			GetMesh()->SetRelativeLocationAndRotation(FVector(0, 0, -88), FRotator(0, -90, 0));
-		}
-		UE_LOG(LogTemp, Warning, TEXT("Enemy Initialize"));
-
-		ConstructorHelpers::FClassFinder <AAIController> tempAIClass(TEXT("Blueprint'/Game/Blueprints/Enemy_AI/Enemy_Controller.Enemy_Controller_C'"));
-		if (tempAIClass.Succeeded())
-		{
-			AIControllerClass = tempAIClass.Class;
-		}
-		else
-		{
-			UE_LOG(LogTemp, Warning, TEXT("Faild give Default AIclass to Boss"));
-		}
-	}
+	
 	
 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
@@ -171,8 +141,6 @@ void AEnemy::Attack()
 	int32 index = FMath::RandRange(0.0f, 1.9f);
 	FString sectionName = FString::Printf(TEXT("Attack%d"), index);
 	anim->PlayAttackAnim(FName(*sectionName));//BP에서 구현된 함수가 실행됨 
-
-
 
 	isMontagePlaying = true;
 	GetController()->StopMovement();
