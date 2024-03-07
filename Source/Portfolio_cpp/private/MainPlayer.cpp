@@ -179,8 +179,6 @@ void AMainPlayer::MainCharacterMoveInput()
 			UAIBlueprintHelperLibrary::SimpleMoveToLocation(mainPlayerController, hitResult.Location);
 
 		}
-
-
 	}
 }
 
