@@ -136,7 +136,7 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = FireBallFactory)
 		TSubclassOf<class AFireBall> FireBall;
 	
-	UPROPERTY(BlueprintReadWrite, Category = FireBallFactory)
+	UPROPERTY(EditAnywhere, Category = FireBallFactory)
 		class UArrowComponent* firePosition;
 
 	//Player's HP

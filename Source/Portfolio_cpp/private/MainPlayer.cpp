@@ -49,8 +49,8 @@ AMainPlayer::AMainPlayer()
 	//firePosition 
 	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition2"));
 	firePosition->SetRelativeLocation(FVector(0.0f, 0.0f, 40.0f));
-	firePosition->bHiddenInGame = true;
 	firePosition->SetupAttachment(RootComponent);
+	firePosition->bHiddenInGame = true;
 
 	//capsuleComponent 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
@@ -77,7 +77,7 @@ AMainPlayer::AMainPlayer()
 	PlayerFootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("FootBox"));
 	PlayerFootBox->SetupAttachment(GetMesh(), "LeftLeg");
 	//PlayerFootBox->AttachTo(GetMesh(),"");
-	PlayerFootBox->bHiddenInGame = false;
+	PlayerFootBox->bHiddenInGame = true;
 	PlayerFootBox->SetGenerateOverlapEvents(false);
 	PlayerFootBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 	PlayerFootBox->SetRelativeScale3D(FVector(1.0f, 1.0f, 1.0f));
@@ -101,7 +101,7 @@ AMainPlayer::AMainPlayer()
 	//punchBox
 	PlayerPunchBox = CreateDefaultSubobject<UBoxComponent>(TEXT("PunchBox"));
 	PlayerPunchBox->SetupAttachment(GetMesh(), "LeftHand");
-	PlayerPunchBox->bHiddenInGame = false;
+	PlayerPunchBox->bHiddenInGame = true;
 	PlayerPunchBox->SetGenerateOverlapEvents(false);
 	PlayerPunchBox->SetRelativeLocation(FVector(0.0f, -45.0f, 0.0f));
 	PlayerPunchBox->SetRelativeScale3D(FVector(1.0f, 1.3f, 1.0f));
