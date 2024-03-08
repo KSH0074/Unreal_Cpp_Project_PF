@@ -47,7 +47,7 @@ AMainPlayer::AMainPlayer()
 	bUseControllerRotationYaw = false;
 
 	//firePosition 
-	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition2"));
+	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition"));
 	firePosition->SetRelativeLocation(FVector(0.0f, 0.0f, 40.0f));
 	firePosition->SetupAttachment(RootComponent);
 	firePosition->bHiddenInGame = true;
