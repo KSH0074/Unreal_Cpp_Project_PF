@@ -136,8 +136,8 @@ public:
 	UPROPERTY(EditDefaultsOnly, Category = FireBallFactory)
 		TSubclassOf<class AFireBall> FireBall;
 	
-	UPROPERTY(EditAnywhere, Category = FireBallFactory)
-		class UArrowComponent* firePosition;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = FireBallFactory)
+		class UArrowComponent* firePosition2;
 
 	//Player's HP
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
@@ -181,7 +181,7 @@ public:
 	UFUNCTION()
 		void MovementModeChange(UCharacterMovementComponent* const MovementComp, EMovementMode moveMode);
 
-	//UPROPERTY(BlueprintReadOnly)
-	//bool mSkillUse = false;
+	UPROPERTY(BlueprintReadOnly)
+	bool isDead = false;
 	
 };

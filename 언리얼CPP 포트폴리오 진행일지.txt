@@ -128,3 +128,4 @@ AIControllerClass C++단에서 Blackboard 데이터 할당, EnemyController BP�
 2024/03/07 : MainMenu 화면설정, Setting button 누르면 새로운 창 표시, MainMenu시에 UI만 입력 가능하도록 만들고 start 누를 시 Normal 맵이 열리게 만듦, Player가 언덕을 오를 수 있게 됨  
 2024/03/08 : MainMenu에서 PlayerUI 보이지 않게 함, 조작법과 관련된 설명 메뉴에 추가 , 게임 나가기 버튼 추가
 2024/03/09 : 게임 중 ESC를 눌렀을때 게임이 일시 정지 되게 함, 조작법을 띄우면서 메뉴이동, 화면설정, 다시시작 버튼 동작 되게 하였다.  일시정지일떄 다시 ESC버튼으로 돌아올 수 있다. 
+2024/03/12 : 일시정지 메뉴에서 화면 설정을 들어갔을때 ESC를 누르면 UI가 켜진채로 재시작 되는 문제 해결, Normal Stage 레벨 테스트 프로젝트에서 제작 중 

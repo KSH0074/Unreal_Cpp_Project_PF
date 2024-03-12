@@ -46,11 +46,10 @@ AMainPlayer::AMainPlayer()
 
 	bUseControllerRotationYaw = false;
 
-	//firePosition 
-	firePosition = CreateDefaultSubobject<UArrowComponent>(TEXT("FirePosition"));
-	firePosition->SetRelativeLocation(FVector(0.0f, 0.0f, 40.0f));
-	firePosition->SetupAttachment(RootComponent);
-	firePosition->bHiddenInGame = true;
+	//firePosition2 
+	firePosition2 = CreateDefaultSubobject<UArrowComponent>(TEXT("firePosition2"));
+	firePosition2->SetupAttachment(RootComponent);
+	firePosition2->bHiddenInGame = true;
 
 	//capsuleComponent 
 	GetCapsuleComponent()->SetGenerateOverlapEvents(true);
@@ -126,7 +125,7 @@ void AMainPlayer::BeginPlay()
 	mainPlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0);
 	thisGameInstance = Cast<UPFGameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 	Playeranim = Cast<UMainPlayerAnim>(GetMesh()->GetAnimInstance());
-
+	firePosition2->SetRelativeLocation(FVector(0.0f, 0.0f, 40.0f));
 	PlayerHitBox->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
 
 
@@ -354,7 +353,7 @@ void AMainPlayer::ThrowFireball()
 {
 	FActorSpawnParameters SpawnPrams;
 	SpawnPrams.bNoFail = true;
-	AFireBall* FireBallInstance = GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition->GetComponentTransform());
+	AFireBall* FireBallInstance = GetWorld()->SpawnActor<AFireBall>(FireBall, firePosition2->GetComponentTransform());
 
 	//생성위치가 겹칠때 생기는 문제를 방지하기 위해서 
 	if (FireBallInstance != nullptr)
@@ -436,8 +435,10 @@ void AMainPlayer::OnDamageProcess(int32 damage)
 	{
 		//사망 모션 이후 게임오버 창 띄우고 조작 안되도독 함, 
 		//위 내용 구현 전까지는 게임을 끝내는 것으로 대체한다 
-		APlayerController* PlayerController = UGameplayStatics::GetPlayerController(GetWorld(), 0); // 플레이어 컨트롤러 가져오기
-		PlayerController->ConsoleCommand("Exit");
+		//mainPlayerController->SetPause(true);
+	
+		isDead = true;
+		
 	}
 
 }
