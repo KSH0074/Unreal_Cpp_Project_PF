@@ -18,7 +18,7 @@ UPFGameInstance::UPFGameInstance()
 		//tableSize = DtTable.Object->GetTableData().Num();
 	}
 }
-
+//테이블 데이터를 찾는 함수 
 FCommandTable* UPFGameInstance::GetTableData(FString column)
 {
 	FCommandTable* temp;
