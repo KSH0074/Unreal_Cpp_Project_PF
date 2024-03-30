@@ -30,7 +30,7 @@ AEnemy::AEnemy()
 	attackZoneComp->SetGenerateOverlapEvents(true);
 	attackZoneComp->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	attackZoneComp->SetCollisionObjectType(ECC_GameTraceChannel7);//Enemy AttackZone
-	attackZoneComp->bHiddenInGame = false;
+	attackZoneComp->bHiddenInGame = true;
 	//반응채널 설정
 	attackZoneComp->SetCollisionResponseToAllChannels(ECR_Ignore);
 	attackZoneComp->SetCollisionResponseToChannel(ECC_GameTraceChannel6, ECollisionResponse::ECR_Overlap); // Player Hit Box
@@ -44,7 +44,7 @@ AEnemy::AEnemy()
 	
 	HP = 100;
 	
-	mDamage = 2;
+	mDamage = 6;
 	
 }
 
@@ -126,9 +126,9 @@ void AEnemy::DeathState()
 	//p = p0 + vt
 	FVector p0 = GetActorLocation();
 	FVector vt = FVector::DownVector * GetWorld()->DeltaTimeSeconds;
-	FVector p = p0 + (60.0f * vt);
+	FVector p = p0 + (80.0f * vt);
 	SetActorLocation(p);
-	if (p.Z < -50.0f)
+	if (p.Z < 0.0f)
 	{
 		Destroy();
 	}
