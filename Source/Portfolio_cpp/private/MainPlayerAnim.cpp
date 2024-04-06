@@ -81,18 +81,7 @@ void UMainPlayerAnim::AnimNotify_Attack()
 
 	if (mMainPlayer->bHit)
 	{
-		if (ABossMonster* Boss = Cast<ABossMonster>(mMainPlayer->mHittedEnemy))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("BossDamaged"));
-			// mHittedEnemy가 BossMonster인 경우
-			Boss->OnDamageProcess(mMainPlayer->mPlayerPower);
-		}
-		else if (AEnemy* Enemy = Cast<AEnemy>(mMainPlayer->mHittedEnemy))
-		{
-			UE_LOG(LogTemp, Warning, TEXT("EnemyDamaged"));
-			// mHittedEnemy가 Enemy인 경우
-			Enemy->OnDamageProcess(mMainPlayer->mPlayerPower);
-		}
+			mMainPlayer->mHittedEnemy->OnDamageProcess(mMainPlayer->mPlayerPower);
 	}
 	else
 	{
